@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  web_demo_template:
+    build: .
+    container_name: demo_template_web
+    environment:
+      - QDRANT_HOST=qdrant_demo_template
+    depends_on:
+      - qdrant_demo_template
+    networks:
+      - qdrant-net
+
+  qdrant_demo_template:
+    image: qdrant/qdrant:v0.7.0
+    volumes:
+      - ./data/qdrant_storage:/qdrant/storage
+
+    networks:
+      - qdrant-net
+
+networks:
+  qdrant-net:
+    external:
+      name: qdrant-net
