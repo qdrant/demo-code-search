@@ -1,4 +1,11 @@
-FROM python:3.9
+FROM node:current as builder
+
+COPY frontend /frontend
+WORKDIR /frontend
+
+RUN npm install; npx quasar build
+
+FROM python:3.9-slim
 
 ENV PYTHONFAULTHANDLER=1 \
   PYTHONUNBUFFERED=1 \
@@ -18,9 +25,13 @@ COPY poetry.lock pyproject.toml /code/
 RUN poetry config virtualenvs.create false \
   && poetry install --no-dev --no-interaction --no-ansi
 
-RUN python -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2") '
+# Install pre-trained models here
+# Example:
+# RUN python -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2") '
 
 # Creating folders, and files for a project:
 COPY . /code
+
+COPY --from=builder /frontend/dist /code/frontend/dist
 
 CMD uvicorn demo_template.service:app --host 0.0.0.0 --port 8000 --workers ${WORKERS:-1}
