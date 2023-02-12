@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <!-- <q-header elevated>
       <q-toolbar>
         <q-btn
           flat
@@ -15,17 +15,13 @@
 
         <div>Qdrant</div>
       </q-toolbar>
-    </q-header>
+    </q-header> -->
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer v-model="drawer" show-if-above :mini="true">
       <q-list>
         <q-item-label header> Essential Links </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
 
