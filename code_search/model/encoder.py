@@ -1,5 +1,5 @@
 from typing import Optional, List
-from unixcoder import UniXcoder
+from .unixcoder import UniXcoder
 
 import torch
 

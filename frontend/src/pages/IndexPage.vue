@@ -9,8 +9,8 @@
 
       <div class="row justify-evenly">
         <div class="col-10 simple-typeahead">
-          <q-input outlined v-model="query" placeholder="Search" color="black" :input-style="{ fontSize: '16pt' }"
-            class="input" v-on:keyup.enter="search">
+          <q-input outlined :loading="loading" v-model="query" placeholder="Search" color="black"
+            :input-style="{ fontSize: '16pt' }" class="input" v-on:keyup.enter="search">
             <template v-slot:append>
               <q-avatar style='width: auto;'>
                 <img src="~/assets/logo_no_text.png" alt="Powered by Qdrant" />
@@ -19,7 +19,7 @@
           </q-input>
 
 
-          <q-list v-if="showResults" class="q-pa-xs simple-typeahead-list bg-white">
+          <q-list v-if="showQuickResults" class="q-pa-xs simple-typeahead-list bg-white">
             <q-item clickable v-ripple v-for="result in results" :key="result.title" @click="console.log(result)"
               class="">
               <q-item-section>
@@ -43,11 +43,12 @@
             <q-item v-for="result in results" :key="result.title" @click="console.log(result)" class="">
               <q-item-section>
                 <q-item-label>
-                  {{ result.context.module }} / {{ result.context.file_name }}:{{ result.line }} >
-                  {{ result.context.struct_name }}
+                  {{ result.file }}:{{ result.start_line }} - &nbsp;&nbsp; <q-icon size="xs" name="open_in_news" />
+                  <a :href="'https://github.com/qdrant/qdrant/blob/master/' + result.file + '#L' + (result.start_line + 1)"
+                    target="_blank">GitHub</a>
                 </q-item-label>
                 <q-item-label>
-                  <highlightjs language="rust" :code="'...\n' + result.context.snippet.slice(0, 1000) + '\n...'" />
+                  <highlightjs language="rust" :code="'...\n' + result.code_snippet.slice(0, 1000) + '\n...'" />
                 </q-item-label>
 
               </q-item-section>
@@ -56,26 +57,24 @@
         </div>
       </div>
     </div>
-  </q-page>
+</q-page>
 </template>
 
 <script>
 import { defineComponent } from "vue";
 import { axios } from "boot/axios";
-import { useQuasar } from "quasar";
+import { Notify } from 'quasar'
+
 import hljs from 'highlight.js/lib/common';
 import hljsVuePlugin from "@highlightjs/vue-plugin";
 
 
 let fakeData = [
-  { "name": "score_internal", "signature": "fn score_internal (& self , point : PointOffsetType , points : & mut dyn Iterator < Item = PointOffsetType > , top : usize ,) -> Vec < ScoredPointOffset >", "code_type": "Function", "block": null, "docstring": null, "line": 301, "line_from": 301, "line_to": 309, "context": { "module": "vector_storage", "file_path": "lib/segment/src/vector_storage/memmap_vector_storage.rs", "file_name": "memmap_vector_storage.rs", "struct_name": "MemmapVectorStorage < TMetric >", "snippet": "    fn score_internal(\n        &self,\n        point: PointOffsetType,\n        points: &mut dyn Iterator<Item = PointOffsetType>,\n        top: usize,\n    ) -> Vec<ScoredPointOffset> {\n        let vector = self.get_vector(point).unwrap();\n        self.score_points(&vector, points, top)\n    }\n" } },
-  { "name": "files", "signature": "fn files (& self) -> Vec < PathBuf >", "code_type": "Function", "block": null, "docstring": null, "line": 311, "line_from": 311, "line_to": 313, "context": { "module": "vector_storage", "file_path": "lib/segment/src/vector_storage/memmap_vector_storage.rs", "file_name": "memmap_vector_storage.rs", "struct_name": "MemmapVectorStorage < TMetric >", "snippet": "    fn files(&self) -> Vec<PathBuf> {\n        vec![self.vectors_path.clone(), self.deleted_path.clone()]\n    }\n" } },
-  { "name": "new", "signature": "fn new (dim : usize) -> ChunkedVectors", "code_type": "Function", "block": null, "docstring": null, "line": 23, "line_from": 23, "line_to": 33, "context": { "module": "vector_storage", "file_path": "lib/segment/src/vector_storage/chunked_vectors.rs", "file_name": "chunked_vectors.rs", "struct_name": "ChunkedVectors", "snippet": "    pub fn new(dim: usize) -> ChunkedVectors {\n        assert_ne!(dim, 0, \"The vector's dimension cannot be 0\");\n        let vector_size = dim * mem::size_of::<VectorElementType>();\n        let chunk_capacity = max(MIN_CHUNK_CAPACITY, CHUNK_SIZE / vector_size);\n        ChunkedVectors {\n            dim,\n            len: 0,\n            chunk_capacity,\n            chunks: Vec::new(),\n        }\n    }\n" } },
-  { "name": "len", "signature": "fn len (& self) -> usize", "code_type": "Function", "block": null, "docstring": null, "line": 35, "line_from": 35, "line_to": 37, "context": { "module": "vector_storage", "file_path": "lib/segment/src/vector_storage/chunked_vectors.rs", "file_name": "chunked_vectors.rs", "struct_name": "ChunkedVectors", "snippet": "    pub fn len(&self) -> usize {\n        self.len\n    }\n" } },
-  { "name": "is_empty", "signature": "fn is_empty (& self) -> bool", "code_type": "Function", "block": null, "docstring": null, "line": 39, "line_from": 39, "line_to": 41, "context": { "module": "vector_storage", "file_path": "lib/segment/src/vector_storage/chunked_vectors.rs", "file_name": "chunked_vectors.rs", "struct_name": "ChunkedVectors", "snippet": "    pub fn is_empty(&self) -> bool {\n        self.len == 0\n    }\n" } },
-  { "name": "get", "signature": "fn get (& self , key : PointOffsetType) -> & [VectorElementType]", "code_type": "Function", "block": null, "docstring": null, "line": 43, "line_from": 43, "line_to": 48, "context": { "module": "vector_storage", "file_path": "lib/segment/src/vector_storage/chunked_vectors.rs", "file_name": "chunked_vectors.rs", "struct_name": "ChunkedVectors", "snippet": "    pub fn get(&self, key: PointOffsetType) -> &[VectorElementType] {\n        let key = key as usize;\n        let chunk_data = &self.chunks[key / self.chunk_capacity];\n        let idx = (key % self.chunk_capacity) * self.dim;\n        &chunk_data[idx..idx + self.dim]\n    }\n" } },
-  { "name": "push", "signature": "fn push (& mut self , vector : & [VectorElementType]) -> PointOffsetType", "code_type": "Function", "block": null, "docstring": null, "line": 50, "line_from": 50, "line_to": 54, "context": { "module": "vector_storage", "file_path": "lib/segment/src/vector_storage/chunked_vectors.rs", "file_name": "chunked_vectors.rs", "struct_name": "ChunkedVectors", "snippet": "    pub fn push(&mut self, vector: &[VectorElementType]) -> PointOffsetType {\n        let new_id = self.len as PointOffsetType;\n        self.insert(new_id, vector);\n        new_id\n    }\n" } },
-  { "name": "insert", "signature": "fn insert (& mut self , key : PointOffsetType , vector : & [VectorElementType])", "code_type": "Function", "block": null, "docstring": null, "line": 56, "line_from": 56, "line_to": 70, "context": { "module": "vector_storage", "file_path": "lib/segment/src/vector_storage/chunked_vectors.rs", "file_name": "chunked_vectors.rs", "struct_name": "ChunkedVectors", "snippet": "    pub fn insert(&mut self, key: PointOffsetType, vector: &[VectorElementType]) {\n        let key = key as usize;\n        self.len = max(self.len, key + 1);\n        while self.chunks.len() * self.chunk_capacity < self.len {\n            self.chunks.push(vec![]);\n        }\n\n        let chunk_data = &mut self.chunks[key / self.chunk_capacity];\n        let idx = (key % self.chunk_capacity) * self.dim;\n        if chunk_data.len() < idx + self.dim {\n            chunk_data.resize(idx + self.dim, 0.);\n        }\n        let data = &mut chunk_data[idx..idx + self.dim];\n        data.copy_from_slice(vector);\n    }\n" } },
+  { "code_snippet": "fn estimate_should<F>(\n    estimator: &F,\n    conditions: &[Condition],\n    total: usize,\n) -> CardinalityEstimation", "end_character": 1, "end_line": 127, "file": "lib/segment/src/index/query_estimator.rs", "start_character": 21, "start_line": 123 },
+  { "code_snippet": "                let query_cardinality = {\n                    let payload_index = self.payload_index.borrow();\n                    payload_index.estimate_cardinality(condition)\n                };", "end_character": 17, "end_line": 701, "file": "lib/segment/src/segment.rs", "start_character": 40, "start_line": 698 },
+  { "code_snippet": "fn estimate_must_not<F>(\n    estimator: &F,\n    conditions: &[Condition],\n    total: usize,\n) -> CardinalityEstimation", "end_character": 1, "end_line": 162, "file": "lib/segment/src/index/query_estimator.rs", "start_character": 23, "start_line": 158 },
+  { "code_snippet": "    ) -> Option<CardinalityEstimation> {\n        self.get_payload_field_index()\n            .estimate_cardinality(condition)\n    }", "end_character": 5, "end_line": 167, "file": "lib/segment/src/index/field_index/field_index_base.rs", "start_character": 39, "start_line": 164 },
+  { "code_snippet": "    fn cardinality_request(index: &NumericIndex<f64>, query: Range) -> CardinalityEstimation {\n        let estimation = index.range_cardinality(&query);\n\n        let result = index\n            .filter(&FieldCondition::new_range(\"\".to_string(), query))\n            .unwrap()\n            .unique()\n            .collect_vec();\n\n        eprintln!(\"estimation = {:#?}\", estimation);\n        eprintln!(\"result.len() = {:#?}\", result.len());\n        assert!(estimation.min <= result.len());\n        assert!(estimation.max >= result.len());\n        estimation\n    }", "end_character": 5, "end_line": 587, "file": "lib/segment/src/index/field_index/numeric_index.rs", "start_character": 93, "start_line": 573 },
 ]
 
 
@@ -88,8 +87,10 @@ export default defineComponent({
 
   data: () => ({
     query: "",
+    loading: false,
     results: [],
-    showResults: false,
+    showResults: true,
+    showQuickResults: false,
   }),
 
   created() {
@@ -99,16 +100,17 @@ export default defineComponent({
 
   methods: {
     async search() {
-      const $q = useQuasar();
       try {
-        // const response = await axios.get("api/predict", {
-        //   params: { query: "test" },
-        // });
-        // this.result = response.data;
-        this.results = fakeData;
+        this.loading = true;
+        const response = await axios.get("api/search", {
+          params: { query: this.query },
+        });
+        this.results = response.data.result;
         this.showResults = true;
+        this.loading = false;
       } catch (e) {
-        $q.notify({
+        this.loading = false;
+        Notify.create({
           color: "negative",
           position: "top",
           message: "Loading failed: " + e,

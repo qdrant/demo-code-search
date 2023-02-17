@@ -34,4 +34,4 @@ COPY . /code
 
 COPY --from=builder /frontend/dist /code/frontend/dist
 
-CMD uvicorn demo_template.service:app --host 0.0.0.0 --port 8000 --workers ${WORKERS:-1}
+CMD uvicorn code_search.service:app --host 0.0.0.0 --port 8000 --workers ${WORKERS:-1}
