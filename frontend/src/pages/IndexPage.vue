@@ -2,6 +2,12 @@
   <q-page>
     <div class="q-pa-md q-col-gutter-sm items-stretch">
       <div class="row justify-evenly">
+        <div class="col-8">
+          <h2>Source Code Search</h2>
+        </div>
+      </div>
+
+      <div class="row justify-evenly">
         <div class="col-10 simple-typeahead">
           <q-input outlined v-model="query" placeholder="Search" color="black" :input-style="{ fontSize: '16pt' }"
             class="input" v-on:keyup.enter="search">
@@ -82,7 +88,7 @@ export default defineComponent({
 
   data: () => ({
     query: "",
-    results: fakeData,
+    results: [],
     showResults: false,
   }),
 
