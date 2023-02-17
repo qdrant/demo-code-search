@@ -5,9 +5,12 @@ description = ""
 authors = ["Andrey Vasnetsov <andrey@vasnetsov.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<=3.11"
 fastapi = "^0.75.2"
 uvicorn = "^0.17.6"
+torch = "^1.13.1"
+transformers = "^4.26.1"
+qdrant-client = "^1.0.1"
 
 [tool.poetry.dev-dependencies]
 
