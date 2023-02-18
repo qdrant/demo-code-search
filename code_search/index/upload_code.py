@@ -6,7 +6,7 @@ import qdrant_client
 import numpy as np
 import json
 
-from code_search.config import QDRANT_URL, QDRANT_API_KEY, DATA_DIR
+from code_search.config import QDRANT_URL, QDRANT_API_KEY, DATA_DIR, QDRANT_CODE_COLLECTION_NAME
 from code_search.model.encoder import UniXcoderEmbeddingsProvider
 
 code_keys = [
@@ -24,7 +24,7 @@ def encode_and_upload():
         prefer_grpc=True,
     )
 
-    collection_name = "code-snippets-unixcoder"
+    collection_name = QDRANT_CODE_COLLECTION_NAME
     input_file = Path(DATA_DIR) / "qdrant_snippets.jsonl"
     encoder = UniXcoderEmbeddingsProvider(device="cuda")
 

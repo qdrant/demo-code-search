@@ -6,13 +6,11 @@ from qdrant_client import QdrantClient
 from qdrant_client.http.models import Distance, VectorParams
 from sentence_transformers import SentenceTransformer
 
-from code_search.config import DATA_DIR, QDRANT_URL, QDRANT_API_KEY
+from code_search.config import DATA_DIR, QDRANT_URL, QDRANT_API_KEY, QDRANT_NLU_COLLECTION_NAME, ENCODER_NAME, \
+    ENCODER_SIZE
 from code_search.index.textifier import textify
 
 file_name = Path(DATA_DIR) / "structures.json"
-
-ENCODER_NAME = "all-MiniLM-L6-v2"
-ENCODER_SIZE = 384
 
 
 def iter_batch(iterable, batch_size=64):
@@ -42,7 +40,7 @@ def encode(sentence_transformer_name=ENCODER_NAME):
 
 
 def upload():
-    collection_name = "code-signatures"
+    collection_name = QDRANT_NLU_COLLECTION_NAME
 
     client = QdrantClient(
         QDRANT_URL,

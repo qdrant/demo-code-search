@@ -3,12 +3,12 @@ import os
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 
-from code_search.config import ROOT_DIR, QDRANT_COLLECTION_NAME
-from code_search.searcher import CodeSearcher
+from code_search.config import ROOT_DIR
+from code_search.searcher import CombinedSearcher
 
 app = FastAPI()
 
-searcher = CodeSearcher(QDRANT_COLLECTION_NAME)
+searcher = CombinedSearcher()
 
 
 @app.get("/api/search")

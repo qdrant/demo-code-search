@@ -43,12 +43,15 @@
             <q-item v-for="result in results" :key="result.title" @click="console.log(result)" class="">
               <q-item-section>
                 <q-item-label>
-                  {{ result.file }}:{{ result.start_line }} - &nbsp;&nbsp; <q-icon size="xs" name="open_in_news" />
-                  <a :href="'https://github.com/qdrant/qdrant/blob/master/' + result.file + '#L' + (result.start_line + 1)"
+                  {{ result.context.file_path }}:{{ result.line }} - &nbsp;&nbsp; <q-icon size="xs" name="open_in_news" />
+                  <a :href="'https://github.com/qdrant/qdrant/blob/master/' + result.context.file_path + '#L' + result.line"
                     target="_blank">GitHub</a>
                 </q-item-label>
                 <q-item-label>
-                  <highlightjs language="rust" :code="'...\n' + result.code_snippet.slice(0, 1000) + '\n...'" />
+                  <!-- <pre v-highlightjs><code class="javascript">const s = new Date().toString()</code></pre> -->
+
+                  <pre><code class="language-rust" v-html="result.context.snippet"></code></pre>
+                  <!-- <highlightjs language="rust" :code="result.context.snippet" /> -->
                 </q-item-label>
 
               </q-item-section>
@@ -66,15 +69,19 @@ import { axios } from "boot/axios";
 import { Notify } from 'quasar'
 
 import hljs from 'highlight.js/lib/common';
-import hljsVuePlugin from "@highlightjs/vue-plugin";
+// Highlight lines plugin
+
+// import hljsVuePlugin from "@highlightjs/vue-plugin";
+// import { component as VueCodeHighlight } from 'vue-code-highlight';
+
 
 
 let fakeData = [
-  { "code_snippet": "fn estimate_should<F>(\n    estimator: &F,\n    conditions: &[Condition],\n    total: usize,\n) -> CardinalityEstimation", "end_character": 1, "end_line": 127, "file": "lib/segment/src/index/query_estimator.rs", "start_character": 21, "start_line": 123 },
-  { "code_snippet": "                let query_cardinality = {\n                    let payload_index = self.payload_index.borrow();\n                    payload_index.estimate_cardinality(condition)\n                };", "end_character": 17, "end_line": 701, "file": "lib/segment/src/segment.rs", "start_character": 40, "start_line": 698 },
-  { "code_snippet": "fn estimate_must_not<F>(\n    estimator: &F,\n    conditions: &[Condition],\n    total: usize,\n) -> CardinalityEstimation", "end_character": 1, "end_line": 162, "file": "lib/segment/src/index/query_estimator.rs", "start_character": 23, "start_line": 158 },
-  { "code_snippet": "    ) -> Option<CardinalityEstimation> {\n        self.get_payload_field_index()\n            .estimate_cardinality(condition)\n    }", "end_character": 5, "end_line": 167, "file": "lib/segment/src/index/field_index/field_index_base.rs", "start_character": 39, "start_line": 164 },
-  { "code_snippet": "    fn cardinality_request(index: &NumericIndex<f64>, query: Range) -> CardinalityEstimation {\n        let estimation = index.range_cardinality(&query);\n\n        let result = index\n            .filter(&FieldCondition::new_range(\"\".to_string(), query))\n            .unwrap()\n            .unique()\n            .collect_vec();\n\n        eprintln!(\"estimation = {:#?}\", estimation);\n        eprintln!(\"result.len() = {:#?}\", result.len());\n        assert!(estimation.min <= result.len());\n        assert!(estimation.max >= result.len());\n        estimation\n    }", "end_character": 5, "end_line": 587, "file": "lib/segment/src/index/field_index/numeric_index.rs", "start_character": 93, "start_line": 573 },
+  { "code_type": "Function", "context": { "file_name": "query_estimator.rs", "file_path": "lib/segment/src/index/query_estimator.rs", "module": "index", "snippet": "<mark>pub fn combine_should_estimations(</mark>\n<mark>    estimations: &[CardinalityEstimation],</mark>\n<mark>    total: usize,</mark>\n) -> CardinalityEstimation {\n    let mut clauses: Vec<PrimaryCondition> = vec![];\n    for estimation in estimations {\n        if estimation.primary_clauses.is_empty() {\n            // If some branch is un-indexed - we can't make\n            // any assumptions about the whole `should` clause\n            clauses = vec![];\n            break;\n        }\n        clauses.append(&mut estimation.primary_clauses.clone());\n    }\n    let element_not_hit_prob: f64 = estimations\n        .iter()\n        .map(|x| (total - x.exp) as f64 / (total as f64))\n        .product();\n    let element_hit_prob = 1.0 - element_not_hit_prob;\n    let expected_count = (element_hit_prob * (total as f64)).round() as usize;\n    CardinalityEstimation {\n        primary_clauses: clauses,\n        min: estimations.iter().map(|x| x.min).max().unwrap_or(0),\n        exp: expected_count,\n        max: min(estimations.iter().map(|x| x.max).sum(), total),\n    }\n}\n", "struct_name": null }, "docstring": null, "line": 13, "line_from": 13, "line_to": 39, "name": "combine_should_estimations", "signature": "fn combine_should_estimations (estimations : & [CardinalityEstimation] , total : usize ,) -> CardinalityEstimation", "sub_matches": [{ "overlap_from": 13, "overlap_to": 15 }] },
+  { "code_type": "Function", "context": { "file_name": "query_estimator.rs", "file_path": "lib/segment/src/index/query_estimator.rs", "module": "index", "snippet": "<mark>fn estimate_must_not<F>(</mark>\n<mark>    estimator: &F,</mark>\n<mark>    conditions: &[Condition],</mark>\n<mark>    total: usize,</mark>\n) -> CardinalityEstimation\nwhere\n    F: Fn(&Condition) -> CardinalityEstimation,\n{\n    let estimate = |x| invert_estimation(&estimate_condition(estimator, x, total), total);\n    let must_not_estimations = conditions.iter().map(estimate).collect_vec();\n    combine_must_estimations(&must_not_estimations, total)\n}\n", "struct_name": null }, "docstring": null, "line": 159, "line_from": 159, "line_to": 170, "name": "estimate_must_not", "signature": "fn estimate_must_not < F > (estimator : & F , conditions : & [Condition] , total : usize ,) -> CardinalityEstimation where F : Fn (& Condition) -> CardinalityEstimation ,", "sub_matches": [{ "overlap_from": 159, "overlap_to": 162 }] },
+  { "code_type": "Function", "context": { "file_name": "query_estimator.rs", "file_path": "lib/segment/src/index/query_estimator.rs", "module": "index", "snippet": "<mark>fn estimate_condition<F>(</mark>\n<mark>    estimator: &F,</mark>\n<mark>    condition: &Condition,</mark>\n<mark>    total: usize,</mark>\n) -> CardinalityEstimation\nwhere\n    F: Fn(&Condition) -> CardinalityEstimation,\n{\n    match condition {\n        Condition::Filter(filter) => estimate_filter(estimator, filter, total),\n        _ => estimator(condition),\n    }\n}\n", "struct_name": null }, "docstring": null, "line": 76, "line_from": 76, "line_to": 88, "name": "estimate_condition", "signature": "fn estimate_condition < F > (estimator : & F , condition : & Condition , total : usize ,) -> CardinalityEstimation where F : Fn (& Condition) -> CardinalityEstimation ,", "sub_matches": [{ "overlap_from": 76, "overlap_to": 79 }] },
+  { "code_type": "Function", "context": { "file_name": "query_estimator.rs", "file_path": "lib/segment/src/index/query_estimator.rs", "module": "index", "snippet": "pub fn combine_must_estimations(\n    estimations: &[CardinalityEstimation],\n    total: usize,\n) -> CardinalityEstimation {\n    let min_estimation = estimations\n        .iter()\n        .map(|x| x.min)\n        .fold(total as i64, |acc, x| {\n            max(0, acc + (x as i64) - (total as i64))\n        }) as usize;\n\n    let max_estimation = estimations.iter().map(|x| x.max).min().unwrap_or(total);\n\n    let exp_estimation_prob: f64 = estimations\n        .iter()\n        .map(|x| (x.exp as f64) / (total as f64))\n        .product();\n\n    let exp_estimation = (exp_estimation_prob * (total as f64)).round() as usize;\n\n    let clauses = estimations\n        .iter()\n        .filter(|x| !x.primary_clauses.is_empty())\n        .min_by_key(|x| x.exp)\n        .map(|x| x.primary_clauses.clone())\n        .unwrap_or_default();\n\n    CardinalityEstimation {\n        primary_clauses: clauses,\n        min: min_estimation,\n        exp: exp_estimation,\n        max: max_estimation,\n    }\n}\n", "struct_name": null }, "docstring": null, "line": 41, "line_from": 41, "line_to": 74, "name": "combine_must_estimations", "signature": "fn combine_must_estimations (estimations : & [CardinalityEstimation] , total : usize ,) -> CardinalityEstimation", "sub_matches": [] },
+  { "code_type": "Function", "context": { "file_name": "query_estimator.rs", "file_path": "lib/segment/src/index/query_estimator.rs", "module": "index", "snippet": "fn estimate_must<F>(estimator: &F, conditions: &[Condition], total: usize) -> CardinalityEstimation\nwhere\n    F: Fn(&Condition) -> CardinalityEstimation,\n{\n    let estimate = |x| estimate_condition(estimator, x, total);\n    let must_estimations = conditions.iter().map(estimate).collect_vec();\n\n    combine_must_estimations(&must_estimations, total)\n}\n", "struct_name": null }, "docstring": null, "line": 137, "line_from": 137, "line_to": 145, "name": "estimate_must", "signature": "fn estimate_must < F > (estimator : & F , conditions : & [Condition] , total : usize) -> CardinalityEstimation where F : Fn (& Condition) -> CardinalityEstimation ,", "sub_matches": [] },
 ]
 
 
@@ -82,20 +89,20 @@ export default defineComponent({
   name: "IndexPage",
 
   components: {
-    highlightjs: hljsVuePlugin.component
+    // highlightjs: hljsVuePlugin.component,
+    // VueCodeHighlight,
   },
 
   data: () => ({
     query: "",
     loading: false,
-    results: [],
+    results: fakeData,
     showResults: true,
     showQuickResults: false,
   }),
 
   created() {
-    // fetch on init
-    // this.search();
+    // hljs.highlightAll();
   },
 
   methods: {
