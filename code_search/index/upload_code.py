@@ -26,7 +26,7 @@ def encode_and_upload():
 
     collection_name = QDRANT_CODE_COLLECTION_NAME
     input_file = Path(DATA_DIR) / "qdrant_snippets.jsonl"
-    encoder = UniXcoderEmbeddingsProvider(device="cuda")
+    encoder = UniXcoderEmbeddingsProvider()
 
     input_file = Path(DATA_DIR) / input_file
     output_file = Path(DATA_DIR) / f"{collection_name}.npy"

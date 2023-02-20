@@ -1,21 +1,21 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <!-- <q-header elevated>
-                <q-toolbar>
-                  <q-btn
-                    flat
-                    dense
-                    round
-                    icon="menu"
-                    aria-label="Menu"
-                    @click="toggleLeftDrawer"
-                  />
+                                            <q-toolbar>
+                                              <q-btn
+                                                flat
+                                                dense
+                                                round
+                                                icon="menu"
+                                                aria-label="Menu"
+                                                @click="toggleLeftDrawer"
+                                              />
 
-                  <q-toolbar-title> Qdrant Demo </q-toolbar-title>
+                                              <q-toolbar-title> Qdrant Demo </q-toolbar-title>
 
-                  <div>Qdrant</div>
-                </q-toolbar>
-              </q-header> -->
+                                              <div>Qdrant</div>
+                                            </q-toolbar>
+                                          </q-header> -->
 
     <q-drawer v-model="drawer" show-if-above :mini="true">
       <q-list>
@@ -29,8 +29,9 @@
       <router-view />
     </q-page-container>
 
-    <q-footer>
-      Hello
+    <q-footer class="bg-white text-black text-center text-caption">
+      Made with <a href="https://github.com/qdrant">Qdrant</a><br />
+      Read more about the demo <router-link to="/about">here</router-link>
     </q-footer>
   </q-layout>
 </template>
@@ -42,9 +43,10 @@ import EssentialLink from "components/EssentialLink.vue";
 const linksList = [
   {
     title: "Docs",
-    caption: "qdrant.tech/documentation",
+    caption: "About",
     icon: "school",
-    link: "https://qdrant.tech/documentation",
+    link: "/about",
+    local: true
   },
   {
     title: "Qdrant",
@@ -53,10 +55,10 @@ const linksList = [
     link: "https://qdrant.tech",
   },
   {
-    title: "GitHub - Qdrant",
+    title: "GitHub - Demo Code Search",
     caption: "github.com/qdrant/qdrant",
     icon: "code",
-    link: "https://github.com/qdrant/qdrant",
+    link: "https://github.com/qdrant/demo-code-search",
   },
   {
     title: "Discord Chat Channel",
