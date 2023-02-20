@@ -31,4 +31,4 @@ jobs:
     - name: Add rust analyzer
       run: rustup component add rust-analyzer
     - name: Run indexing
-      run: QDRANT_URL=${{ secrets.QDRANT_URL }} QDRANT_API_KEY=${{ secrets.QDRANT_API_KEY }} bash -x tools/index_qdrant.sh
+      run: QDRANT_URL=${{ secrets.QDRANT_URL }} QDRANT_API_KEY=${{ secrets.QDRANT_API_KEY }} bash -x tools/download_and_index.sh

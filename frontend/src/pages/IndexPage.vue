@@ -3,7 +3,7 @@
     <div class="q-pa-md q-col-gutter-sm items-stretch">
       <div class="row justify-evenly">
         <div class="col-8">
-          <h2>Source Code Search</h2>
+          <h2>Semantic Code Search</h2>
         </div>
       </div>
 
@@ -39,6 +39,17 @@
       </div>
       <div class="row justify-evenly">
         <div class="col-10">
+          Try this:
+          <q-chip v-for="example in examples" v-bind:key="example" square clickable @click="useSample(example)"
+            color="primary" text-color="primary" icon="input" outline>
+            {{ example }}
+          </q-chip>
+        </div>
+      </div>
+
+
+      <div class="row justify-evenly">
+        <div class="col-10">
           <q-list class="q-pa-xs q-margin-md" separator>
             <q-item v-for="result in results" :key="result.title" @click="console.log(result)" class="">
               <q-item-section>
@@ -60,7 +71,7 @@
         </div>
       </div>
     </div>
-</q-page>
+  </q-page>
 </template>
 
 <script>
@@ -96,9 +107,14 @@ export default defineComponent({
   data: () => ({
     query: "",
     loading: false,
-    results: fakeData,
+    results: [],
     showResults: true,
     showQuickResults: false,
+    examples: [
+      "cardinality of should request",
+      "geo condition filter",
+      "flush WAL"
+    ]
   }),
 
   created() {
@@ -106,6 +122,10 @@ export default defineComponent({
   },
 
   methods: {
+    async useSample(sample) {
+      this.query = sample;
+      await this.search();
+    },
     async search() {
       try {
         this.loading = true;
