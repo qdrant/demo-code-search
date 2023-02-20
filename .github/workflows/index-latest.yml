@@ -1,4 +1,4 @@
-name: Rust
+name: Index Qdrant source
 
 # Trigger manually
 on:
