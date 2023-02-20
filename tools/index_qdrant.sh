@@ -17,6 +17,6 @@ python -m code_search.index.convert_lsif_index
 
 python -m code_search.index.upload_code
 
-docker run --rm -it -v $QDRANT_PATH:/source qdrant/rust-parser ./rust_parser /source > $ROOT_PATH/data/structures.json
+docker run --rm -v $QDRANT_PATH:/source qdrant/rust-parser ./rust_parser /source > $ROOT_PATH/data/structures.json
 
 python -m code_search.index.upload_signatures
