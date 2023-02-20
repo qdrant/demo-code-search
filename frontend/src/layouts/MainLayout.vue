@@ -1,23 +1,24 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <!-- 
-          <q-header elevated>
-            <q-toolbar>
-              <q-btn
-                flat
-                dense
-                round
-                icon="menu"
-                aria-label="Menu"
-                @click="toggleLeftDrawer"
-              />
+        <q-header elevated>
+          <q-toolbar>
+            <q-btn
+              flat
+              dense
+              round
+              icon="menu"
+              aria-label="Menu"
+              @click="toggleLeftDrawer"
+            />
 
-              <q-toolbar-title> Qdrant Demo </q-toolbar-title>
+            <q-toolbar-title> Qdrant Demo </q-toolbar-title>
 
-              <div>Qdrant</div>
-            </q-toolbar>
-            </q-header> 
-        -->
+            <div>Qdrant</div>
+          </q-toolbar>
+          </q-header> 
+      -->
+
     <q-drawer v-model="drawer" show-if-above :mini="true">
       <q-list>
         <q-item-label header> Essential Links </q-item-label>
