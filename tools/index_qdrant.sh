@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 QDRANT_PATH=$1
 
 QDRANT_PATH=$(realpath $QDRANT_PATH)
@@ -17,4 +19,4 @@ python -m code_search.index.upload_code
 
 docker run --rm -it -v $QDRANT_PATH:/source qdrant/rust-parser ./rust_parser /source > $ROOT_PATH/data/structures.json
 
-python -m code_search.index.upload_structures
+python -m code_search.index.upload_signatures
