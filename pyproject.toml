@@ -2,7 +2,7 @@
 name = "demo-template"
 version = "0.1.0"
 description = ""
-authors = ["Andrey Vasnetsov <andrey@vasnetsov.com>"]
+authors = ["Qdrant Team <team@qdrant.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<=3.11"
