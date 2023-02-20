@@ -42,7 +42,7 @@ jobs:
           docker images;
           docker kill code-search-web || true;
           docker rm code-search-web || true;
-          docker run -d -p 8066:8000 --restart unless-stopped --network=qdrant-net --name code-search-web qdrant/code-search-web:${{ github.sha }};
+          docker run -d -p 8066:8000 -e QDRANT_URL="${{ secrets.QDRANT_URL }}" -e QDRANT_API_KEY="${{ secrets.QDRANT_API_KEY }}" --restart unless-stopped --network=qdrant-net --name code-search-web qdrant/code-search-web:${{ github.sha }};
         host: ${{ secrets.DEPLOY_HOST }}
         user: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
