@@ -35,7 +35,7 @@
                     <p>
                         Outputs of both models are uploaded to Qdrant as embeddings. Then, we perform a semantic search
                         over those two collections and combine results.
-                        Function bodies are obtained from the vector search over function signatiures and docstrings.
+                        Function bodies are obtained from the vector search over function signatures and docstrings.
                         Matching code blocks are highlighted inside the function body.
                     </p>
 
