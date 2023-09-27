@@ -1,50 +1,33 @@
 {
-  "name": "demo-frontend",
-  "version": "0.0.1",
-  "description": "Semantic code search",
-  "productName": "Code Search",
-  "author": "Qdrant team <team@qdrant.tech>",
+  "name": "frontend_v2",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "lint": "eslint --ext .js,.vue ./",
-    "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
-    "test": "echo \"No test specified\" && exit 0"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@highlightjs/vue-plugin": "^2.1.0",
-    "@quasar/extras": "^1.0.0",
-    "axios": "^0.27.2",
-    "core-js": "^3.6.5",
-    "highlight.js": "^11.7.0",
-    "quasar": "^2.6.0",
-    "vue": "^3.0.0",
-    "vue-code-highlight": "^0.7.8",
-    "vue-router": "^4.0.0",
-    "vue3-highlightjs": "^1.0.5"
+    "@emotion/react": "^11.11.1",
+    "@mantine/core": "^6.0.19",
+    "@mantine/hooks": "^6.0.19",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "path": "^0.12.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.13.14",
-    "@quasar/app-webpack": "^3.0.0",
-    "eslint": "^8.10.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-vue": "^8.5.0",
-    "eslint-webpack-plugin": "^3.1.1",
-    "prettier": "^2.5.1"
-  },
-  "browserslist": [
-    "last 10 Chrome versions",
-    "last 10 Firefox versions",
-    "last 4 Edge versions",
-    "last 7 Safari versions",
-    "last 8 Android versions",
-    "last 8 ChromeAndroid versions",
-    "last 8 FirefoxAndroid versions",
-    "last 10 iOS versions",
-    "last 5 Opera versions"
-  ],
-  "engines": {
-    "node": ">= 12.22.1",
-    "npm": ">= 6.13.4",
-    "yarn": ">= 1.21.1"
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react": "^4.0.3",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
   }
 }
