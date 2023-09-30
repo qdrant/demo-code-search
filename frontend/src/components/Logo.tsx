@@ -1,5 +1,3 @@
-import { rem } from "@mantine/core";
-
 export interface LogoProps extends React.ComponentPropsWithoutRef<"svg"> {
   size?: number | string;
 }
@@ -8,7 +6,7 @@ export function Logo({ size, ...others }: LogoProps) {
   return (
     <svg
       {...others}
-      height={rem(size)}
+      height={size}
       viewBox="0 0 238 80"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

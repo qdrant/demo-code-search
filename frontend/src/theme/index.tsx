@@ -1,67 +1,38 @@
-import { CSSObject, MantineThemeOverride } from "@mantine/core";
 import { heights, sizing, widths } from "./sizing";
-import { Tuple, DefaultMantineColor } from "@mantine/core";
+import { createTheme } from "@mantine/core";
 
-type ExtendedCustomColors =
-  | "Primary"
-  | "P500"
-  | "secondary"
-  | "blue"
-  | "purple"
-  | "teal"
-  | "Neutral"
-  | "N500"
-  | "Error"
-  | "E500"
-  | "Success"
-  | "S500"
-  | "Warning"
-  | "W500"
-  | "pink"
-  | DefaultMantineColor;
-
-declare module "@mantine/core" {
-  export interface MantineThemeColorsOverride {
-    colors: Record<ExtendedCustomColors, Tuple<string, 10>>;
-  }
-}
-
-const globalStyles = (): CSSObject => {
-  return {
-    "#root": {
-      overflow: "auto",
-      display: "block",
-      width: widths.screen,
-      height: heights.screen,
-      backgroundColor: "#F2F6FF",
-      fontFamily: "Roboto,Roboto Mono",
-    },
-  };
-};
-
-const myTheme: MantineThemeOverride = {
-  globalStyles,
-  defaultRadius: "md",
+export const theme = createTheme({
   fontFamily: "Roboto,Roboto Mono",
   colors: {
-    Primary: ["#FFC2D6", "#F5587F", "#DC244C", "#A31030", "#660223"],
-    P500: ["#DC244C"],
-    secondary: ["#724CEF", "#148BF4", "#009999"],
-    blue: [
-      "#E7F5FF",
-      "#D0EBFF",
-      "#A5D8FF",
-      "#74C0FC",
-      "#4DABF7",
-      "#339AF0",
-      "#148BF4",
-      "#228BE6",
-      "#1C7ED6",
-      "#1971C2",
+    Primary: [
+      "#FFC2D6",
+      "#F5587F",
+      "#DC244C",
+      "#A31030",
+      "#660223",
+      "#FFC2D6",
+      "#F5587F",
+      "#DC244C",
+      "#A31030",
+      "#660223",
     ],
-    purple: ["#724CEF"],
-    teal: ["#009999"],
-    Neutral: [
+    // P500: ["#DC244C"],
+    // secondary: ["#724CEF", "#148BF4", "#009999"],
+    // blue: [
+    //   "#E7F5FF",
+    //   "#D0EBFF",
+    //   "#A5D8FF",
+    //   "#74C0FC",
+    //   "#4DABF7",
+    //   "#339AF0",
+    //   "#148BF4",
+    //   "#228BE6",
+    //   "#1C7ED6",
+    //   "#1971C2",
+    // ],
+    // purple: ["#724CEF"],
+    // teal: ["#009999"],
+    neutral: [
       "#F2F6FF",
       "#DCE4FA",
       "#AEBDE5",
@@ -73,13 +44,13 @@ const myTheme: MantineThemeOverride = {
       "#102252",
       "#06153D",
     ],
-    N500: ["5069AD"],
-    Error: ["#FED6D6", "#F03030", "#661414"],
-    E500: ["#F03030"],
-    Success: ["#D1FADF", "#12B765", "#085232"],
-    S500: ["#12B765"],
-    Warning: ["#FEE4C7", "#F5870A", "#662F0A"],
-    W500: ["#F5870A"],
+    // N500: ["5069AD"],
+    // Error: ["#FED6D6", "#F03030", "#661414"],
+    // E500: ["#F03030"],
+    // Success: ["#D1FADF", "#12B765", "#085232"],
+    // S500: ["#12B765"],
+    // Warning: ["#FEE4C7", "#F5870A", "#662F0A"],
+    // W500: ["#F5870A"],
     pink: [
       "#FFF0F6",
       "#FFDEEB",
@@ -94,6 +65,7 @@ const myTheme: MantineThemeOverride = {
     ],
   },
   primaryColor: "Primary",
+  primaryShade: 2,
   spacing: {
     xxs: "0.2rem",
   },
@@ -151,6 +123,4 @@ const myTheme: MantineThemeOverride = {
       },
     },
   },
-};
-
-export default myTheme;
+});
