@@ -15,6 +15,8 @@
     "@mantine/hooks": "^6.0.19",
     "@tabler/icons-react": "^2.35.0",
     "@vitejs/plugin-react-swc": "^3.3.2",
+    "axios": "^1.5.1",
+    "http-status-codes": "^2.3.0",
     "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
