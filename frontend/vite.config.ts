@@ -15,6 +15,7 @@ export default defineConfig({
       "/api": {
         target: "https://code-search.qdrant.tech/",
         changeOrigin: true,
+        secure: false, 
       },
     },
   },
