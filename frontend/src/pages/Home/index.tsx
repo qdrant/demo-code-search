@@ -1,3 +1,10 @@
+import { CustomHeader } from "@/components/CustomHeader";
+
 export default function Home() {
-  return <div> </div>;
+  return (
+    <>
+      <CustomHeader />
+      f
+    </>
+  );
 }
