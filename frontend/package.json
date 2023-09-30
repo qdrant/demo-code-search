@@ -10,13 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mantine/code-highlight": "^7.1.0",
     "@mantine/core": "7.1.0",
     "@mantine/hooks": "7.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@tabler/icons-react": "^2.35.0",
     "axios": "^1.5.1",
     "http-status-codes": "^2.3.0",
-    "@tabler/icons-react": "^2.35.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

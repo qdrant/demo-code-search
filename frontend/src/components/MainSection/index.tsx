@@ -3,10 +3,11 @@ import { IconSearch } from "@tabler/icons-react";
 import useMountedState from "@/hooks/useMountedState";
 import { useGetSearchResult } from "@/hooks/useGetSearchResult";
 import { getHotkeyHandler } from "@mantine/hooks";
+import { FileTree } from "../FIleTree";
 
 export function Main() {
   const [query, setQuery] = useMountedState("");
-  const { getSearch } = useGetSearchResult();
+  const { data, getSearch } = useGetSearchResult();
 
   const handleSubmit = () => {
     if (query) {
@@ -42,7 +43,9 @@ export function Main() {
       />
 
       <Grid>
-        <Grid.Col span={12}>File Tree</Grid.Col>
+        <Grid.Col span={12}>
+          <FileTree data={data} />
+        </Grid.Col>
         <Grid.Col span={12}></Grid.Col>
       </Grid>
     </Container>
