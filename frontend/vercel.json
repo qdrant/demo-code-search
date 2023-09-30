@@ -1,0 +1,13 @@
+{
+    "rewrites": [
+      {
+        "source": "/api",
+        "destination": "https://code-search.qdrant.tech/api/"
+  
+      },
+      {
+          "source": "/api/:path*",
+          "destination": "https://code-search.qdrant.tech/api/:path*"
+      }
+    ]
+  }
