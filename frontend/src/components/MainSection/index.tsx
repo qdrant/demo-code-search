@@ -22,6 +22,7 @@ export function Main() {
       <TextInput
         radius={10}
         size="md"
+        
         leftSection={<IconSearch color="#102252" />}
         placeholder="Enter a query"
         rightSection={
@@ -42,6 +43,7 @@ export function Main() {
         required
         onChange={(event) => setQuery(event.currentTarget.value)}
         onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
+        classNames={{input: classes.input}}
       />
 
       <Grid>

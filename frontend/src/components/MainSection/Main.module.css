@@ -3,3 +3,7 @@
     padding: var(--mantine-spacing-md);
 }
 
+.input{
+    border-color: var(--mantine-color-neutral-1);
+    color: var(--mantine-color-neutral-8);
+}

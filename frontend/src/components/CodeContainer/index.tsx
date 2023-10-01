@@ -2,6 +2,7 @@ import { Box, Image, ScrollArea, Text } from "@mantine/core";
 import classes from "./CodeContainer.module.css";
 import { CodeHighlight } from "@mantine/code-highlight";
 import React, { useEffect } from "react";
+import "@mantine/code-highlight/styles.css";
 
 type CodeContainerProps = {
   code_type: string;
@@ -44,7 +45,8 @@ export function CodeContainer(props: CodeContainerProps) {
         <CodeHighlight
           code={context.snippet}
           withCopyButton={false}
-          language={"rs"}
+          language={"rust"}
+          
         />
       </ScrollArea>
     </Box>
