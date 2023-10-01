@@ -4,7 +4,6 @@
     var(--mantine-color-dark-6)
   );
   height: calc(100vh - 130px);
-  width: rem(300px);
   padding: var(--mantine-spacing-md);
   padding-bottom: 0;
   display: flex;

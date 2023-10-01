@@ -1,0 +1,19 @@
+.wrapper {
+  border: 1px solid var(--mantine-color-neutral-1);
+  border-radius: var(--mantine-radius-md);
+  margin-bottom: var(--mantine-spacing-md);
+}
+.header {
+  display: flex;
+  align-items: center;
+  padding: var(--mantine-spacing-sm);
+  padding-left: var(--mantine-spacing-xs);
+  border-bottom: 1px solid var(--mantine-color-neutral-1);
+}
+.filename {
+  margin-left: var(--mantine-spacing-xs);
+  color: light-dark(
+    var(--mantine-color-neutral-6),
+    var(--mantine-color-dark-0)
+  );
+}

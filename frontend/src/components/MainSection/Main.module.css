@@ -1,2 +1,5 @@
-
+.codeDisplayArea{
+    height: calc(100vh - 130px);
+    padding: var(--mantine-spacing-md);
+}
 

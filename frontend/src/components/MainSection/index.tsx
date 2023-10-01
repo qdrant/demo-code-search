@@ -1,9 +1,11 @@
-import { Button, Container, TextInput, Grid } from "@mantine/core";
+import { Button, Container, TextInput, Grid, ScrollArea } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import useMountedState from "@/hooks/useMountedState";
 import { useGetSearchResult } from "@/hooks/useGetSearchResult";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { FileTree } from "../FIleTree";
+import { CodeContainer } from "../CodeContainer";
+import classes from "./Main.module.css";
 
 export function Main() {
   const [query, setQuery] = useMountedState("");
@@ -43,10 +45,19 @@ export function Main() {
       />
 
       <Grid>
-        <Grid.Col span={12}>
+        <Grid.Col span={3}>
           <FileTree data={data} />
         </Grid.Col>
-        <Grid.Col span={12}></Grid.Col>
+        <Grid.Col span={9}>
+          <ScrollArea className={classes.codeDisplayArea}>
+            {data?.result.map((item) => (
+              <CodeContainer
+                {...item}
+                key={`${item.context.snippet} ${item.line_from} ${item.line_to}`}
+              />
+            ))}
+          </ScrollArea>
+        </Grid.Col>
       </Grid>
     </Container>
   );
