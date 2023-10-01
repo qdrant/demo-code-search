@@ -1,6 +1,7 @@
-import { Box, Image, Text } from "@mantine/core";
+import { Box, Image, ScrollArea, Text } from "@mantine/core";
 import classes from "./CodeContainer.module.css";
 import { CodeHighlight } from "@mantine/code-highlight";
+import React, { useEffect } from "react";
 
 type CodeContainerProps = {
   code_type: string;
@@ -25,20 +26,27 @@ type CodeContainerProps = {
 
 export function CodeContainer(props: CodeContainerProps) {
   const { context } = props;
+  const CodeContainerRef = React.useRef<HTMLDivElement>(null);
+  const [width, setWidth] = React.useState<number>(0);
+  useEffect(() => {
+    if (CodeContainerRef.current) {
+      setWidth(CodeContainerRef.current.clientWidth);
+    }
+  }, [CodeContainerRef]);
 
   return (
-    <Box className={classes.wrapper}>
+    <Box className={classes.wrapper} ref={CodeContainerRef}>
       <Box className={classes.header}>
         <Image src={"/logoFavicon.svg"} alt={"logo"} height={25} />
         <Text className={classes.filename}>{context.file_name}</Text>
       </Box>
-      <Box>
+      <ScrollArea w={width}>
         <CodeHighlight
           code={context.snippet}
           withCopyButton={false}
           language={"rs"}
         />
-      </Box>
+      </ScrollArea>
     </Box>
   );
 }

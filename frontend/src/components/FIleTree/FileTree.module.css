@@ -5,11 +5,10 @@
   );
   height: calc(100vh - 130px);
   padding: var(--mantine-spacing-md);
+  padding-right: 0;
   padding-bottom: 0;
   display: flex;
   flex-direction: column;
-  border-right: rem(1px) solid
-    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
 .links {
   flex: 1;
