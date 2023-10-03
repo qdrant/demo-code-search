@@ -58,10 +58,10 @@ export default function Main() {
       />
       {data && (
         <Grid>
-          <Grid.Col span={3}>
+          <Grid.Col span={{ base: 22, sm: 4 }} >
             <FileTree data={data} />
           </Grid.Col>
-          <Grid.Col span={9}>
+          <Grid.Col span={{ base: 12, sm: 8 }} >
             <ScrollArea className={classes.codeDisplayArea}>
               {data?.result.map((item) => (
                 <CodeContainer
@@ -83,7 +83,7 @@ export default function Main() {
           <Image
             src="/landing.gif"
             alt="Qdrant Landing"
-            w={400}
+            maw={300}
             fit="contain"
           />
           <Title order={3} className={classes.heading}>

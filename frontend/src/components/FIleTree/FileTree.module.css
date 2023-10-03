@@ -18,3 +18,14 @@
   padding: var(--mantine-spacing-md);
   padding-bottom:0 ;
 }
+
+/* @media (max-width: 768px) {
+  .navbar {
+    display: none;
+  }
+} */
+@media (max-width: 48em) {
+  .navbar {
+    display: none;
+  }
+}
