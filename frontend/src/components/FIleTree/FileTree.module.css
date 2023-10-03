@@ -4,9 +4,7 @@
     var(--mantine-color-dark-6)
   );
   height: calc(100vh - 130px);
-  padding: var(--mantine-spacing-md);
-  padding-right: 0;
-  padding-bottom: 0;
+  padding-left: var(--mantine-spacing-md);
   display: flex;
   flex-direction: column;
 }
@@ -17,6 +15,6 @@
 }
 
 .linksInner {
-  padding-top: var(--mantine-spacing-xl);
-  padding-bottom: var(--mantine-spacing-xl);
+  padding: var(--mantine-spacing-md);
+  padding-bottom:0 ;
 }

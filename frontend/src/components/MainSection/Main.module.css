@@ -1,9 +1,39 @@
-.codeDisplayArea{
-    height: calc(100vh - 130px);
-    padding: var(--mantine-spacing-md);
+.codeDisplayArea {
+  height: calc(100vh - 114px);
+  padding-top: var(--mantine-spacing-md);
 }
 
-.input{
-    border-color: var(--mantine-color-neutral-1);
-    color: var(--mantine-color-neutral-8);
+.input {
+  border-color: var(--mantine-color-neutral-1);
+  color: var(--mantine-color-neutral-8);
+}
+.heading {
+  text-decoration: none;
+  font-family: Roboto, Roboto Mono;
+  margin: 0px;
+  color: rgb(31, 50, 102);
+  text-align: center;
+  font-weight: 700;
+  font-size: 2.5rem;
+  font-style: normal;
+  line-height: 3rem;
+}
+.subHeading {
+  text-decoration: none;
+  padding-top: 0.625rem;
+  text-align: center;
+  color: rgb(57, 80, 143);
+  font-size: 1.125rem;
+  line-height: 1.6875rem;
+  font-weight: 400;
+}
+.headingHighlight {
+  color: var(--mantine-color-Primary-2);
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 114px);
 }
