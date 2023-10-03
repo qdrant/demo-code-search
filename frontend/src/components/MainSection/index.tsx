@@ -58,10 +58,10 @@ export default function Main() {
       />
       {data && (
         <Grid>
-          <Grid.Col span={{ base: 22, sm: 4 }} >
+          <Grid.Col span={{ base: 22, sm: 4 }}>
             <FileTree data={data} />
           </Grid.Col>
-          <Grid.Col span={{ base: 12, sm: 8 }} >
+          <Grid.Col span={{ base: 12, sm: 8 }}>
             <ScrollArea className={classes.codeDisplayArea}>
               {data?.result.map((item) => (
                 <CodeContainer
@@ -74,16 +74,19 @@ export default function Main() {
         </Grid>
       )}
       {!data && !loading && (
-        <Box style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}>
+        <Box
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Image
             src="/landing.gif"
             alt="Qdrant Landing"
-            maw={300}
+            maw={400}
+            mah={400}
             fit="contain"
           />
           <Title order={3} className={classes.heading}>
@@ -96,7 +99,6 @@ export default function Main() {
           </Text>
         </Box>
       )}
-      {error && <Text>Something went wrong</Text>}
       {loading && (
         <Box className={classes.loader}>
           <Loader type="bars" />
@@ -106,7 +108,9 @@ export default function Main() {
         <Box>
           <Image src="/error.gif" alt="Error" h={400} fit="contain" />
 
-          <Text className={classes.subHeading}>{error}</Text>
+          <Text className={classes.subHeading}>
+            Something went wrong, {error}
+          </Text>
         </Box>
       )}
     </Container>
