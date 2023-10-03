@@ -18,7 +18,7 @@ import { FileTree } from "../FIleTree";
 import { CodeContainer } from "../CodeContainer";
 import classes from "./Main.module.css";
 
-export function Main() {
+export default function Main() {
   const [query, setQuery] = useMountedState("");
   const { data, getSearch, loading, error, resetData } = useGetSearchResult();
 
@@ -74,11 +74,16 @@ export function Main() {
         </Grid>
       )}
       {!data && !loading && (
-        <Box>
+        <Box style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
           <Image
             src="/landing.gif"
             alt="Qdrant Landing"
-            h={400}
+            w={400}
             fit="contain"
           />
           <Title order={3} className={classes.heading}>

@@ -1,11 +1,21 @@
 import { CustomHeader } from "@/components/CustomHeader";
-import { Main } from "@/components/MainSection";
+import { FC, lazy } from "react";
+import SuspensePage from "./SuspensePage";
+
+const Main = lazy(() => import("@/components/MainSection"));
+const MainElement: FC = () => {
+  return (
+    <SuspensePage>
+      <Main />
+    </SuspensePage>
+  );
+};
 
 export default function Home() {
   return (
     <>
       <CustomHeader />
-      <Main />
+      <MainElement />
     </>
   );
 }
