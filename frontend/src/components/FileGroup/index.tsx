@@ -23,9 +23,21 @@ export function LinksGroup({
   initiallyOpened,
   links,
 }: LinksGroupProps) {
-  const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
-  const items = (hasLinks ? links : []).map((link) => {
+
+  const getFileRoute = () => {
+    if (links?.length === 1 && links[0].links) {
+      label = `${label}/${links[0].label}`;
+      links = links[0].links;
+      getFileRoute();
+    }
+  };
+
+  getFileRoute();
+
+
+
+  const items = links?.map((link) => {
     if (link.links) {
       return (
         <Box key={link.label} ml="sm" className={classes.lind}>
@@ -60,14 +72,14 @@ export function LinksGroup({
         onClick={() => setOpened((o) => !o)}
         className={classes.control}
       >
-        <Group justify="space-between" gap={0}>
+        <Group justify="space-between" gap={0} wrap="nowrap">
           <Box style={{ display: "flex", alignItems: "center" }}>
             <ThemeIcon variant="transparent" size={30}>
               <Icon style={{ width: rem(18), height: rem(18) }} />
             </ThemeIcon>
             <Box>{label}</Box>
           </Box>
-          {hasLinks && (
+          {links?.length && (
             <IconChevronRight
               className={classes.chevron}
               stroke={1.5}
@@ -80,7 +92,7 @@ export function LinksGroup({
           )}
         </Group>
       </UnstyledButton>
-      {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
+      {links?.length? <Collapse in={opened}>{items}</Collapse> : null}
     </>
   );
 }

@@ -1,8 +1,9 @@
-import { Box, Image, ScrollArea, Text } from "@mantine/core";
+import { Box, Image, ScrollArea, Text, ThemeIcon } from "@mantine/core";
 import classes from "./CodeContainer.module.css";
 import { CodeHighlight } from "@mantine/code-highlight";
 import React, { useEffect } from "react";
 import "@mantine/code-highlight/styles.css";
+import { IconExternalLink } from "@tabler/icons-react";
 
 type CodeContainerProps = {
   code_type: string;
@@ -39,14 +40,26 @@ export function CodeContainer(props: CodeContainerProps) {
     <Box className={classes.wrapper} ref={CodeContainerRef}>
       <Box className={classes.header}>
         <Image src={"/logoFavicon.svg"} alt={"logo"} height={25} />
-        <Text className={classes.filename}>{context.file_name}</Text>
+        <Text className={classes.filename}>{context.file_path}</Text>
+        <ThemeIcon
+          variant="transparent"
+          size={30}
+          style={{ cursor: "pointer" }}
+          onClick={() =>
+            window.open(
+              `https://github.com/qdrant/qdrant/blob/master/${context.file_path}#L${props.line_from}-L${props.line_to}`,
+              "_blank"
+            )
+          }
+        >
+          <IconExternalLink style={{ width: 18, height: 18 }} />
+        </ThemeIcon>
       </Box>
       <ScrollArea w={width}>
         <CodeHighlight
           code={context.snippet}
           withCopyButton={false}
           language={"rust"}
-          
         />
       </ScrollArea>
     </Box>
