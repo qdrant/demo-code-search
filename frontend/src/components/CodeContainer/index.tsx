@@ -37,7 +37,11 @@ export function CodeContainer(props: CodeContainerProps) {
   }, [CodeContainerRef]);
 
   return (
-    <Box className={classes.wrapper} ref={CodeContainerRef}>
+    <Box
+      className={classes.wrapper}
+      ref={CodeContainerRef}
+      id={`${context.file_path}`}
+    >
       <Box className={classes.header}>
         <Image src={"/logoFavicon.svg"} alt={"logo"} height={25} />
         <Text className={classes.filename}>{context.file_path}</Text>

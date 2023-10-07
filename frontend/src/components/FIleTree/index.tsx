@@ -25,6 +25,7 @@ interface CodeElement {
 interface ParsedLink {
   label: string;
   icon: any;
+  id?: string;
   initiallyOpened?: boolean;
   links?: ParsedLink[];
 }
@@ -64,6 +65,7 @@ function parseCodeElements(data: { result: CodeElement[] }): ParsedData[] {
       if (index === filePathComponents.length - 1) {
         const file: ParsedLink = {
           label: element.context.file_name,
+          id: element.context.file_path,
           icon: IconFile,
         };
         currentLevel.push(file);

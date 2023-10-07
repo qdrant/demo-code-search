@@ -14,6 +14,7 @@ interface LinksGroupProps {
   label: string;
   icon: any;
   initiallyOpened?: boolean;
+  id?: string;
   links?: LinksGroupProps[];
 }
 
@@ -35,8 +36,6 @@ export function LinksGroup({
 
   getFileRoute();
 
-
-
   const items = links?.map((link) => {
     if (link.links) {
       return (
@@ -55,6 +54,14 @@ export function LinksGroup({
             style={{ display: "flex", alignItems: "center" }}
             ml={"sm"}
             className={classes.lind}
+            onClick={() => {
+              const element = document.getElementById(link.id ?? link.label);
+
+              if (element) {
+                console.log(element);
+                element.scrollIntoView({ behavior: "smooth", block: "center" });
+              }
+            }}
           >
             <ThemeIcon variant="transparent" size={30}>
               <link.icon style={{ width: rem(18), height: rem(18) }} />
@@ -92,7 +99,7 @@ export function LinksGroup({
           )}
         </Group>
       </UnstyledButton>
-      {links?.length? <Collapse in={opened}>{items}</Collapse> : null}
+      {links?.length ? <Collapse in={opened}>{items}</Collapse> : null}
     </>
   );
 }
