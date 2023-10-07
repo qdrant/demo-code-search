@@ -59,7 +59,7 @@ export function LinksGroup({
 
               if (element) {
                 console.log(element);
-                element.scrollIntoView({ behavior: "smooth", block: "center" });
+                element.scrollIntoView({ behavior: "smooth"});
               }
             }}
           >
