@@ -47,7 +47,7 @@ export function LinksGroup({
             <ThemeIcon variant="transparent" size={30}>
               <link.icon style={{ width: rem(18), height: rem(18) }} />
             </ThemeIcon>
-            <Box ml="md">{link.label}</Box>
+            <Box>{link.label}</Box>
           </Box>
         </UnstyledButton>
       );
@@ -65,7 +65,7 @@ export function LinksGroup({
             <ThemeIcon variant="transparent" size={30}>
               <Icon style={{ width: rem(18), height: rem(18) }} />
             </ThemeIcon>
-            <Box ml="md">{label}</Box>
+            <Box>{label}</Box>
           </Box>
           {hasLinks && (
             <IconChevronRight
