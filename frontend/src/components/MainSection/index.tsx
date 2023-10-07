@@ -58,10 +58,10 @@ export default function Main() {
       />
       {data && (
         <Grid>
-          <Grid.Col span={{ base: 22, sm: 4 }}>
+          <Grid.Col span={{ base: 22, sm: 3 }}>
             <FileTree data={data} />
           </Grid.Col>
-          <Grid.Col span={{ base: 12, sm: 8 }}>
+          <Grid.Col span={{ base: 12, sm: 9 }}>
             <ScrollArea className={classes.codeDisplayArea}>
               {data?.result.map((item) => (
                 <CodeContainer

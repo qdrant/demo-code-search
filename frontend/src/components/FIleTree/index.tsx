@@ -1,4 +1,4 @@
-import { ScrollArea } from "@mantine/core";
+import { Box } from "@mantine/core";
 
 import classes from "./FileTree.module.css";
 import { LinksGroup } from "../FileGroup";
@@ -90,9 +90,9 @@ export function FileTree({ data }: { data: searchResponse | null }) {
   ));
   return (
     <nav className={classes.navbar}>
-      <ScrollArea className={classes.links}>
+      <Box className={classes.links}>
         <div className={classes.linksInner}>{links}</div>
-      </ScrollArea>
+      </Box>
     </nav>
   );
 }
