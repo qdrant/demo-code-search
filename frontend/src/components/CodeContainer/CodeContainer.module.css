@@ -22,6 +22,7 @@
   text-wrap: inherit;
   border-bottom-left-radius: var(--mantine-radius-md);
   border-bottom-right-radius: var(--mantine-radius-md);
+  font-size: .8125rem;
 }
 .codeNumber {
   padding-right: 1rem;
