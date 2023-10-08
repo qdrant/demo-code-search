@@ -17,3 +17,24 @@
     var(--mantine-color-dark-0)
   );
 }
+.code {
+  margin: 0;
+  text-wrap: inherit;
+  border-bottom-left-radius: var(--mantine-radius-md);
+  border-bottom-right-radius: var(--mantine-radius-md);
+}
+.codeNumber {
+  padding-right: 1rem;
+  padding-left: 1rem;
+  color: #828a93;
+}
+
+.codeLoad {
+  padding-right: 1rem;
+  padding-left: 1rem;
+  color: #646d76;
+  background-color: #bddfff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
