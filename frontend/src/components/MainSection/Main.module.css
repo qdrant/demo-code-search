@@ -1,7 +1,6 @@
 .codeDisplayArea {
   height: calc(100vh - 114px);
-  padding: var(--mantine-spacing-md);
-  padding-bottom: 0;
+  padding-top: var(--mantine-spacing-md);
 }
 
 .input {

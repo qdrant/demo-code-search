@@ -122,11 +122,18 @@ export function CodeContainer(props: CodeContainerProps) {
                       justifyContent: "flex-start",
                       width: "100%",
                       backgroundColor: "#DCF4FF",
+                      borderBottomLeftRadius: ".5rem",
+                      borderBottomRightRadius: ".5rem",
                     }
               }
             >
               <Tooltip label={`Expand all`} withArrow>
-                <span className={classes.codeLoad}>
+                <span
+                  className={classes.codeLoad}
+                  style={{
+                    borderBottomLeftRadius: ".5rem",
+                  }}
+                >
                   <IconFoldDown />
                 </span>
               </Tooltip>

@@ -86,7 +86,7 @@ export default function Main() {
             src="/landing.gif"
             alt="Qdrant Landing"
             maw={400}
-            mah={400}
+            h={400}
             fit="contain"
           />
           <Title order={3} className={classes.heading}>
