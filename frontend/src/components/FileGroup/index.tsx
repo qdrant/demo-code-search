@@ -58,7 +58,6 @@ export function LinksGroup({
               const element = document.getElementById(link.id ?? link.label);
 
               if (element) {
-                console.log(element);
                 element.scrollIntoView({ behavior: "smooth"});
               }
             }}

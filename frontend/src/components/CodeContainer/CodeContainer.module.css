@@ -2,6 +2,7 @@
   border: 1px solid var(--mantine-color-neutral-1);
   border-radius: var(--mantine-radius-md);
   margin-bottom: var(--mantine-spacing-md);
+  width: 100%;
 }
 .header {
   display: flex;
@@ -16,6 +17,11 @@
     var(--mantine-color-neutral-6),
     var(--mantine-color-dark-0)
   );
+  
+}
+.filename:hover {
+  color: var(--mantine-color-primary);
+  text-decoration: underline;
 }
 .code {
   margin: 0;

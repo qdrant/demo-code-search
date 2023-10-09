@@ -1,6 +1,24 @@
 .codeDisplayArea {
-  height: calc(100vh - 114px);
-  padding-top: var(--mantine-spacing-md);
+  width: 75%;
+  padding-left: var(--mantine-spacing-md);
+}
+
+.navbar {
+  position: sticky;
+  top: 114px;
+  width: 25%;
+}
+
+
+
+@media (max-width: 48em) {
+  .codeDisplayArea {
+    width: 100vw;
+    padding-left: 0;
+  }
+  .navbar {
+    display: none;
+  }
 }
 
 .input {
@@ -37,3 +55,5 @@
   align-items: center;
   height: calc(100vh - 114px);
 }
+
+

@@ -2,8 +2,6 @@ import {
   Button,
   Container,
   TextInput,
-  Grid,
-  ScrollArea,
   Box,
   Image,
   Title,
@@ -55,23 +53,34 @@ export default function Main() {
         onChange={(event) => setQuery(event.currentTarget.value)}
         onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
         classNames={{ input: classes.input }}
+        style={{
+          position: "sticky",
+          top: 56,
+          zIndex: 100,
+          backgroundColor: "#fff",
+        }}
       />
       {data && (
-        <Grid>
-          <Grid.Col span={{ base: 22, sm: 3 }}>
+        <Box
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box className={classes.navbar}>
             <FileTree data={data} />
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, sm: 9 }}>
-            <ScrollArea className={classes.codeDisplayArea}>
-              {data?.result.map((item) => (
-                <CodeContainer
-                  {...item}
-                  key={`${item.context.snippet} ${item.line_from} ${item.line_to}`}
-                />
-              ))}
-            </ScrollArea>
-          </Grid.Col>
-        </Grid>
+          </Box>
+          <Box pt={"md"} className={classes.codeDisplayArea}>
+            {data?.result.map((item) => (
+              <CodeContainer
+                {...item}
+                key={`${item.context.snippet} ${item.line_from} ${item.line_to}`}
+              />
+            ))}
+          </Box>
+        </Box>
       )}
       {!data && !loading && (
         <Box

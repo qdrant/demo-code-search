@@ -3,7 +3,6 @@
     var(--mantine-color-white),
     var(--mantine-color-dark-6)
   );
-  height: calc(100vh - 130px);
   padding-left: var(--mantine-spacing-md);
   display: flex;
   flex-direction: column;

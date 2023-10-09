@@ -1,4 +1,4 @@
-import { Box, Image, Text, ThemeIcon, Tooltip } from "@mantine/core";
+import { Box, Button, Image, Text, ThemeIcon, Tooltip } from "@mantine/core";
 import classes from "./CodeContainer.module.css";
 import { Highlight, themes } from "prism-react-renderer";
 import {
@@ -31,29 +31,41 @@ type CodeContainerProps = {
 export function CodeContainer(props: CodeContainerProps) {
   const { context, line_from, sub_matches, line_to } = props;
   return (
-    <Box className={classes.wrapper} id={`${context.file_path}`}>
+    <Box
+      className={classes.wrapper}
+      id={`${context.file_path}`}
+      style={{
+        scrollMarginTop: "130px",
+      }}
+    >
       <Box className={classes.header}>
         <Image src={"/logoFavicon.svg"} alt={"logo"} height={25} />
-        <Text className={classes.filename}>{context.file_path}</Text>
-        <ThemeIcon
+        <Button
+          component="a"
           variant="transparent"
-          size={30}
-          style={{ cursor: "pointer" }}
-          onClick={() =>
-            window.open(
-              `https://github.com/qdrant/qdrant/blob/master/${context.file_path}#L${props.line_from}-L${props.line_to}`,
-              "_blank"
-            )
+          href={`https://github.com/qdrant/qdrant/blob/master/${context.file_path}#L${props.line_from}-L${props.line_to}`}
+          target="_blank"
+          rightSection={
+            <ThemeIcon
+              variant="transparent"
+              size={30}
+              style={{
+                cursor: "pointer",
+              }}
+            >
+              <IconExternalLink style={{ width: 18, height: 18 }} />
+            </ThemeIcon>
           }
         >
-          <IconExternalLink style={{ width: 18, height: 18 }} />
-        </ThemeIcon>
+          <Text className={classes.filename}>{context.file_path}</Text>
+        </Button>
       </Box>
 
       <Highlight
         theme={themes.github}
         code={props.context.snippet}
         language="rust"
+        key={`${props.context.snippet} ${props.line_from} ${props.line_to}`}
       >
         {({ tokens, style, getTokenProps }) => (
           <pre style={style} className={classes.code}>
@@ -83,6 +95,7 @@ export function CodeContainer(props: CodeContainerProps) {
             </div>
             {tokens.map((line, i) => (
               <div
+                key={i}
                 style={
                   sub_matches?.some(
                     (sub_match) =>
