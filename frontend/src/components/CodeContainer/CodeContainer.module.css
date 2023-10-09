@@ -10,17 +10,14 @@
   padding: var(--mantine-spacing-sm);
   padding-left: var(--mantine-spacing-xs);
   border-bottom: 1px solid var(--mantine-color-neutral-1);
+  overflow: hidden;
 }
 .filename {
   margin-left: var(--mantine-spacing-xs);
-  color: light-dark(
-    var(--mantine-color-neutral-6),
-    var(--mantine-color-dark-0)
-  );
-  
+  color: var(--mantine-color-neutral-6);
 }
 .filename:hover {
-  color: var(--mantine-color-primary);
+  color: var(--mantine-color-Primary-light-color);
   text-decoration: underline;
 }
 .code {
@@ -28,7 +25,7 @@
   text-wrap: inherit;
   border-bottom-left-radius: var(--mantine-radius-md);
   border-bottom-right-radius: var(--mantine-radius-md);
-  font-size: .8125rem;
+  font-size: 0.8125rem;
 }
 .codeNumber {
   padding-right: 1rem;
@@ -44,4 +41,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.codeLine {
+  width: calc(100% - 3.2rem);
+}
+.codeLine > span {
+  word-wrap: break-word;
 }

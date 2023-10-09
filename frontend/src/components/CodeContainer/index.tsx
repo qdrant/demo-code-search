@@ -1,4 +1,4 @@
-import { Box, Button, Image, Text, ThemeIcon, Tooltip } from "@mantine/core";
+import { Box, Button, Image, ThemeIcon, Tooltip } from "@mantine/core";
 import classes from "./CodeContainer.module.css";
 import { Highlight, themes } from "prism-react-renderer";
 import {
@@ -56,8 +56,9 @@ export function CodeContainer(props: CodeContainerProps) {
               <IconExternalLink style={{ width: 18, height: 18 }} />
             </ThemeIcon>
           }
+          className={classes.filename}
         >
-          <Text className={classes.filename}>{context.file_path}</Text>
+          {context.file_path}
         </Button>
       </Box>
 
