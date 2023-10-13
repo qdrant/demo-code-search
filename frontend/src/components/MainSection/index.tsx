@@ -15,6 +15,7 @@ import { getHotkeyHandler } from "@mantine/hooks";
 import { FileTree } from "../FIleTree";
 import { CodeContainer } from "../CodeContainer";
 import classes from "./Main.module.css";
+import DemoSearch from "../DemoSearch";
 
 export default function Main() {
   const [query, setQuery] = useMountedState("");
@@ -27,16 +28,24 @@ export default function Main() {
     }
   };
 
+  const handleDemoSearch = (query: string) => {
+    resetData();
+    if (query) {
+      setQuery(query);
+      getSearch(query);
+    }
+  };
+
   return (
     <Container size="lg">
       <TextInput
-        radius={10}
+        radius={4}
         size="md"
         leftSection={<IconSearch color="#102252" />}
         placeholder="Enter a query"
         rightSection={
           <Button
-            radius={10}
+            radius={4}
             w={"100%"}
             size={"md"}
             variant="filled"
@@ -48,7 +57,7 @@ export default function Main() {
         }
         rightSectionWidth={"6rem"}
         value={query}
-        pt={"1rem"}
+        pt={"5rem"}
         required
         onChange={(event) => setQuery(event.currentTarget.value)}
         onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
@@ -60,6 +69,7 @@ export default function Main() {
           backgroundColor: "#fff",
         }}
       />
+      <DemoSearch handleDemoSearch={handleDemoSearch} />
       {data && (
         <Box
           style={{

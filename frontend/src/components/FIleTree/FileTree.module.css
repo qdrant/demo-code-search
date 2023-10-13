@@ -1,8 +1,4 @@
 .navbar {
-  background-color: light-dark(
-    var(--mantine-color-white),
-    var(--mantine-color-dark-6)
-  );
   padding-left: var(--mantine-spacing-md);
   display: flex;
   flex-direction: column;

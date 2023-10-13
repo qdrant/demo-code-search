@@ -1,11 +1,11 @@
 .codeDisplayArea {
   width: 75%;
   padding-left: var(--mantine-spacing-md);
-}
+  }
 
 .navbar {
   position: sticky;
-  top: 114px;
+  top: 178px;
   width: 25%;
 }
 

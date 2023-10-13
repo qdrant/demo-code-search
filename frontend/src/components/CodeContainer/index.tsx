@@ -35,7 +35,7 @@ export function CodeContainer(props: CodeContainerProps) {
       className={classes.wrapper}
       id={`${context.file_path}`}
       style={{
-        scrollMarginTop: "130px",
+        scrollMarginTop: "193px",
       }}
     >
       <Box className={classes.header}>
