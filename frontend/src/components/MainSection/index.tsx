@@ -69,7 +69,6 @@ export default function Main() {
           backgroundColor: "#fff",
         }}
       />
-      <DemoSearch handleDemoSearch={handleDemoSearch} />
       {data && (
         <Box
           style={{
@@ -93,30 +92,34 @@ export default function Main() {
         </Box>
       )}
       {!data && !loading && (
-        <Box
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Image
-            src="/landing.gif"
-            alt="Qdrant Landing"
-            maw={400}
-            h={400}
-            fit="contain"
-          />
-          <Title order={3} className={classes.heading}>
-            Qdrant <span className={classes.headingHighlight}>Code Search</span>{" "}
-            Unleashing Semantic Power
-          </Title>
-          <Text className={classes.subHeading}>
-            Qdrant Code Explorer: Empowering Semantic Searching in Qdrant
-            Repository with Advanced Code Analysis
-          </Text>
-        </Box>
+        <>
+          <DemoSearch handleDemoSearch={handleDemoSearch} />
+          <Box
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              src="/landing.gif"
+              alt="Qdrant Landing"
+              maw={400}
+              h={400}
+              fit="contain"
+            />
+            <Title order={3} className={classes.heading}>
+              Qdrant{" "}
+              <span className={classes.headingHighlight}>Code Search</span>{" "}
+              Unleashing Semantic Power
+            </Title>
+            <Text className={classes.subHeading}>
+              Qdrant Code Explorer: Empowering Semantic Searching in Qdrant
+              Repository with Advanced Code Analysis
+            </Text>
+          </Box>
+        </>
       )}
       {loading && (
         <Box className={classes.loader}>
