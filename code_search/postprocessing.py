@@ -48,39 +48,10 @@ def merge_search_results(code_search_result: List[dict], nlu_search_result: List
                 code_search_result_by_file[file],
                 nlu_search_hit
             )
-            for sub_match in nlu_search_hit["sub_matches"]:
-                nlu_search_hit["context"]["snippet"] = highlight_overlap(
-                    text=nlu_search_hit["context"]["snippet"],
-                    start_line=nlu_search_hit["line_from"],
-                    from_line=sub_match["overlap_from"],
-                    to_line=sub_match["overlap_to"]
-                )
     nlu_search_result = sorted(nlu_search_result, key=lambda x: -len(x.get('sub_matches', [])))
 
     return nlu_search_result
 
-
-def highlight_overlap(text: str, start_line: int, from_line: int, to_line: int, start_tag="<mark>", end_tag="</mark>"):
-    """Highlight overlapping lines in the text using start_tag and end_tag
-
-    Args:
-        text:
-        start_line:
-        from_line:
-        to_line:
-        start_tag:
-        end_tag:
-
-    Returns: Highlighted text
-    """
-    lines = text.split("\n")
-    highlighted_lines = []
-    for i, line in enumerate(lines):
-        if i + start_line in range(from_line, to_line + 1):
-            highlighted_lines.append(f"{start_tag}{line}{end_tag}")
-        else:
-            highlighted_lines.append(line)
-    return "\n".join(highlighted_lines)
 
 
 def try_merge_overlapping_snippets(code_search_results: List[dict], nlu_search_result: dict) -> List[dict]:

@@ -6,6 +6,7 @@ import {
   IconFoldDown,
   IconFoldUp,
 } from "@tabler/icons-react";
+import useMountedState from "@/hooks/useMountedState";
 
 type CodeContainerProps = {
   code_type: string;
@@ -15,6 +16,8 @@ type CodeContainerProps = {
     module: string;
     snippet: string;
     struct_name: string;
+    upper_lines: string;
+    lower_lines: string;
   };
   docstring: string | null;
   line: number;
@@ -30,6 +33,20 @@ type CodeContainerProps = {
 
 export function CodeContainer(props: CodeContainerProps) {
   const { context, line_from, sub_matches, line_to } = props;
+  const [codeLineFrom, setCodeLineFrom] = useMountedState(line_from);
+  const [codeLineTo, setCodeLineTo] = useMountedState(line_to);
+  const [code, setCode] = useMountedState(props.context.snippet);
+
+  const loadUpperCode = () => {
+    setCodeLineFrom(1);
+    setCode(`${context.upper_lines}${code}`);
+  };
+
+  const loadLowerCode = () => {
+    setCodeLineTo(Infinity);
+    setCode(`${code}${context.lower_lines}`);
+  };
+
   return (
     <Box
       className={classes.wrapper}
@@ -64,15 +81,15 @@ export function CodeContainer(props: CodeContainerProps) {
 
       <Highlight
         theme={themes.github}
-        code={props.context.snippet}
+        code={code}
         language="rust"
-        key={`${props.context.snippet} ${props.line_from} ${props.line_to}`}
+        key={`${code} ${props.line_from} ${props.line_to}`}
       >
         {({ tokens, style, getTokenProps }) => (
           <pre style={style} className={classes.code}>
             <div
               style={
-                line_from === 1
+                codeLineFrom === 1
                   ? { display: "none" }
                   : {
                       display: "flex",
@@ -84,7 +101,7 @@ export function CodeContainer(props: CodeContainerProps) {
               }
             >
               <Tooltip label={`Expand all`} withArrow>
-                <span className={classes.codeLoad}>
+                <span className={classes.codeLoad} onClick={loadUpperCode}>
                   <IconFoldUp />
                 </span>
               </Tooltip>
@@ -100,8 +117,8 @@ export function CodeContainer(props: CodeContainerProps) {
                 style={
                   sub_matches?.some(
                     (sub_match) =>
-                      sub_match.overlap_from <= line_from + i &&
-                      sub_match.overlap_to >= line_from + i
+                      sub_match.overlap_from <= codeLineFrom + i &&
+                      sub_match.overlap_to >= codeLineFrom + i
                   )
                     ? {
                         display: "flex",
@@ -118,7 +135,7 @@ export function CodeContainer(props: CodeContainerProps) {
                       }
                 }
               >
-                <span className={classes.codeNumber}>{line_from + i}</span>
+                <span className={classes.codeNumber}>{codeLineFrom + i}</span>
                 <div key={i} className={classes.codeLine}>
                   {line.map((token, key) => (
                     <span key={key} {...getTokenProps({ token })} />
@@ -128,7 +145,7 @@ export function CodeContainer(props: CodeContainerProps) {
             ))}
             <div
               style={
-                line_from === line_to
+                codeLineTo === Infinity
                   ? { display: "none" }
                   : {
                       display: "flex",
@@ -147,6 +164,7 @@ export function CodeContainer(props: CodeContainerProps) {
                   style={{
                     borderBottomLeftRadius: ".5rem",
                   }}
+                  onClick={loadLowerCode}
                 >
                   <IconFoldDown />
                 </span>

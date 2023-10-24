@@ -3,7 +3,7 @@ FROM node:current as builder
 COPY frontend /frontend
 WORKDIR /frontend
 
-RUN npm install; npx quasar build
+RUN npm install; npm run build
 
 FROM python:3.9-slim
 

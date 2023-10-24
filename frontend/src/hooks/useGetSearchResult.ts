@@ -11,6 +11,8 @@ export type searchResponse = {
       module: string;
       snippet: string;
       struct_name: string;
+      upper_lines: string;
+      lower_lines: string;
     };
     docstring: string | null;
     line: number;

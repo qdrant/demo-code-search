@@ -59,7 +59,7 @@ export default function Main() {
         value={query}
         pt={"5rem"}
         required
-        onChange={(event) => setQuery(event.currentTarget.value)}
+        onChange={(event: any) => setQuery(event.currentTarget.value)}
         onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
         classNames={{ input: classes.input }}
         style={{
@@ -91,7 +91,7 @@ export default function Main() {
           </Box>
         </Box>
       )}
-      {!data && !loading && (
+      {!data && !loading && !error && (
         <>
           <DemoSearch handleDemoSearch={handleDemoSearch} />
           <Box
