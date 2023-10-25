@@ -3,6 +3,8 @@ name: Index Qdrant source
 # Trigger manually
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "55 0 * * *" # every day at 00:55 UTC
 
 env:
   CARGO_TERM_COLOR: always

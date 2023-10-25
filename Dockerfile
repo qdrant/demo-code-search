@@ -5,7 +5,7 @@ WORKDIR /frontend
 
 RUN npm install; npm run build
 
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 # Copy only requirements to cache them in docker layer
 WORKDIR /code

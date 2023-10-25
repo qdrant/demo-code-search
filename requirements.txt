@@ -1,10 +1,10 @@
--f https://download.pytorch.org/whl/torch_stable.html
-torch==1.13.1+cpu
-torchvision==0.14.1+cpu
-fastapi==0.75.2 ; python_version >= "3.9" and python_full_version <= "3.11.0"
-uvicorn==0.17.6 ; python_version >= "3.9" and python_full_version <= "3.11.0"
-transformers==4.26.1 ; python_version >= "3.9" and python_full_version <= "3.11.0"
-qdrant-client==1.0.1 ; python_version >= "3.9" and python_full_version <= "3.11.0"
-python-dotenv==0.21.1 ; python_version >= "3.9" and python_full_version <= "3.11.0"
-sentence-transformers==2.2.2 ; python_version >= "3.9" and python_full_version <= "3.11.0"
-tqdm==4.64.1 ; python_version >= "3.9" and python_full_version <= "3.11.0"
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.1.0+cpu
+torchvision==0.16.0+cpu
+fastapi==0.75.2 ; python_version >= "3.9" and python_full_version < "3.11"
+uvicorn==0.17.6 ; python_version >= "3.9" and python_full_version < "3.11"
+transformers==4.26.1 ; python_version >= "3.9" and python_full_version < "3.11"
+qdrant-client==1.6.3 ; python_version >= "3.9" and python_full_version < "3.11"
+python-dotenv==0.21.1 ; python_version >= "3.9" and python_full_version < "3.11"
+sentence-transformers==2.2.2 ; python_version >= "3.9" and python_full_version < "3.11"
+tqdm==4.64.1 ; python_version >= "3.9" and python_full_version < "3.11"

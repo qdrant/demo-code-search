@@ -57,7 +57,7 @@ export default function Main() {
         }
         rightSectionWidth={"6rem"}
         value={query}
-        pt={"5rem"}
+        pt={ data ? "1rem" : "5rem" }
         required
         onChange={(event: any) => setQuery(event.currentTarget.value)}
         onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
