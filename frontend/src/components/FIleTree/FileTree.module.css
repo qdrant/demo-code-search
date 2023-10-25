@@ -1,0 +1,21 @@
+.navbar {
+  padding-left: var(--mantine-spacing-md);
+  display: flex;
+  flex-direction: column;
+}
+.links {
+  flex: 1;
+  margin-left: calc(var(--mantine-spacing-md) * -1);
+  margin-right: calc(var(--mantine-spacing-md) * -1);
+}
+
+.linksInner {
+  padding: var(--mantine-spacing-md);
+  padding-bottom:0 ;
+}
+
+@media (max-width: 48em) {
+  .navbar {
+    display: none;
+  }
+}

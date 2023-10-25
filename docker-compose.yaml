@@ -7,10 +7,5 @@ services:
     environment:
       - QDRANT_URL
       - QDRANT_API_KEY
-    networks:
-      - qdrant-net
-
-networks:
-  qdrant-net:
-    external:
-      name: qdrant-net
+    ports:
+      - 8000:8000

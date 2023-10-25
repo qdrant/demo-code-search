@@ -1,0 +1,50 @@
+.wrapper {
+  border: 1px solid var(--mantine-color-neutral-1);
+  border-radius: var(--mantine-radius-md);
+  margin-bottom: var(--mantine-spacing-md);
+  width: 100%;
+}
+.header {
+  display: flex;
+  align-items: center;
+  padding: var(--mantine-spacing-sm);
+  padding-left: var(--mantine-spacing-xs);
+  border-bottom: 1px solid var(--mantine-color-neutral-1);
+  overflow: hidden;
+}
+.filename {
+  margin-left: var(--mantine-spacing-xs);
+  color: var(--mantine-color-neutral-6);
+}
+.filename:hover {
+  color: var(--mantine-color-Primary-light-color);
+  text-decoration: underline;
+}
+.code {
+  margin: 0;
+  text-wrap: inherit;
+  border-bottom-left-radius: var(--mantine-radius-md);
+  border-bottom-right-radius: var(--mantine-radius-md);
+  font-size: 0.8125rem;
+}
+.codeNumber {
+  padding-right: 1rem;
+  padding-left: 1rem;
+  color: #828a93;
+}
+
+.codeLoad {
+  padding-right: 1rem;
+  padding-left: 1rem;
+  color: #646d76;
+  background-color: #bddfff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.codeLine {
+  width: calc(100% - 3.2rem);
+}
+.codeLine > span {
+  word-wrap: break-word;
+}
