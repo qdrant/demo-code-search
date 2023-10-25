@@ -18,7 +18,7 @@ async def search(query: str):
     }
 
 
-app.mount("/", StaticFiles(directory=os.path.join(ROOT_DIR, 'frontend', 'dist', 'spa'), html=True))
+app.mount("/", StaticFiles(directory=os.path.join(ROOT_DIR, 'frontend', 'dist'), html=True))
 
 if __name__ == "__main__":
     import uvicorn
