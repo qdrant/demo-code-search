@@ -121,7 +121,7 @@ export function CodeContainer(props: CodeContainerProps) {
                     }
               }
             >
-              <Tooltip label={`Load ${codeLineFrom-10} to ${codeLineFrom-1} `} withArrow>
+              <Tooltip label={`Load ${codeLineFrom-10>0?codeLineFrom-10:1} to ${codeLineFrom-1} `} withArrow>
                 <span className={classes.codeLoad} onClick={loadUpperCode}>
                   <IconFoldUp />
                 </span>
@@ -182,7 +182,7 @@ export function CodeContainer(props: CodeContainerProps) {
                     }
               }
             >
-              <Tooltip label={`Load ${line_to + codeLineTo+2} to ${line_to + codeLineTo+11}`} withArrow>
+              <Tooltip label={`Load ${line_to + codeLineTo+2} to ${line_to + codeLineTo+11<context.lower_lines.split("\n").length+line_to?line_to + codeLineTo+11:context.lower_lines.split("\n").length+line_to}`} withArrow>
                 <span
                   className={classes.codeLoad}
                   style={{
