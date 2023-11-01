@@ -30,21 +30,45 @@ type CodeContainerProps = {
     overlap_to: number;
   }[];
 };
+const loadCount = 10;
 
 export function CodeContainer(props: CodeContainerProps) {
   const { context, line_from, sub_matches, line_to } = props;
   const [codeLineFrom, setCodeLineFrom] = useMountedState(line_from);
-  const [codeLineTo, setCodeLineTo] = useMountedState(line_to);
+  const [codeLineTo, setCodeLineTo] = useMountedState(0);
   const [code, setCode] = useMountedState(props.context.snippet);
 
   const loadUpperCode = () => {
-    setCodeLineFrom(1);
-    setCode(`${context.upper_lines}${code}`);
+    const upperCodeArray = context.upper_lines.split("\n");
+    const upperCode = upperCodeArray
+      .slice(
+        codeLineFrom - loadCount + 1 > 0 ? codeLineFrom - loadCount + 1 : 0,
+        codeLineFrom
+      )
+      .join("\n");
+    setCodeLineFrom((number) => {
+      return number - loadCount > 0 ? number - loadCount : 1;
+    });
+    setCode(`${upperCode}${code}`);
   };
 
   const loadLowerCode = () => {
-    setCodeLineTo(Infinity);
-    setCode(`${code}${context.lower_lines}`);
+    const lowerCodeArray = context.lower_lines.split("\n");
+    if (lowerCodeArray.length > codeLineTo + loadCount) {
+      const lowerCode = lowerCodeArray
+        .slice(codeLineTo, codeLineTo + loadCount + 1)
+        .join("\n");
+      setCodeLineTo((number) => {
+        return number + loadCount;
+      });
+      setCode(`${code}${lowerCode}`);
+    } else {
+      const lowerCode = lowerCodeArray
+        .slice(codeLineTo, lowerCodeArray.length)
+        .join("\n");
+      setCodeLineTo(lowerCodeArray.length);
+      setCode(`${code}${lowerCode}`);
+    }
   };
 
   return (
@@ -100,14 +124,19 @@ export function CodeContainer(props: CodeContainerProps) {
                     }
               }
             >
-              <Tooltip label={`Expand all`} withArrow>
+              <Tooltip
+                label={`Load ${
+                  codeLineFrom - loadCount > 0 ? codeLineFrom - loadCount : 1
+                } to ${codeLineFrom - 1} `}
+                withArrow
+              >
                 <span className={classes.codeLoad} onClick={loadUpperCode}>
                   <IconFoldUp />
                 </span>
               </Tooltip>
               <div className={classes.codeLine}>
                 <span className={classes.codeNumber}>
-                  @@ {1} - {line_from} of {context.file_name}
+                  @@ {1} - {codeLineFrom - 1} of {context.file_name}
                 </span>
               </div>
             </div>
@@ -145,7 +174,10 @@ export function CodeContainer(props: CodeContainerProps) {
             ))}
             <div
               style={
-                codeLineTo === Infinity
+                codeLineTo === context.lower_lines.split("\n").length ||
+                context.lower_lines === undefined ||
+                context.lower_lines === null ||
+                context.lower_lines === ""
                   ? { display: "none" }
                   : {
                       display: "flex",
@@ -158,7 +190,15 @@ export function CodeContainer(props: CodeContainerProps) {
                     }
               }
             >
-              <Tooltip label={`Expand all`} withArrow>
+              <Tooltip
+                label={`Load ${line_to + codeLineTo + 2} to ${
+                  line_to + codeLineTo + loadCount+1 <
+                  context.lower_lines.split("\n").length + line_to
+                    ? line_to + codeLineTo + loadCount+1
+                    : context.lower_lines.split("\n").length + line_to
+                }`}
+                withArrow
+              >
                 <span
                   className={classes.codeLoad}
                   style={{
@@ -171,7 +211,9 @@ export function CodeContainer(props: CodeContainerProps) {
               </Tooltip>
               <div className={classes.codeLine}>
                 <span className={classes.codeNumber}>
-                  @@ {line_to} - {"end of file"} of {context.file_name}
+                  @@ {line_to + codeLineTo + 2} -{" "}
+                  {context.lower_lines.split("\n").length + line_to} of{" "}
+                  {context.file_name}
                 </span>
               </div>
             </div>

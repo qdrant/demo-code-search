@@ -6,6 +6,9 @@
   margin: 0 auto;
   padding: var(--mantine-spacing-md);
   gap: var(--mantine-spacing-sm);
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 }
 
 .demoBtn{

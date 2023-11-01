@@ -11,30 +11,57 @@ import {
 import { IconSearch } from "@tabler/icons-react";
 import useMountedState from "@/hooks/useMountedState";
 import { useGetSearchResult } from "@/hooks/useGetSearchResult";
-import { getHotkeyHandler } from "@mantine/hooks";
+import { getHotkeyHandler, useHotkeys } from "@mantine/hooks";
 import { FileTree } from "../FIleTree";
 import { CodeContainer } from "../CodeContainer";
 import classes from "./Main.module.css";
 import DemoSearch from "../DemoSearch";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Main() {
   const [query, setQuery] = useMountedState("");
   const { data, getSearch, loading, error, resetData } = useGetSearchResult();
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  useHotkeys([
+    [
+      "/",
+      () => {
+        const input = document.querySelector("input");
+        input?.focus();
+      },
+    ],
+  ]);
   const handleSubmit = () => {
     resetData();
     if (query) {
       getSearch(query);
+      setSearchParams({ query });
     }
   };
 
   const handleDemoSearch = (query: string) => {
     resetData();
     if (query) {
+      setSearchParams({ query: query });
       setQuery(query);
       getSearch(query);
     }
   };
+
+  useEffect(() => {
+    if (searchParams.get("query")&&searchParams.get("query")!==query) {
+      handleDemoSearch(searchParams.get("query") ?? "");
+    }
+  }, [searchParams.get("query")]);
+
+  useEffect(() => {
+    if (query === "") {
+      resetData();
+      window.history.replaceState({}, "", "/");
+    }
+  }, [query]);
 
   return (
     <Container size="lg">
@@ -57,7 +84,7 @@ export default function Main() {
         }
         rightSectionWidth={"6rem"}
         value={query}
-        pt={ data ? "1rem" : "5rem" }
+        pt={data || loading ? "1rem" : "5rem"}
         required
         onChange={(event: any) => setQuery(event.currentTarget.value)}
         onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
@@ -68,6 +95,7 @@ export default function Main() {
           zIndex: 100,
           backgroundColor: "#fff",
         }}
+        ref={(input) => input && input.focus()}
       />
       {data && (
         <Box
