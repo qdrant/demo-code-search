@@ -126,7 +126,7 @@ export function CodeContainer(props: CodeContainerProps) {
             >
               <Tooltip
                 label={`Load ${
-                  codeLineFrom - 10 > 0 ? codeLineFrom - 10 : 1
+                  codeLineFrom - loadCount > 0 ? codeLineFrom - loadCount : 1
                 } to ${codeLineFrom - 1} `}
                 withArrow
               >
@@ -192,9 +192,9 @@ export function CodeContainer(props: CodeContainerProps) {
             >
               <Tooltip
                 label={`Load ${line_to + codeLineTo + 2} to ${
-                  line_to + codeLineTo + 11 <
+                  line_to + codeLineTo + loadCount+1 <
                   context.lower_lines.split("\n").length + line_to
-                    ? line_to + codeLineTo + 11
+                    ? line_to + codeLineTo + loadCount+1
                     : context.lower_lines.split("\n").length + line_to
                 }`}
                 withArrow
