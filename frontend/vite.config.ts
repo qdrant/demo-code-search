@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://code-search.qdrant.tech/",
+        target: "http://0.0.0.0:8000",
         changeOrigin: true,
       },
     },
