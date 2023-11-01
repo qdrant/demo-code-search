@@ -30,6 +30,7 @@ type CodeContainerProps = {
     overlap_to: number;
   }[];
 };
+const loadCount = 10;
 
 export function CodeContainer(props: CodeContainerProps) {
   const { context, line_from, sub_matches, line_to } = props;
@@ -40,26 +41,28 @@ export function CodeContainer(props: CodeContainerProps) {
   const loadUpperCode = () => {
     const upperCodeArray = context.upper_lines.split("\n");
     const upperCode = upperCodeArray
-      .slice(codeLineFrom - 11 > 0 ? codeLineFrom - 11 : 0, codeLineFrom)
+      .slice(
+        codeLineFrom - loadCount + 1 > 0 ? codeLineFrom - loadCount + 1 : 0,
+        codeLineFrom
+      )
       .join("\n");
     setCodeLineFrom((number) => {
-      return number - 10 > 0 ? number - 10 : 1;
+      return number - loadCount > 0 ? number - loadCount : 1;
     });
     setCode(`${upperCode}${code}`);
   };
 
   const loadLowerCode = () => {
     const lowerCodeArray = context.lower_lines.split("\n");
-    if (lowerCodeArray.length > codeLineTo + 10) {
+    if (lowerCodeArray.length > codeLineTo + loadCount) {
       const lowerCode = lowerCodeArray
-        .slice(codeLineTo, codeLineTo + 11)
+        .slice(codeLineTo, codeLineTo + loadCount + 1)
         .join("\n");
       setCodeLineTo((number) => {
-        return number + 10;
+        return number + loadCount;
       });
       setCode(`${code}${lowerCode}`);
-    }
-    else{
+    } else {
       const lowerCode = lowerCodeArray
         .slice(codeLineTo, lowerCodeArray.length)
         .join("\n");
@@ -121,14 +124,19 @@ export function CodeContainer(props: CodeContainerProps) {
                     }
               }
             >
-              <Tooltip label={`Load ${codeLineFrom-10>0?codeLineFrom-10:1} to ${codeLineFrom-1} `} withArrow>
+              <Tooltip
+                label={`Load ${
+                  codeLineFrom - 10 > 0 ? codeLineFrom - 10 : 1
+                } to ${codeLineFrom - 1} `}
+                withArrow
+              >
                 <span className={classes.codeLoad} onClick={loadUpperCode}>
                   <IconFoldUp />
                 </span>
               </Tooltip>
               <div className={classes.codeLine}>
                 <span className={classes.codeNumber}>
-                  @@ {1} - {codeLineFrom-1} of {context.file_name}
+                  @@ {1} - {codeLineFrom - 1} of {context.file_name}
                 </span>
               </div>
             </div>
@@ -182,7 +190,15 @@ export function CodeContainer(props: CodeContainerProps) {
                     }
               }
             >
-              <Tooltip label={`Load ${line_to + codeLineTo+2} to ${line_to + codeLineTo+11<context.lower_lines.split("\n").length+line_to?line_to + codeLineTo+11:context.lower_lines.split("\n").length+line_to}`} withArrow>
+              <Tooltip
+                label={`Load ${line_to + codeLineTo + 2} to ${
+                  line_to + codeLineTo + 11 <
+                  context.lower_lines.split("\n").length + line_to
+                    ? line_to + codeLineTo + 11
+                    : context.lower_lines.split("\n").length + line_to
+                }`}
+                withArrow
+              >
                 <span
                   className={classes.codeLoad}
                   style={{
@@ -195,7 +211,8 @@ export function CodeContainer(props: CodeContainerProps) {
               </Tooltip>
               <div className={classes.codeLine}>
                 <span className={classes.codeNumber}>
-                  @@ {line_to + codeLineTo+2} - {context.lower_lines.split("\n").length+line_to} of{" "}
+                  @@ {line_to + codeLineTo + 2} -{" "}
+                  {context.lower_lines.split("\n").length + line_to} of{" "}
                   {context.file_name}
                 </span>
               </div>
