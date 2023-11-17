@@ -51,12 +51,12 @@ export function CodeContainer(props: CodeContainerProps) {
       const upperCodeArray = data.result[0].code;
       const upperCode = upperCodeArray
         .slice(
-          codeLineFrom - loadCount + 1 > 0 ? codeLineFrom - loadCount + 1 : 0,
-          codeLineFrom
+          codeLineFrom - loadCount - 1 > 0 ? codeLineFrom - loadCount - 1 : 0,
+          codeLineFrom - 1 // Array start from 0.
         )
         .join("");
       setCodeLineFrom((number) => {
-        return number - loadCount > 0 ? number - loadCount : 1;
+        return number - loadCount - 1 > 0 ? number - loadCount : 1;
       });
       setCode(`${upperCode}${code}`);
     }
