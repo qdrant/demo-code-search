@@ -5,10 +5,7 @@ import json
 from code_search.config import QDRANT_URL, QDRANT_API_KEY, DATA_DIR, QDRANT_FILE_COLLECTION_NAME
 
 
-
-
 def encode_and_upload():
-   
     qdrant_client = QdrantClient(
         QDRANT_URL,
         api_key=QDRANT_API_KEY,
@@ -24,7 +21,6 @@ def encode_and_upload():
     with open(input_file, 'r') as json_file:
         data = json.load(json_file)
         payload = data
-        
 
     print(f"Recreating the collection {collection_name}")
     qdrant_client.recreate_collection(
@@ -37,10 +33,9 @@ def encode_and_upload():
         collection_name=collection_name,
         payload=payload,
         vectors=[{}] * len(payload),
-        ids=None, 
+        ids=None,
         batch_size=256
     )
-   
 
 
 if __name__ == '__main__':

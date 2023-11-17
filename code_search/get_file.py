@@ -5,9 +5,6 @@ from qdrant_client.http import models
 
 from code_search.config import QDRANT_URL, QDRANT_API_KEY, QDRANT_FILE_COLLECTION_NAME
 
-
-
-
 class FileGet:
 
     def __init__(self):
