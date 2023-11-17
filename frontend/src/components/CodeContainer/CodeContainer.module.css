@@ -36,6 +36,8 @@
 .codeLoad {
   padding-right: 1rem;
   padding-left: 1rem;
+  height: 24px;
+  width: 56px;
   color: #646d76;
   background-color: #bddfff;
   display: flex;

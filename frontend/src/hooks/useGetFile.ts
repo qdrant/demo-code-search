@@ -1,39 +1,25 @@
-import { getSearchResult } from "@/api/search";
 import { StatusCodes } from "http-status-codes";
 import useMountedState from "./useMountedState";
+import { getFileResult } from "@/api/file";
 
 export type searchResponse = {
   result: {
-    code_type: string;
-    context: {
-      file_name: string;
-      file_path: string;
-      module: string;
-      snippet: string;
-      struct_name: string;
-    };
-    docstring: string | null;
-    line: number;
-    line_from: number;
-    line_to: number;
-    name: string;
-    signature: string;
-    sub_matches: {
-      overlap_from: number;
-      overlap_to: number;
-    }[];
+    code: string[];
+    endline: number;
+    startline: number;
+    path: string;
   }[];
 };
-export const useGetSearchResult = () => {
+export const useGetFile = () => {
   const [data, setData] = useMountedState<searchResponse | null>(null);
   const [error, setError] = useMountedState<string | null>(null);
   const [loading, setLoading] = useMountedState<boolean>(false);
 
-  const getSearch = async (query: string) => {
+  const getFile = async (path: string) => {
     try {
       setLoading(true);
       setError(null);
-      const res = await getSearchResult({ query });
+      const res = await getFileResult({ path });
 
       switch (res.status) {
         case StatusCodes.OK: {
@@ -42,11 +28,11 @@ export const useGetSearchResult = () => {
           break;
         }
         default: {
-          setError("Failed to get Search Result");
+          setError("Failed to get the file");
         }
       }
     } catch {
-      setError("Failed to get Search Result");
+      setError("Failed to get the file");
     } finally {
       setLoading(false);
     }
@@ -56,5 +42,5 @@ export const useGetSearchResult = () => {
     setData(null);
   };
 
-  return { data, error, loading, getSearch, resetData };
+  return { data, error, loading, getFile, resetData };
 };

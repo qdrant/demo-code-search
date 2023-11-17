@@ -1,4 +1,4 @@
-import { Box, Button, Image, ThemeIcon, Tooltip } from "@mantine/core";
+import { Box, Button, Image, Loader, ThemeIcon, Tooltip } from "@mantine/core";
 import classes from "./CodeContainer.module.css";
 import { Highlight, themes } from "prism-react-renderer";
 import {
@@ -7,6 +7,8 @@ import {
   IconFoldUp,
 } from "@tabler/icons-react";
 import useMountedState from "@/hooks/useMountedState";
+import { useGetFile } from "@/hooks/useGetFile";
+import { useEffect } from "react";
 
 type CodeContainerProps = {
   code_type: string;
@@ -16,8 +18,6 @@ type CodeContainerProps = {
     module: string;
     snippet: string;
     struct_name: string;
-    upper_lines: string;
-    lower_lines: string;
   };
   docstring: string | null;
   line: number;
@@ -35,41 +35,60 @@ const loadCount = 10;
 export function CodeContainer(props: CodeContainerProps) {
   const { context, line_from, sub_matches, line_to } = props;
   const [codeLineFrom, setCodeLineFrom] = useMountedState(line_from);
-  const [codeLineTo, setCodeLineTo] = useMountedState(0);
+  const [codeLineTo, setCodeLineTo] = useMountedState(line_to);
   const [code, setCode] = useMountedState(props.context.snippet);
+  const { data, error, loading, getFile } = useGetFile();
+  const [inStack, setInStack] = useMountedState<
+    "loadUpperCode" | "loadLowerCode" | null
+  >(null);
 
   const loadUpperCode = () => {
-    const upperCodeArray = context.upper_lines.split("\n");
-    const upperCode = upperCodeArray
-      .slice(
-        codeLineFrom - loadCount + 1 > 0 ? codeLineFrom - loadCount + 1 : 0,
-        codeLineFrom
-      )
-      .join("\n");
-    setCodeLineFrom((number) => {
-      return number - loadCount > 0 ? number - loadCount : 1;
-    });
-    setCode(`${upperCode}${code}`);
+    if (!data) {
+      getFile(context.file_path);
+      setInStack("loadUpperCode");
+    }
+    if (data) {
+      const upperCodeArray = data.result[0].code;
+      const upperCode = upperCodeArray
+        .slice(
+          codeLineFrom - loadCount + 1 > 0 ? codeLineFrom - loadCount + 1 : 0,
+          codeLineFrom
+        )
+        .join("");
+      setCodeLineFrom((number) => {
+        return number - loadCount > 0 ? number - loadCount : 1;
+      });
+      setCode(`${upperCode}${code}`);
+    }
   };
 
   const loadLowerCode = () => {
-    const lowerCodeArray = context.lower_lines.split("\n");
-    if (lowerCodeArray.length > codeLineTo + loadCount) {
+    if (!data) {
+      getFile(context.file_path);
+      setInStack("loadLowerCode");
+    }
+    if (data) {
+      const lowerCodeArray = data.result[0].code;
       const lowerCode = lowerCodeArray
-        .slice(codeLineTo, codeLineTo + loadCount + 1)
-        .join("\n");
+        .slice(codeLineTo, codeLineTo + loadCount)
+        .join("");
       setCodeLineTo((number) => {
         return number + loadCount;
       });
       setCode(`${code}${lowerCode}`);
-    } else {
-      const lowerCode = lowerCodeArray
-        .slice(codeLineTo, lowerCodeArray.length)
-        .join("\n");
-      setCodeLineTo(lowerCodeArray.length);
-      setCode(`${code}${lowerCode}`);
     }
   };
+
+  useEffect(() => {
+    if (inStack === "loadUpperCode" && data) {
+      loadUpperCode();
+      setInStack(null);
+    }
+    if (inStack === "loadLowerCode" && data) {
+      loadLowerCode();
+      setInStack(null);
+    }
+  }, [data]);
 
   return (
     <Box
@@ -131,12 +150,18 @@ export function CodeContainer(props: CodeContainerProps) {
                 withArrow
               >
                 <span className={classes.codeLoad} onClick={loadUpperCode}>
-                  <IconFoldUp />
+                  {loading && inStack === "loadUpperCode" ? (
+                    <Loader type="oval" size="xs" />
+                  ) : (
+                    <IconFoldUp />
+                  )}
                 </span>
               </Tooltip>
               <div className={classes.codeLine}>
                 <span className={classes.codeNumber}>
-                  @@ {1} - {codeLineFrom - 1} of {context.file_name}
+                  {error
+                    ? error
+                    : `@@ 1 - ${codeLineFrom - 1} of ${context.file_name}`}
                 </span>
               </div>
             </div>
@@ -174,10 +199,7 @@ export function CodeContainer(props: CodeContainerProps) {
             ))}
             <div
               style={
-                codeLineTo === context.lower_lines.split("\n").length ||
-                context.lower_lines === undefined ||
-                context.lower_lines === null ||
-                context.lower_lines === ""
+                data?.result[0].endline && codeLineTo >= data?.result[0].endline
                   ? { display: "none" }
                   : {
                       display: "flex",
@@ -191,12 +213,12 @@ export function CodeContainer(props: CodeContainerProps) {
               }
             >
               <Tooltip
-                label={`Load ${line_to + codeLineTo + 2} to ${
-                  line_to + codeLineTo + loadCount+1 <
-                  context.lower_lines.split("\n").length + line_to
-                    ? line_to + codeLineTo + loadCount+1
-                    : context.lower_lines.split("\n").length + line_to
-                }`}
+                label={`Load ${codeLineTo + 2} to ${
+                  data?.result[0].endline &&
+                  data?.result[0].endline < codeLineTo + loadCount + 2
+                    ? data?.result[0].endline + 1
+                    : codeLineTo + loadCount + 2
+                } of file`}
                 withArrow
               >
                 <span
@@ -206,14 +228,22 @@ export function CodeContainer(props: CodeContainerProps) {
                   }}
                   onClick={loadLowerCode}
                 >
-                  <IconFoldDown />
+                  {loading && inStack === "loadLowerCode" ? (
+                    <Loader type="oval" size="xs" />
+                  ) : (
+                    <IconFoldDown />
+                  )}
                 </span>
               </Tooltip>
               <div className={classes.codeLine}>
                 <span className={classes.codeNumber}>
-                  @@ {line_to + codeLineTo + 2} -{" "}
-                  {context.lower_lines.split("\n").length + line_to} of{" "}
-                  {context.file_name}
+                  {error
+                    ? error
+                    : `@@ ${codeLineTo + 2} - ${
+                        data?.result[0].endline
+                          ? data?.result[0].endline + 1
+                          : "end"
+                      } of ${context.file_name}`}
                 </span>
               </div>
             </div>
