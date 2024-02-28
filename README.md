@@ -154,7 +154,7 @@ The demo consists of the following components:
 - [React frontend](/frontend) - a web application that allows the user to search over Qdrant codebase
 - [FastAPI backend](/code_search/service.py) - a backend that communicates with Qdrant and exposes a REST API
 - [Qdrant](https://qdrant.tech/) - a vector search engine that stores the data and performs the search
-- Two neural encoders - one for the natural language and one for the code-specific queries
+- Two neural encoders - one trained on the natural language and one for the code-specific tasks
 
 There is also an additional indexing component that has to be run periodically to keep the index up to date. It is also
 part of the demo, but it is not directly exposed to the user. All the required scripts are documented below, and you can 
