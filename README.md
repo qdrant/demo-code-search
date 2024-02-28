@@ -7,16 +7,16 @@ If you want to start with having a look at a running application, it is availabl
 
 ## Description
 
-[Qdrant](https://qdrant.tech) is not only created to support the engineers in building reliable and efficient semantic 
-search experience, but it may also be used to ease their day-to-day work. Nowadays, the amount of code required to 
+[Qdrant](https://qdrant.tech) is not only created to support engineers in building reliable and efficient semantic 
+search experiences but it may also be used to ease their day-to-day work. Nowadays, the amount of code required to 
 support a single project is enormous, and it is growing every day. It is hard to keep track of all the code, and it is
-even harder to find the right piece of code when you need it. **Keywords do not always work, and sometimes you need to
+even harder to find the right piece of code when you need it. **Keywords do not always work, and sometimes, you need to
 find a piece of code that does a specific thing, but you do not remember the exact name of the function or class.**
 That sounds like a perfect task for a semantic search engine, and Qdrant is here to help.
 
 The demo uses [Qdrant source code](https://github.com/qdrant/qdrant) to build an end-to-end code search application that
-helps to find the right piece of code, even if you have never contributed to the project. We implemented an end-to-end
-process, including data chunking, indexing, and search. Code search is a very specific task, in which the programming 
+helps you find the right piece of code, even if you have never contributed to the project. We implemented an end-to-end
+process, including data chunking, indexing, and search. Code search is a very specific task in which the programming 
 language syntax matters as much as the function, class, variable names, and the docstring, describing what and why. 
 While the latter is more of a traditional natural language processing task, the former requires a specific approach. 
 Thus, we used two separate neural encoders to handle both cases
@@ -26,28 +26,24 @@ Thus, we used two separate neural encoders to handle both cases
 
 ### Chunking and indexing process
 
-Source code might be considered a semi-structured data, as it has an inherent structure, defined by the programming
+Source code might be considered semi-structured data, as it has an inherent structure, defined by the programming
 language syntax, and some good practices of the team that created it. If your codebase doesn't seem to have any 
 structure, it might be a good idea to start with some refactoring, before building a search mechanism on top of it. 
 However, that already gives us a hint on how to approach the problem. We can divide the code into chunks, with each
-chunk being a specific function, struct, enum or any other code structure that might be considered as a whole.
+chunk being a specific function, struct, enum, or any other code structure that might be considered as a whole.
 
-[//]: # (Each chunk is encoded by both neural encoders, however the JSON object above is not directly sent to the network. )
-
-[//]: # (Instead, there is a separate model-specific logic that extracts the most important parts of the code and converts them)
-
-[//]: # (into a format that the neural network can understand. Only then, the encoded representation is indexed in Qdrant )
-
-[//]: # (collection, along with the original JSON structure as a payload.)
+There is a separate model-specific logic that extracts the most important parts of the code and converts them
+into a format that the neural network can understand. Only then, the encoded representation is indexed in the Qdrant 
+collection, along with a JSON structure describing that snippet as a payload.
 
 #### all-MiniLM-L6-v2
 
 Before the encoding, code is divided into chunks, but contrary to the traditional NLP challenges, it contains not only
-the definition of the function or class, but also the context in which appears. While doing code search it's important 
+the definition of the function or class but also the context in which appears. While doing code search it's important 
 to know where the function is defined, in which module, and in which file. This information is crucial to present the
 results to the user in a meaningful way.
 
-For example, the `upsert` function from one of the Qdrant's modules would be represented as the following structure:
+For example, the `upsert` function from one of Qdrant's modules would be represented as the following structure:
 
 ```json
 {
@@ -90,8 +86,8 @@ For example, the `upsert` function from the example above would be represented a
 
 In the properly structured codebase, both module and file names should carry some additional information about the 
 semantics of that piece of code. For example, the `upsert` function is defined in the `InvertedIndexRam` struct, which 
-is a part of the `inverted_index`, what indicates that it is a part of the inverted index implementation stored in 
-memory, what is unclear from the function name itself.
+is a part of the `inverted_index`, which indicates that it is a part of the inverted index implementation stored in 
+memory. It is unclear from the function name itself.
 
 > If you want to see how the conversion is implemented in general, please check the `textify` function in the 
 `code_search.index.textifier` module.
@@ -104,10 +100,10 @@ Language Server Protocol (**LSP**) implementations that can help with that, and 
 your programming language](https://microsoft.github.io/language-server-protocol/implementors/servers/). For Rust, we 
 used the [rust-analyzer](https://rust-analyzer.github.io/) that is capable of converting the codebase into the [LSIF 
 format](https://microsoft.github.io/language-server-protocol/specifications/lsif/0.4.0/specification/), which is a 
-universal, JSON-based format for code, no matter the programming language.
+universal, JSON-based format for code, regardless of the programming language.
 
-The same `upsert` function from the example above would be represented in LSIF as multiple entries, and won't contain
-the definition itself, but just the location of it, so we have to extract it from the source file on our own. 
+The same `upsert` function from the example above would be represented in LSIF as multiple entries and won't contain
+the definition itself but just the location, so we have to extract it from the source file on our own. 
 
 Even though the `microsoft/unixcoder-base` model does not officially support Rust, we found it to be working quite well 
 for the task. Obtaining the embeddings for the code snippets is quite straightforward, as we just send the code snippet 
@@ -163,7 +159,7 @@ There is also an additional indexing component that has to be run periodically t
 part of the demo, but it is not directly exposed to the user. All the required scripts are documented below, and you can 
 find them in the [`tools`](/tools) directory.
 
-Demo is, as always, open source, so feel free to check the code in this repository to see how it is implemented.
+The demo is, as always, open source, so feel free to check the code in this repository to see how it is implemented.
 
 ## Usage
 
