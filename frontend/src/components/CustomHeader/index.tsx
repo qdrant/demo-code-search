@@ -83,7 +83,7 @@ export function CustomHeader() {
             On the search interface, it's possible for users to initiate searches
             for code snippets by employing either natural language queries or
             more code-like examples. The system processes the input by transforming
-            it into vector representations through the use of twp neural encoders.
+            it into vector representations through the use of two neural encoders.
             These vectors play a crucial role in semantically searching a database
             filled with code snippets, ensuring the retrieval of code that aligns
             closely with the intended meaning and/or functionality.
