@@ -24,6 +24,7 @@ jobs:
         cd $GITHUB_WORKSPACE
         docker build -t qdrant/code-search-web:${{ github.sha }} .
         docker save -o code-search-web.tar qdrant/code-search-web:${{ github.sha }}
+        chmod 666 code-search-web.tar
         ls -al .
     - name: copy data with ssh
       uses: appleboy/scp-action@master
