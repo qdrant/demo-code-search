@@ -5,17 +5,35 @@ you can set up a tool that provides code results, in context.
 
 ## Online version
 
-If you want to start with having a look at a running application, it is available here:
-**[https://code-search.qdrant.tech/](https://code-search.qdrant.tech/)**
+See our code search tool "in action." Navigate to 
+**[https://code-search.qdrant.tech/](https://code-search.qdrant.tech/)**. We've prepopulated the demo with Qdrant 
+codebase. You can see the results, in context, even with relatively vague search terms.
+
+## Prerequisites
+
+To run this demo on your own system, install and/or set up the following components:
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+- [Rust](https://www.rust-lang.org/learn/get-started)
+- [rust-analyzer](https://rust-analyzer.github.io/)
+
+Docker and Docker Compose setup depends on your operating system. Please refer to the official documentation for
+instructions on how to install them. Both Rust and rust-analyzer can be installed with the following commands:
+
+```shell
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup component add rust-analyzer
+```
 
 ## Description
 
-[Qdrant](https://qdrant.tech) is not only created to support engineers in building reliable and efficient semantic 
-search experiences but it may also be used to ease their day-to-day work. Nowadays, the amount of code required to 
-support a single project is enormous, and it is growing every day. It is hard to keep track of all the code, and it is
-even harder to find the right piece of code when you need it. **Keywords do not always work, and sometimes, you need to
-find a piece of code that does a specific thing, but you do not remember the exact name of the function or class.**
-That sounds like a perfect task for a semantic search engine, and Qdrant is here to help.
+You can set up [Qdrant](https://qdrant.tech) to help developers find the code they need, with context. Using semantic
+search, developers can find the code samples that can help them do their day-to-day work, even with:
+
+- Imprecise keywords
+- Inexact names for functions, classes or variables
+- Some other code snippets
 
 The demo uses [Qdrant source code](https://github.com/qdrant/qdrant) to build an end-to-end code search application that
 helps you find the right piece of code, even if you have never contributed to the project. We implemented an end-to-end
@@ -167,18 +185,10 @@ The demo is, as always, open source, so feel free to check the code in this repo
 
 ## Usage
 
-Please make sure to have [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) 
-installed on your machine. 
+As every other semantic search system, the demo requires a few steps to be set up. First of all, the data has to be
+ingested, so we can then use the created index for our queries.
 
 ### Data indexing
-
-We used some Rust-based tools to build the demo, so you will need to have Rust installed on your machine, along with
-the [rust-analyzer](https://rust-analyzer.github.io/).
-
-```shell
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-rustup component add rust-analyzer
-```
 
 Qdrant is used as a search engine, so you will need to have it running somewhere. You can either use the local container
 or the Cloud version. If you want to use the local version, you can start it with the following command:
