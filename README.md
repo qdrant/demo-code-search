@@ -1,5 +1,8 @@
 # Code search with Qdrant
 
+Developers need a code search tool that helps them find the right piece of code. In this README, we describe how
+you can set up a tool that provides code results, in context.
+
 ## Online version
 
 If you want to start with having a look at a running application, it is available here:
@@ -19,22 +22,22 @@ helps you find the right piece of code, even if you have never contributed to th
 process, including data chunking, indexing, and search. Code search is a very specific task in which the programming 
 language syntax matters as much as the function, class, variable names, and the docstring, describing what and why. 
 While the latter is more of a traditional natural language processing task, the former requires a specific approach. 
-Thus, we used two separate neural encoders to handle both cases
+Thus, we use the following neural encoders for our use cases:
 
 - `all-MiniLM-L6-v2` - one of the gold standard models for natural language processing
 - `microsoft/unixcoder-base` - a model trained specifically on a code dataset
 
 ### Chunking and indexing process
 
-Source code might be considered semi-structured data, as it has an inherent structure, defined by the programming
-language syntax, and some good practices of the team that created it. If your codebase doesn't seem to have any 
-structure, it might be a good idea to start with some refactoring, before building a search mechanism on top of it. 
-However, that already gives us a hint on how to approach the problem. We can divide the code into chunks, with each
-chunk being a specific function, struct, enum, or any other code structure that might be considered as a whole.
+Semantic search works best with _structured_ source code repositories, with good syntax, as well as best practices
+as defined by the authoring team. If your code base needs help, start by dividing the code into chunks. Each
+chunk should correspond to a specific function, struct, enum, or any other code structure that might be considered as a whole.
 
 There is a separate model-specific logic that extracts the most important parts of the code and converts them
 into a format that the neural network can understand. Only then, the encoded representation is indexed in the Qdrant 
 collection, along with a JSON structure describing that snippet as a payload.
+
+To that end, we work with the following models. The combination is the "best of both worlds."
 
 #### all-MiniLM-L6-v2
 
