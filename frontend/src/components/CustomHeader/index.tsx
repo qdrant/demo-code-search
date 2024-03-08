@@ -80,19 +80,16 @@ export function CustomHeader() {
           }}
         >
           <Text size="lg" color="dimmed" className={classes.description}>
-            Searching over a codebase is a non-trivial task, which might be seen from at
-            least two perspectives. As a developer, you might want to find code snippets
-            similar to the one you already have. At a different time, you want a particular
-            method that does <b>this specific thing</b>, but you don't know the entire
-            source code. Our code search demo supports both cases using two different
-            embedding models.
+            When you search a codebase, you might have the following objectives:
+            To find code snippets similar to what you're using, or to identify a method
+            that does <b>this specific thing</b>. Our code search demo supports
+            both cases with multiple embedding models.
           </Text>
 
           <Image src="/workflow.svg" />
           <Text size="lg" color="dimmed" className={classes.description}>
             Using both embeddings helps us find not only the relevant method but also the
-            exact piece of code inside it, that does the thing you are looking for.
-            Semantic code intelligence in action, in context!
+            exact piece of code inside it. Semantic code intelligence in action, in context!
           </Text>
           <Button
             className={classes.modalBtnInner}
