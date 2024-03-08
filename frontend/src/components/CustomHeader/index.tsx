@@ -80,28 +80,16 @@ export function CustomHeader() {
           }}
         >
           <Text size="lg" color="dimmed" className={classes.description}>
-            On the search interface, it's possible for users to initiate searches
-            for code snippets by employing either natural language queries or
-            more code-like examples. The system processes the input by transforming
-            it into vector representations through the use of two neural encoders.
-            These vectors play a crucial role in semantically searching a database
-            filled with code snippets, ensuring the retrieval of code that aligns
-            closely with the intended meaning and/or functionality.
+            When you search a codebase, you might have the following objectives:
+            To find code snippets similar to what you're using, or to identify a method
+            that does <b>this specific thing</b>. Our code search demo supports
+            both cases with multiple embedding models.
           </Text>
 
           <Image src="/workflow.svg" />
           <Text size="lg" color="dimmed" className={classes.description}>
-            The outcome of this search presents users with code snippets that closely
-            match their query, organized in order of their relevance to the entered
-            text. This allows users to explore and evaluate the found code snippets
-            to identify the one that meets their requirements best. By utilizing
-            natural language processing and machine learning techniques, this code
-            search method enhances the precision and efficiency in locating pertinent
-            code. Moreover, it facilitates the exploration of unfamiliar codebases
-            even without the necessity of prior knowledge in the programming language,
-            overcoming the limitations of traditional keyword-based searches which
-            falter without knowledge of specific variable or class names. Thus, semantic
-            code search significantly improves the search experience.
+            Using both embeddings helps us find not only the relevant method but also the
+            exact piece of code inside it. Semantic code intelligence in action, in context!
           </Text>
           <Button
             className={classes.modalBtnInner}
