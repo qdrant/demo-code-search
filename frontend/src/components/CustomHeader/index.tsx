@@ -25,7 +25,7 @@ export function CustomHeader() {
             variant="subtle"
             className={classes.link}
             component="a"
-            href="https://github.com/qdrant/demo-code-search/blob/master/README.md"
+            href="https://qdrant.tech/documentation/tutorials/code-search/"
             target="_blank"
             rel="noopener noreferrer"
           >
