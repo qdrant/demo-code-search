@@ -2,8 +2,8 @@ import json
 from pathlib import Path
 
 import tqdm
-from qdrant_client import QdrantClient
-from qdrant_client.http.models import Distance, VectorParams
+from qdrant_client import QdrantClient, models
+from qdrant_client.models import Distance, VectorParams
 from sentence_transformers import SentenceTransformer
 
 from code_search.config import DATA_DIR, QDRANT_URL, QDRANT_API_KEY, QDRANT_NLU_COLLECTION_NAME, ENCODER_NAME, \
@@ -54,6 +54,14 @@ def upload():
         vectors_config=VectorParams(
             size=ENCODER_SIZE,
             distance=Distance.COSINE,
+            on_disk=True,
+        ),
+        quantization_config=models.ScalarQuantization(
+            scalar=models.ScalarQuantizationConfig(
+                type=models.ScalarType.INT8,
+                always_ram=True,
+                quantile=0.99,
+            )
         )
     )
 

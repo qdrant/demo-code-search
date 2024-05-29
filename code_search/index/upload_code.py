@@ -74,6 +74,14 @@ def encode_and_upload():
         vectors_config=rest.VectorParams(
             size=len(embeddings[1]),
             distance=rest.Distance.COSINE,
+            on_disk=True,
+        ),
+        quantization_config=rest.ScalarQuantization(
+            scalar=rest.ScalarQuantizationConfig(
+                type=rest.ScalarType.INT8,
+                always_ram=True,
+                quantile=0.99,
+            )
         )
     )
 
