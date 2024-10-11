@@ -86,15 +86,12 @@ def encode_and_upload():
     )
 
     print(f"Storing data in the collection {collection_name}")
-    response = client.upsert(
+    client.upload_collection(
         collection_name=collection_name,
-        points=rest.Batch(
-            ids=[i for i, _ in enumerate(embeddings)],
-            vectors=embeddings,
-            payloads=payloads,
-        ),
+        ids=[i for i, _ in enumerate(embeddings)],
+        vectors=embeddings,
+        payload=payloads,
     )
-    print(response)
 
 
 if __name__ == '__main__':
