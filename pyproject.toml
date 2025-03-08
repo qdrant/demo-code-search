@@ -5,7 +5,7 @@ description = ""
 authors = ["Qdrant Team <team@qdrant.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.11"
+python = ">=3.9,<3.12"
 fastapi = "^0.75.2"
 uvicorn = "^0.17.6"
 torch = "^2.1.0"
