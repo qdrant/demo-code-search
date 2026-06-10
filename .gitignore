@@ -141,3 +141,5 @@ cython_debug/
 
 # Do not include auto-generated setup.py
 /setup.py
+
+.DS_Store
