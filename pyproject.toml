@@ -6,8 +6,8 @@ authors = ["Qdrant Team <team@qdrant.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
-fastapi = "^0.75.2"
-uvicorn = "^0.17.6"
+fastapi = ">=0.75.2,<0.129.0"
+uvicorn = ">=0.17.6,<0.40.0"
 torch = "^2.1.0"
 transformers = "^4.26.1"
 qdrant-client = "^1.12.0"
