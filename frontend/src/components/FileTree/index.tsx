@@ -1,44 +1,11 @@
 import { Box } from "@mantine/core";
-
-import classes from "./FileTree.module.css";
-import { LinksGroup } from "../FileGroup";
-import { searchResponse } from "@/hooks/useGetSearchResult";
 import { IconFile, IconFolderFilled } from "@tabler/icons-react";
+import { LinksGroup, type LinkNode } from "../FileGroup";
+import { SearchResponse } from "@/hooks/useGetSearchResult";
+import classes from "./FileTree.module.css";
 
-interface CodeElement {
-  code_type: string;
-  context: {
-    file_name: string;
-    file_path: string;
-    module: string;
-    snippet: string;
-    struct_name?: string;
-  };
-  docstring: string | null;
-  line: number;
-  line_from: number;
-  line_to: number;
-  name: string;
-  signature: string;
-}
-
-interface ParsedLink {
-  label: string;
-  icon: any;
-  id?: string;
-  initiallyOpened?: boolean;
-  links?: ParsedLink[];
-}
-
-interface ParsedData {
-  label: string;
-  icon: any;
-  initiallyOpened?: boolean;
-  links?: ParsedLink[];
-}
-
-function parseCodeElements(data: { result: CodeElement[] }): ParsedData[] {
-  const parsedData: ParsedLink[] = [];
+function parseCodeElements(data: SearchResponse): LinkNode[] {
+  const parsedData: LinkNode[] = [];
 
   data.result.forEach((element) => {
     const filePathComponents = element.context.file_path.split("/");
@@ -51,24 +18,23 @@ function parseCodeElements(data: { result: CodeElement[] }): ParsedData[] {
       if (existingFolder) {
         currentLevel = existingFolder.links || [];
       } else if (index < filePathComponents.length - 1) {
-        const newFolder: ParsedLink = {
+        const newFolder: LinkNode = {
           label: component,
           icon: IconFolderFilled,
           initiallyOpened: true,
           links: [],
         };
         currentLevel.push(newFolder);
-        currentLevel = newFolder.links ? newFolder.links : [];
+        currentLevel = newFolder.links ?? [];
       }
 
-      // If it's the last component, add the file to the current folder
+      // The last path component is the file itself.
       if (index === filePathComponents.length - 1) {
-        const file: ParsedLink = {
+        currentLevel.push({
           label: element.context.file_name,
           id: element.context.file_path,
           icon: IconFile,
-        };
-        currentLevel.push(file);
+        });
       }
     });
   });
@@ -76,22 +42,18 @@ function parseCodeElements(data: { result: CodeElement[] }): ParsedData[] {
   return parsedData;
 }
 
-export function FileTree({ data }: { data: searchResponse | null }) {
-  const parsedData = parseCodeElements(data || { result: [] });
+export function FileTree({ data }: { data: SearchResponse | null }) {
+  const parsedData = parseCodeElements(data ?? { result: [] });
 
-  const links = parsedData.map((link) => (
-    <LinksGroup
-      key={link.label}
-      label={link.label}
-      icon={link.icon}
-      initiallyOpened={link.initiallyOpened}
-      links={link.links}
-    />
-  ));
   return (
     <nav className={classes.navbar}>
+      <div className={classes.treeLabel}>Files</div>
       <Box className={classes.links}>
-        <div className={classes.linksInner}>{links}</div>
+        <div className={classes.linksInner}>
+          {parsedData.map((link) => (
+            <LinksGroup key={link.label} {...link} />
+          ))}
+        </div>
       </Box>
     </nav>
   );

@@ -1,43 +1,32 @@
 import { Box, Button, Text } from "@mantine/core";
-import classes from "./DemoSearch.module.css";
 import { IconPointerSearch } from "@tabler/icons-react";
+import classes from "./DemoSearch.module.css";
+
+const DEMO_QUERIES = [
+  "cardinality of should request",
+  "geo condition filter",
+  "flush WAL",
+];
 
 type DemoSearchProps = {
-    handleDemoSearch: (query: string) => void;
+  handleDemoSearch: (query: string) => void;
 };
 
 export default function DemoSearch({ handleDemoSearch }: DemoSearchProps) {
-
-
   return (
     <Box className={classes.wrapper}>
-      <Text
-      className={classes.demoText}
-      >Try this:</Text>
-      <Button
-        variant="outline"
-        leftSection={<IconPointerSearch size={"1.3rem"} />}
-        className={classes.demoBtn}
-        onClick={() => handleDemoSearch("cardinality of should request")}
-      >
-        cardinality of should request
-      </Button>
-      <Button
-        variant="outline"
-        leftSection={<IconPointerSearch  size={"1.3rem"}/>}
-        className={classes.demoBtn}
-        onClick={() => handleDemoSearch("geo condition filter")}
-      >
-        geo condition filter
-      </Button>
-      <Button
-        variant="outline"
-        leftSection={<IconPointerSearch  size={"1.3rem"}/>}
-        className={classes.demoBtn}
-        onClick={() => handleDemoSearch("flush WAL")}
-      >
-        flush WAL
-      </Button>
+      <Text className={classes.demoText}>Try an example:</Text>
+      {DEMO_QUERIES.map((query) => (
+        <Button
+          key={query}
+          variant="outline"
+          leftSection={<IconPointerSearch size="1.1rem" />}
+          className={classes.demoBtn}
+          onClick={() => handleDemoSearch(query)}
+        >
+          {query}
+        </Button>
+      ))}
     </Box>
   );
 }

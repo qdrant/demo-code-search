@@ -1,82 +1,190 @@
 .header {
-  height: rem(56px);
-  background-color: var(--mantine-color-body);
-  border-bottom: rem(1px) solid
-    light-dark(var(--mantine-color-neutral-1), var(--mantine-color-dark-4));
+  height: 64px;
+
   position: sticky;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
+
+  background: rgba(11, 15, 25, 0.82);
+  border-bottom: 1px solid var(--qd-surface-8);
+
+  backdrop-filter: blur(18px);
+}
+
+/* Signature brand gradient as a hairline accent along the very top. */
+.header::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 2px;
+
+  background: linear-gradient(90deg, var(--qd-red), var(--qd-violet));
+  opacity: 0.85;
 }
 
 .inner {
-  height: rem(56px);
+  height: 64px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  transition: opacity 0.15s ease;
+}
+
+.logo:hover {
+  opacity: 0.85;
+}
+
+.logo img {
+  height: 26px;
+  width: auto;
+  display: block;
+}
+
 .link {
   display: block;
-  line-height: 1;
-  padding: rem(8px) rem(12px);
-  border-radius: var(--mantine-radius-sm);
-  text-decoration: none;
-  color: light-dark(
-    var(--mantine-color-neutral-6),
-    var(--mantine-color-dark-0)
-  );
-  font-size: var(--mantine-font-size-sm);
-  font-weight: 500;
 
-  @mixin hover {
-    background-color: light-dark(
-      var(--mantine-color-gray-0),
-      var(--mantine-color-dark-6)
-    );
-  }
+  line-height: 1;
+  padding: 8px 12px;
+
+  border-radius: 999px;
+
+  text-decoration: none;
+
+  color: var(--qd-text-secondary);
+
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 600;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.link:hover {
+  background-color: var(--qd-red-tint);
+  color: var(--qd-text);
+}
+
+.link :global(.mantine-Button-section) {
+  color: currentColor;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 0 1rem 1rem;
 }
 
 .modalHeader {
-  color: var(--mantine-color-neutral-8);
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: var(--mantine-line-height-lg);
-  letter-spacing: 0em;
-  text-align: center;
   width: 100%;
+
+  color: var(--qd-text);
+
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  text-align: center;
 }
 
 .highlight {
-  color: var(--mantine-color-Primary-2);
+  color: var(--qd-red);
 }
 
 .subHeading {
-  font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1.6875rem;
-  letter-spacing: 0em;
-  text-align: center;
   width: 100%;
-  padding-top: 1rem;
-  color: var(--mantine-color-neutral-8);
+
+  padding-top: 0.75rem;
+
+  color: var(--qd-text-secondary);
+
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.description {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+
+  text-align: center;
+
+  color: var(--qd-text-secondary);
+
+  font-size: var(--mantine-font-size-md);
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+.workflow {
+  width: 100%;
+
+  padding: 12px;
+
+  background: #f2f6ff;
+  border-radius: 8px;
 }
 
 .modalBtn {
-  width: 200px;
-  margin-top: 2rem;
-}
-.description {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  text-align: center;
-  color: var(--mantine-color-neutral-6);
-  font-size: var(--mantine-font-size-md);
-  line-height: var(--mantine-line-height-sm);
-  font-weight: 500;
+  margin-top: 1.5rem;
+
+  border-radius: 8px;
+
+  background: var(--qd-red);
+  color: #ffffff;
+
+  font-weight: 600;
+
+  transition: background-color 0.15s ease;
 }
 
-.description:not(:first-of-type) {
-  padding-top: 1rem;
+.modalBtn:hover {
+  background: var(--qd-red-hover);
+}
+
+:global(.mantine-Modal-content) {
+  background: var(--qd-surface-2);
+
+  border: 1px solid var(--qd-border);
+  border-radius: 16px;
+}
+
+:global(.mantine-Modal-header) {
+  background: var(--qd-surface-2);
+}
+
+@media (max-width: 48em) {
+  .link {
+    padding: 7px 9px;
+    font-size: 12px;
+  }
+
+  .logo img {
+    height: 22px;
+  }
+
+  .modalHeader {
+    font-size: 1.6rem;
+  }
+
+  .subHeading {
+    font-size: 1rem;
+  }
 }

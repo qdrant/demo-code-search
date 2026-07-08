@@ -1,76 +1,64 @@
 import { useState } from "react";
-import {
-  Group,
-  Box,
-  Collapse,
-  ThemeIcon,
-  UnstyledButton,
-  rem,
-} from "@mantine/core";
+import { Box, Collapse, Group, ThemeIcon, UnstyledButton } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import classes from "./FileGroup.module.css";
 
-interface LinksGroupProps {
+type IconComponent = React.ComponentType<{
+  style?: React.CSSProperties;
+  stroke?: string | number;
+}>;
+
+export interface LinkNode {
   label: string;
-  icon: any;
+  icon: IconComponent;
   initiallyOpened?: boolean;
   id?: string;
-  links?: LinksGroupProps[];
+  links?: LinkNode[];
 }
 
-export function LinksGroup({
-  icon: Icon,
-  label,
-  initiallyOpened,
-  links,
-}: LinksGroupProps) {
-  const [opened, setOpened] = useState(initiallyOpened || false);
+/** Collapse chains of single-child folders into one "a/b/c" label. */
+function flattenSingleChildFolders(
+  label: string,
+  links?: LinkNode[]
+): { label: string; links?: LinkNode[] } {
+  let flatLabel = label;
+  let flatLinks = links;
+  while (flatLinks?.length === 1 && flatLinks[0].links) {
+    flatLabel = `${flatLabel}/${flatLinks[0].label}`;
+    flatLinks = flatLinks[0].links;
+  }
+  return { label: flatLabel, links: flatLinks };
+}
 
-  const getFileRoute = () => {
-    if (links?.length === 1 && links[0].links) {
-      label = `${label}/${links[0].label}`;
-      links = links[0].links;
-      getFileRoute();
-    }
-  };
+function scrollToResult(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+}
 
-  getFileRoute();
+export function LinksGroup(props: LinkNode) {
+  const { icon: Icon, initiallyOpened } = props;
+  const { label, links } = flattenSingleChildFolders(props.label, props.links);
+  const [opened, setOpened] = useState(initiallyOpened ?? false);
 
-  const items = links?.map((link) => {
-    if (link.links) {
-      return (
-        <Box key={link.label} ml="sm" className={classes.lind}>
-          <LinksGroup {...link} />
+  const items = links?.map((link) =>
+    link.links ? (
+      <Box key={link.label} ml="sm" className={classes.branch}>
+        <LinksGroup {...link} />
+      </Box>
+    ) : (
+      <UnstyledButton
+        key={link.label}
+        className={classes.control}
+        onClick={() => scrollToResult(link.id ?? link.label)}
+      >
+        <Box ml="sm" className={`${classes.item} ${classes.branch}`}>
+          <ThemeIcon variant="transparent" size={30}>
+            <link.icon style={{ width: 18, height: 18 }} />
+          </ThemeIcon>
+          <Box>{link.label}</Box>
         </Box>
-      );
-    } else {
-      return (
-        <UnstyledButton
-          key={link.label}
-          className={classes.control}
-          variant="transparent"
-        >
-          <Box
-            style={{ display: "flex", alignItems: "center" }}
-            ml={"sm"}
-            className={classes.lind}
-            onClick={() => {
-              const element = document.getElementById(link.id ?? link.label);
-
-              if (element) {
-                element.scrollIntoView({ behavior: "smooth"});
-              }
-            }}
-          >
-            <ThemeIcon variant="transparent" size={30}>
-              <link.icon style={{ width: rem(18), height: rem(18) }} />
-            </ThemeIcon>
-            <Box>{link.label}</Box>
-          </Box>
-        </UnstyledButton>
-      );
-    }
-  });
+      </UnstyledButton>
+    )
+  );
 
   return (
     <>
@@ -79,9 +67,9 @@ export function LinksGroup({
         className={classes.control}
       >
         <Group justify="space-between" gap={0} wrap="nowrap">
-          <Box style={{ display: "flex", alignItems: "center" }}>
+          <Box className={classes.item}>
             <ThemeIcon variant="transparent" size={30}>
-              <Icon style={{ width: rem(18), height: rem(18) }} />
+              <Icon style={{ width: 18, height: 18 }} />
             </ThemeIcon>
             <Box>{label}</Box>
           </Box>
@@ -89,11 +77,7 @@ export function LinksGroup({
             <IconChevronRight
               className={classes.chevron}
               stroke={1.5}
-              style={{
-                width: rem(16),
-                height: rem(16),
-                transform: opened ? "rotate(-90deg)" : "none",
-              }}
+              data-opened={opened || undefined}
             />
           )}
         </Group>

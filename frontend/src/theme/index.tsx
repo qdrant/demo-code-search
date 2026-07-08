@@ -1,104 +1,45 @@
-import { heights, sizing, widths } from "./sizing";
 import { createTheme } from "@mantine/core";
 
+/**
+ * Qdrant brand theme.
+ * Colors follow the official palette: primary red #DC244C on a dark
+ * #0B0F19 background, with Mona Sans for UI text and Geist Mono for code.
+ */
 export const theme = createTheme({
-  fontFamily: "Roboto,Roboto Mono",
+  fontFamily:
+    '"Mona Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  fontFamilyMonospace:
+    '"Geist Mono", "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace',
   colors: {
+    // Qdrant primary red scale, primaryShade points at #DC244C.
     Primary: [
-      "#FFC2D6",
+      "#FDECEF",
+      "#FBD5DC",
+      "#FF8792",
       "#F5587F",
+      "#E93A62",
       "#DC244C",
-      "#A31030",
-      "#660223",
-      "#FFC2D6",
-      "#F5587F",
-      "#DC244C",
-      "#A31030",
+      "#CC1845",
+      "#9E0D38",
+      "#7A0A2B",
       "#660223",
     ],
-
-    neutral: [
-      "#F2F6FF",
-      "#DCE4FA",
-      "#AEBDE5",
-      "#8B9CCC",
-      "#6A80BD",
-      "#5069AD",
-      "#39508F",
-      "#1F3266",
-      "#102252",
-      "#06153D",
-    ],
-    pink: [
-      "#FFF0F6",
-      "#FFDEEB",
-      "#FCC2D7",
-      "#FAA2C1",
-      "#F783AC",
-      "#F06595",
-      "#DC244C",
-      "#D6336C",
-      "#C2255C",
-      "#A61E4D",
+    // Dark-theme neutral scale: page background is #0B0F19,
+    // surfaces #111824/#141A2A, borders #4E5366.
+    Neutral: [
+      "#F0F3FA",
+      "#D3D9EB",
+      "#ABB1C7",
+      "#656B7F",
+      "#4E5366",
+      "#303547",
+      "#212635",
+      "#141A2A",
+      "#111824",
+      "#0B0F19",
     ],
   },
   primaryColor: "Primary",
-  primaryShade: 2,
-  spacing: {
-    xxs: "0.2rem",
-  },
-  other: {
-    sizing,
-    heights,
-    widths,
-    fontWeights: {
-      thin: 100,
-      extraLight: 200,
-      light: 300,
-      normal: 400,
-      medium: 500,
-      semibold: 600,
-      bold: 700,
-      extrabold: 800,
-      black: 900,
-    },
-    subheading: {
-      sizes: {
-        SH18: {
-          fontSize: "1.125rem",
-          lineHeight: "1.5rem",
-        },
-        SH12: {
-          fontSize: "0.75rem",
-          lineHeight: "1.125rem",
-        },
-      },
-    },
-    paragraph: {
-      sizes: {
-        P24: {
-          fontSize: "1.5rem",
-          lineHeight: "2rem",
-        },
-        P18: {
-          fontSize: "1.125rem",
-          lineHeight: "1.6875rem",
-          fontWeight: 400,
-        },
-        P16: {
-          fontSize: "1rem",
-          lineHeight: "1.5rem",
-        },
-        P14: {
-          fontSize: "0.875rem",
-          lineHeight: "1.3125rem",
-          fontWeight: 400,
-        },
-        P12: {
-          fontSize: "0.75rem",
-          lineHeight: "1.125rem",
-        },
-      },
-    },
-  },
+  primaryShade: 5,
+  defaultRadius: 8,
 });

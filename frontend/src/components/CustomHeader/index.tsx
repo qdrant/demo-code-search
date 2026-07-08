@@ -1,16 +1,7 @@
-import {
-  Container,
-  Group,
-  Button,
-  Modal,
-  Title,
-  Text,
-  Image,
-} from "@mantine/core";
+import { Box, Button, Container, Group, Image, Modal, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import classes from "./CustomHeader.module.css";
-import { Logo } from "../Logo";
 import { IconBrandGithub } from "@tabler/icons-react";
+import classes from "./CustomHeader.module.css";
 
 export function CustomHeader() {
   const [opened, handlers] = useDisclosure(false);
@@ -18,10 +9,11 @@ export function CustomHeader() {
   return (
     <header className={classes.header}>
       <Container size="lg" className={classes.inner}>
-        <Logo size={35} />
+        <a href="/" className={classes.logo}>
+          <img src="/qdrant-logo.svg" alt="Qdrant" />
+        </a>
         <Group gap={5} wrap="nowrap">
           <Button
-            color="Neutral.6"
             variant="subtle"
             className={classes.link}
             component="a"
@@ -32,7 +24,6 @@ export function CustomHeader() {
             Docs
           </Button>
           <Button
-            color="Neutral.6"
             variant="subtle"
             className={classes.link}
             onClick={handlers.open}
@@ -40,7 +31,6 @@ export function CustomHeader() {
             About
           </Button>
           <Button
-            color="Neutral.6"
             variant="subtle"
             className={classes.link}
             component="a"
@@ -53,55 +43,35 @@ export function CustomHeader() {
           </Button>
         </Group>
       </Container>
-      <Modal opened={opened} onClose={handlers.close} centered size={"lg"}>
-        <Modal.Header
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Title className={classes.modalHeader}>
-            How does{" "}
+      <Modal opened={opened} onClose={handlers.close} centered size="lg">
+        <Box className={classes.modalContent}>
+          <Title order={2} className={classes.modalHeader}>
+            How Does{" "}
             <Text component="span" className={classes.highlight} inherit>
-              Code search
+              Code Search
             </Text>{" "}
-            work?
+            Work?
           </Title>
           <Text className={classes.subHeading}>
-            This demo uses code of qdrant repo to perform a semantic search.
+            This demo runs semantic search over the Qdrant codebase.
           </Text>
-        </Modal.Header>
-        <Modal.Body
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Text size="lg" color="dimmed" className={classes.description}>
-            When you search a codebase, you might have the following objectives:
-            To find code snippets similar to what you're using, or to identify a method
-            that does <b>this specific thing</b>. Our code search demo supports
-            both cases with multiple embedding models.
+          <Text className={classes.description}>
+            When you search a codebase, you usually want one of two things:
+            code that looks like a snippet you already have, or a method that
+            does <b>one specific thing</b>. This demo covers both cases with
+            two embedding models.
           </Text>
-
-          <Image src="/workflow.svg" />
-          <Text size="lg" color="dimmed" className={classes.description}>
-            Using both embeddings helps us find not only the relevant method but also the
-            exact piece of code inside it. Semantic code intelligence in action, in context!
+          <Box className={classes.workflow}>
+            <Image src="/workflow.svg" alt="Diagram of the two-model search workflow" />
+          </Box>
+          <Text className={classes.description}>
+            Combining both embeddings finds the relevant method and the exact
+            lines inside it — semantic code intelligence, in context.
           </Text>
-          <Button
-            className={classes.modalBtnInner}
-            radius={30}
-            size={"md"}
-            variant="filled"
-            color="Primary.2"
-            onClick={handlers.close}
-          >
-            Get started
+          <Button size="md" className={classes.modalBtn} onClick={handlers.close}>
+            Get Started
           </Button>
-        </Modal.Body>
+        </Box>
       </Modal>
     </header>
   );
