@@ -38,6 +38,33 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Empty-state (hero) layout is designed to fit the viewport exactly —
+   lock scroll so there's no jitter or scrollbar reveal. MainSection
+   toggles this attribute in an effect keyed to `showHero`.
+   Rules are split to survive browsers without :has() support. */
+body[data-home] {
+  overflow: hidden;
+  height: 100vh;
+}
+
+html:has(body[data-home]) {
+  overflow: hidden;
+  height: 100vh;
+}
+
+@media (max-width: 48em) {
+  /* On mobile the hero doesn't fit in the viewport by design —
+     allow scroll so nothing gets clipped. */
+  body[data-home] {
+    overflow: auto;
+    height: auto;
+  }
+  html:has(body[data-home]) {
+    overflow: auto;
+    height: auto;
+  }
+}
+
 /* Subtle dot-grid texture over the hero area. */
 body::before {
   content: "";

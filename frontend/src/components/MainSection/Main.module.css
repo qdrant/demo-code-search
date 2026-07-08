@@ -131,8 +131,8 @@
   flex-direction: column;
   align-items: center;
 
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1rem;
 }
 
 .hero > * {
@@ -162,19 +162,20 @@
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 
   margin-bottom: 1.25rem;
-  padding: 4px 12px;
+  padding: 5px 14px;
 
-  border: 1px solid var(--qd-border-strong);
+  border: 1px solid rgba(220, 36, 76, 0.35);
   border-radius: 999px;
 
-  color: var(--qd-text-secondary);
+  background: rgba(220, 36, 76, 0.08);
+  color: var(--qd-red-light);
 
   font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 .eyebrow::before {
@@ -185,7 +186,20 @@
 
   border-radius: 999px;
   background: var(--qd-red);
-  box-shadow: 0 0 8px rgba(220, 36, 76, 0.8);
+  box-shadow: 0 0 10px rgba(220, 36, 76, 0.9);
+
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
 }
 
 .heading {
@@ -257,7 +271,7 @@
   width: 100%;
   max-width: 880px;
 
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 
   border: 1px solid var(--qd-border);
   border-radius: 12px;
@@ -287,6 +301,12 @@
   line-height: 1;
 }
 
+/* Accent the first stat number in Qdrant red so the strip reads
+   as branded, not just a neutral info row. */
+.stat:first-child .statValue {
+  color: var(--qd-red-light);
+}
+
 .statLabel {
   padding-top: 5px;
 
@@ -310,8 +330,8 @@
 }
 
 .sectionEyebrow {
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
 
   color: var(--qd-text-muted);
 

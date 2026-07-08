@@ -70,6 +70,18 @@ export default function Main() {
   const showHero = !data && !loading && !error;
   const typedPlaceholder = useTypewriter(PLACEHOLDER_PHRASES, showHero && !query);
 
+  // Lock body scroll on the hero (empty) state — the layout is designed to
+  // fit the viewport with no scroll indicator. Any other state (results,
+  // loading, error) scrolls normally.
+  useEffect(() => {
+    if (showHero) {
+      document.body.setAttribute("data-home", "");
+    } else {
+      document.body.removeAttribute("data-home");
+    }
+    return () => document.body.removeAttribute("data-home");
+  }, [showHero]);
+
   const runSearch = useCallback(
     (value: string) => {
       if (!value) return;
@@ -169,14 +181,10 @@ export default function Main() {
             Not Keywords
           </Title>
           <Text className={classes.subHeading}>
-            Describe what a piece of code does, and this demo finds the matching
-            functions, structs, and snippets across the Qdrant codebase — even
-            if you don't know their names.
+            Describe what code does — find matching functions and snippets
+            across the Qdrant codebase, no names required.
           </Text>
           <DemoSearch handleDemoSearch={runSearch} />
-          <Text className={classes.kbdHint}>
-            Press <kbd>/</kbd> to focus the search bar
-          </Text>
           <Box className={classes.stats}>
             {STATS.map((stat, i) => (
               <div key={stat.label} className={classes.stat}>

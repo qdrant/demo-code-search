@@ -6,7 +6,7 @@
   justify-content: center;
 
   margin: 0 auto;
-  padding-top: 2.5rem;
+  padding-top: 1.5rem;
 
   gap: var(--mantine-spacing-sm);
 }
@@ -45,7 +45,13 @@
   color: var(--qd-red-light);
 }
 
+/* Keep the leading pointer icon in Qdrant red at rest so the chip reads
+   as a branded control even before hover. */
 .demoBtn :global(.mantine-Button-section) {
+  color: var(--qd-red-light);
+}
+
+.demoBtn:hover :global(.mantine-Button-section) {
   color: currentColor;
 }
 
