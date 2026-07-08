@@ -1,0 +1,43 @@
+/* Global page styles — Qdrant dark theme. */
+
+body {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(1100px 520px at 15% -10%, rgba(220, 36, 76, 0.13), transparent 60%),
+    radial-gradient(1000px 520px at 85% -10%, rgba(96, 71, 255, 0.12), transparent 60%),
+    #0b0f19;
+  background-attachment: fixed;
+
+  color: #f0f3fa;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(220, 36, 76, 0.35);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #303547 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #303547;
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #4e5366;
+}
