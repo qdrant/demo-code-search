@@ -1,10 +1,9 @@
 import json
 
-from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
 
-from code_search.config import QDRANT_URL, QDRANT_API_KEY, ENCODER_NAME, QDRANT_CODE_COLLECTION_NAME, \
-    QDRANT_NLU_COLLECTION_NAME
+from code_search.config import ENCODER_NAME, QDRANT_CODE_COLLECTION_NAME, \
+    QDRANT_NLU_COLLECTION_NAME, make_qdrant_client
 from code_search.model.encoder import UniXcoderEmbeddingsProvider
 from code_search.postprocessing import merge_search_results
 
@@ -13,7 +12,7 @@ class CodeSearcher:
 
     def __init__(self):
         self.collection_name = QDRANT_CODE_COLLECTION_NAME
-        self.client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
+        self.client = make_qdrant_client()
         self.encoder = UniXcoderEmbeddingsProvider("cpu")
 
     def search(self, query, limit=5) -> list[dict]:
@@ -32,7 +31,7 @@ class NluSearcher:
 
     def __init__(self):
         self.collection_name = QDRANT_NLU_COLLECTION_NAME
-        self.client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
+        self.client = make_qdrant_client()
         self.encoder = SentenceTransformer(ENCODER_NAME)
 
     def search(self, query, limit=5) -> list[dict]:

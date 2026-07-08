@@ -1,14 +1,13 @@
-from qdrant_client import QdrantClient
 from qdrant_client.http import models
 
-from code_search.config import QDRANT_URL, QDRANT_API_KEY, QDRANT_FILE_COLLECTION_NAME
+from code_search.config import QDRANT_FILE_COLLECTION_NAME, make_qdrant_client
 
 
 class FileGet:
 
     def __init__(self):
         self.collection_name = QDRANT_FILE_COLLECTION_NAME
-        self.client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
+        self.client = make_qdrant_client()
 
     def get(self, path, limit=5) -> list[dict]:
         points, _next_offset = self.client.scroll(
