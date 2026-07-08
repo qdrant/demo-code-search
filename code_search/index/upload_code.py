@@ -41,7 +41,7 @@ def encode_and_upload():
         print(f"Preparing the output for {output_file}")
 
         embeddings = []
-        with open(input_file, "r") as fp:
+        with open(input_file, "r", encoding="utf-8") as fp:
             for line in tqdm(fp):
                 line_dict = json.loads(line)
 
@@ -61,7 +61,7 @@ def encode_and_upload():
         np.save(str(output_file), np.array(embeddings))
 
     payloads = []
-    with open(input_file, "r") as fp:
+    with open(input_file, "r", encoding="utf-8") as fp:
         for line in tqdm(fp):
             line_dict = json.loads(line)
             payloads.append(line_dict)
@@ -69,7 +69,9 @@ def encode_and_upload():
     print(f"Embeddings shape: ({len(embeddings)}, {len(embeddings[0])})")
 
     print(f"Recreating the collection {collection_name}")
-    client.recreate_collection(
+    if client.collection_exists(collection_name):
+        client.delete_collection(collection_name)
+    client.create_collection(
         collection_name=collection_name,
         vectors_config=rest.VectorParams(
             size=len(embeddings[1]),

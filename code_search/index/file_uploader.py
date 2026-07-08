@@ -23,7 +23,9 @@ def encode_and_upload():
         payload = data
 
     print(f"Recreating the collection {collection_name}")
-    qdrant_client.recreate_collection(
+    if qdrant_client.collection_exists(collection_name):
+        qdrant_client.delete_collection(collection_name)
+    qdrant_client.create_collection(
         collection_name=collection_name,
         vectors_config={}
     )

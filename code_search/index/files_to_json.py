@@ -8,7 +8,8 @@ from code_search.config import DATA_DIR
 def process_file(root_dir, file_path):
     with open(file_path, 'r', encoding='utf-8', errors='ignore') as file:
         code_lines = file.readlines()
-        relative_path = os.path.relpath(file_path, root_dir)
+        # POSIX-style so paths match the snippet index regardless of indexing OS.
+        relative_path = Path(os.path.relpath(file_path, root_dir)).as_posix()
         return {
             "path": relative_path,
             "code": code_lines,
