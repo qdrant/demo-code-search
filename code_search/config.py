@@ -20,11 +20,22 @@ _DEMO_FALLBACK_KEY = (
     ".eyJhY2Nlc3MiOiJtIiwic3ViamVjdCI6ImFwaS1rZXk6ZGIzYmVmMjAtOWYyYS00YmIyLWJhMDEtNzI0MzZhOTdiMWMyIn0"
     ".B99ORZd-8BrAEj66-wUvHxcpC40O0HHoG3c6t9EM1ug"
 )
+def _usable_key(value: str | None) -> bool:
+    """A key is usable only if it's present, long enough, not Railway's
+    "<UNKNOWN>" placeholder, and pure ASCII. Non-ASCII keys crash httpx
+    with UnicodeEncodeError when it builds the Authorization header, so we
+    must reject them here and fall back rather than let them through."""
+    if not value or value == "<UNKNOWN>" or len(value) < 20:
+        return False
+    try:
+        value.encode("ascii")
+    except UnicodeEncodeError:
+        return False
+    return True
+
+
 _env_key = os.environ.get("QDRANT_API_KEY")
-if not _env_key or _env_key == "<UNKNOWN>" or len(_env_key) < 20:
-    QDRANT_API_KEY = _DEMO_FALLBACK_KEY
-else:
-    QDRANT_API_KEY = _env_key
+QDRANT_API_KEY = _env_key if _usable_key(_env_key) else _DEMO_FALLBACK_KEY
 
 QDRANT_CODE_COLLECTION_NAME = "code-snippets-unixcoder"
 QDRANT_NLU_COLLECTION_NAME = "code-signatures"
