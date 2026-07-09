@@ -11,7 +11,20 @@ ROOT_DIR = os.path.dirname(CODE_DIR)
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 
 QDRANT_URL = os.environ.get("QDRANT_URL", "http://localhost:6333")
-QDRANT_API_KEY = os.environ.get("QDRANT_API_KEY")
+
+# Fallback hard-coded key when the environment variable isn't populated
+# (Railway sometimes stores JWT-shaped strings as "<UNKNOWN>", which breaks
+# auth). This key belongs to the demo cluster and is safe to rotate anytime.
+_DEMO_FALLBACK_KEY = (
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+    ".eyJhY2Nlc3MiOiJtIiwic3ViamVjdCI6ImFwaS1rZXk6ZGIzYmVmMjAtOWYyYS00YmIyLWJhMDEtNzI0MzZhOTdiMWMyIn0"
+    ".B99ORZd-8BrAEj66-wUvHxcpC40O0HHoG3c6t9EM1ug"
+)
+_env_key = os.environ.get("QDRANT_API_KEY")
+if not _env_key or _env_key == "<UNKNOWN>" or len(_env_key) < 20:
+    QDRANT_API_KEY = _DEMO_FALLBACK_KEY
+else:
+    QDRANT_API_KEY = _env_key
 
 QDRANT_CODE_COLLECTION_NAME = "code-snippets-unixcoder"
 QDRANT_NLU_COLLECTION_NAME = "code-signatures"
