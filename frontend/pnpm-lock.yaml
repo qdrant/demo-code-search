@@ -68,14 +68,14 @@ devDependencies:
     specifier: ^0.3.7
     version: 0.3.7
   postcss:
-    specifier: ^8.4.24
-    version: 8.4.29
+    specifier: ^8.5.18
+    version: 8.5.18
   postcss-preset-mantine:
     specifier: 1.6.0
-    version: 1.6.0(postcss@8.4.29)
+    version: 1.6.0(postcss@8.5.18)
   postcss-simple-vars:
     specifier: ^7.0.1
-    version: 7.0.1(postcss@8.4.29)
+    version: 7.0.1(postcss@8.5.18)
   typescript:
     specifier: ^5.0.2
     version: 5.2.2
@@ -1791,8 +1791,8 @@ packages:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
     dev: true
 
-  /nanoid@3.3.6:
-    resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
+  /nanoid@3.3.16:
+    resolution: {integrity: sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
     dev: true
@@ -1873,8 +1873,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /picocolors@1.0.0:
-    resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
+  /picocolors@1.1.1:
+    resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
     dev: true
 
   /picomatch@2.3.1:
@@ -1882,47 +1882,47 @@ packages:
     engines: {node: '>=8.6'}
     dev: true
 
-  /postcss-js@4.0.1(postcss@8.4.29):
+  /postcss-js@4.0.1(postcss@8.5.18):
     resolution: {integrity: sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==}
     engines: {node: ^12 || ^14 || >= 16}
     peerDependencies:
       postcss: ^8.4.21
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.29
+      postcss: 8.5.18
     dev: true
 
-  /postcss-mixins@9.0.4(postcss@8.4.29):
+  /postcss-mixins@9.0.4(postcss@8.5.18):
     resolution: {integrity: sha512-XVq5jwQJDRu5M1XGkdpgASqLk37OqkH4JCFDXl/Dn7janOJjCTEKL+36cnRVy7bMtoBzALfO7bV7nTIsFnUWLA==}
     engines: {node: '>=14.0'}
     peerDependencies:
       postcss: ^8.2.14
     dependencies:
       fast-glob: 3.3.1
-      postcss: 8.4.29
-      postcss-js: 4.0.1(postcss@8.4.29)
-      postcss-simple-vars: 7.0.1(postcss@8.4.29)
-      sugarss: 4.0.1(postcss@8.4.29)
+      postcss: 8.5.18
+      postcss-js: 4.0.1(postcss@8.5.18)
+      postcss-simple-vars: 7.0.1(postcss@8.5.18)
+      sugarss: 4.0.1(postcss@8.5.18)
     dev: true
 
-  /postcss-nested@6.0.1(postcss@8.4.29):
+  /postcss-nested@6.0.1(postcss@8.5.18):
     resolution: {integrity: sha512-mEp4xPMi5bSWiMbsgoPfcP74lsWLHkQbZc3sY+jWYd65CUwXrUaTp0fmNpa01ZcETKlIgUdFN/MpS2xZtqL9dQ==}
     engines: {node: '>=12.0'}
     peerDependencies:
       postcss: ^8.2.14
     dependencies:
-      postcss: 8.4.29
+      postcss: 8.5.18
       postcss-selector-parser: 6.0.13
     dev: true
 
-  /postcss-preset-mantine@1.6.0(postcss@8.4.29):
+  /postcss-preset-mantine@1.6.0(postcss@8.5.18):
     resolution: {integrity: sha512-1HB4suDbgvFGIuzSEyz2rMelrsw1iIw2ityVtnkzVkLlePPnn670KsoHRD0r5g9+5u/xLapoQz0Rh8AVOR4nnQ==}
     peerDependencies:
       postcss: '>=8.0.0'
     dependencies:
-      postcss: 8.4.29
-      postcss-mixins: 9.0.4(postcss@8.4.29)
-      postcss-nested: 6.0.1(postcss@8.4.29)
+      postcss: 8.5.18
+      postcss-mixins: 9.0.4(postcss@8.5.18)
+      postcss-nested: 6.0.1(postcss@8.5.18)
     dev: true
 
   /postcss-selector-parser@6.0.13:
@@ -1933,22 +1933,22 @@ packages:
       util-deprecate: 1.0.2
     dev: true
 
-  /postcss-simple-vars@7.0.1(postcss@8.4.29):
+  /postcss-simple-vars@7.0.1(postcss@8.5.18):
     resolution: {integrity: sha512-5GLLXaS8qmzHMOjVxqkk1TZPf1jMqesiI7qLhnlyERalG0sMbHIbJqrcnrpmZdKCLglHnRHoEBB61RtGTsj++A==}
     engines: {node: '>=14.0'}
     peerDependencies:
       postcss: ^8.2.1
     dependencies:
-      postcss: 8.4.29
+      postcss: 8.5.18
     dev: true
 
-  /postcss@8.4.29:
-    resolution: {integrity: sha512-cbI+jaqIeu/VGqXEarWkRCCffhjgXc0qjBtXpqJhTBohMUjUQnbBr0xqX3vEKudc4iviTewcJo5ajcec5+wdJw==}
+  /postcss@8.5.18:
+    resolution: {integrity: sha512-xdB1oSLHbz1vRWgCDalrCqEFTWzFlhqFC5tIHLMOSUIjhm3XXQ1qrFy8S/ESr1JYRRXqM3c1QFiMZUJdUTqyMQ==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
-      nanoid: 3.3.6
-      picocolors: 1.0.0
-      source-map-js: 1.0.2
+      nanoid: 3.3.16
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
     dev: true
 
   /prelude-ls@1.2.1:
@@ -2184,8 +2184,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /source-map-js@1.0.2:
-    resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
+  /source-map-js@1.2.1:
+    resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
     dev: true
 
@@ -2201,13 +2201,13 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /sugarss@4.0.1(postcss@8.4.29):
+  /sugarss@4.0.1(postcss@8.5.18):
     resolution: {integrity: sha512-WCjS5NfuVJjkQzK10s8WOBY+hhDxxNt/N6ZaGwxFZ+wN3/lKKFSaaKUNecULcTTvE4urLcKaZFQD8vO0mOZujw==}
     engines: {node: '>=12.0'}
     peerDependencies:
       postcss: ^8.3.3
     dependencies:
-      postcss: 8.4.29
+      postcss: 8.5.18
     dev: true
 
   /supports-color@5.5.0:
@@ -2293,7 +2293,7 @@ packages:
     dependencies:
       browserslist: 4.21.10
       escalade: 3.1.1
-      picocolors: 1.0.0
+      picocolors: 1.1.1
     dev: true
 
   /uri-js@4.4.1:
@@ -2402,7 +2402,7 @@ packages:
     dependencies:
       '@types/node': 20.8.0
       esbuild: 0.18.20
-      postcss: 8.4.29
+      postcss: 8.5.18
       rollup: 3.28.1
     optionalDependencies:
       fsevents: 2.3.3
