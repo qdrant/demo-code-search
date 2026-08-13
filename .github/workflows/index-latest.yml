@@ -30,5 +30,32 @@ jobs:
         pip install -r requirements.txt
     - name: Add rust analyzer
       run: rustup component add rust-analyzer
+    # Shape-check the secrets before spending six hours on the indexing run.
+    # Reports length and word count rather than the values themselves, which is
+    # enough to spot the usual breakage: prompt text or a stray newline captured
+    # along with the value when it was pasted in.
+    - name: Check secrets
+      env:
+        QDRANT_URL: ${{ secrets.QDRANT_URL }}
+        QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+      run: |
+        fail=0
+        for name in QDRANT_URL QDRANT_API_KEY; do
+          value="${!name}"
+          words=$(printf '%s' "$value" | wc -w | tr -d ' ')
+          printf '%s: %s chars, %s word(s)\n' "$name" "${#value}" "$words"
+          if [ -z "$value" ]; then echo "  -> not set"; fail=1; fi
+          if [ "$words" -gt 1 ]; then echo "  -> contains whitespace, so it was pasted with extra text"; fail=1; fi
+        done
+        case "$QDRANT_URL" in https://*) ;; *) echo 'QDRANT_URL does not start with https://'; fail=1;; esac
+        case "$QDRANT_API_KEY" in eyJ*) ;; *) echo 'QDRANT_API_KEY does not start with eyJ, so it is not the JWT'; fail=1;; esac
+        [ "$fail" -eq 0 ] || { echo 'Re-set the offending secret with: gh secret set <NAME> --repo qdrant-labs/demo-code-search'; exit 1; }
+        echo 'Both secrets look well-formed.'
+    # Passed through env rather than interpolated into the command line: a value
+    # containing a space used to split the assignment and abort the run at
+    # `secret: command not found` before any indexing happened.
     - name: Run indexing
-      run: QDRANT_URL=${{ secrets.QDRANT_URL }} QDRANT_API_KEY=${{ secrets.QDRANT_API_KEY }} bash -x tools/download_and_index.sh
+      env:
+        QDRANT_URL: ${{ secrets.QDRANT_URL }}
+        QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+      run: bash -x tools/download_and_index.sh
