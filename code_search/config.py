@@ -12,30 +12,39 @@ DATA_DIR = os.path.join(ROOT_DIR, "data")
 
 QDRANT_URL = os.environ.get("QDRANT_URL", "http://localhost:6333")
 
-# Fallback hard-coded key when the environment variable isn't populated
-# (Railway sometimes stores JWT-shaped strings as "<UNKNOWN>", which breaks
-# auth). This key belongs to the demo cluster and is safe to rotate anytime.
-_DEMO_FALLBACK_KEY = (
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-    ".eyJhY2Nlc3MiOiJtIiwic3ViamVjdCI6ImFwaS1rZXk6ZGIzYmVmMjAtOWYyYS00YmIyLWJhMDEtNzI0MzZhOTdiMWMyIn0"
-    ".B99ORZd-8BrAEj66-wUvHxcpC40O0HHoG3c6t9EM1ug"
-)
-def _usable_key(value: str | None) -> bool:
-    """A key is usable only if it's present, long enough, not Railway's
-    "<UNKNOWN>" placeholder, and pure ASCII. Non-ASCII keys crash httpx
-    with UnicodeEncodeError when it builds the Authorization header, so we
-    must reject them here and fall back rather than let them through."""
-    if not value or value == "<UNKNOWN>" or len(value) < 20:
-        return False
+def _key_problem(value: str | None) -> str | None:
+    """Describe why a key is unusable, or None when it looks fine.
+
+    Non-ASCII keys are worth catching here: httpx raises UnicodeEncodeError
+    deep inside header construction, which surfaces as an unrelated-looking
+    stack trace. "<UNKNOWN>" is what some PaaS dashboards store when a
+    variable was set from an unresolved reference.
+    """
+    if not value:
+        return "QDRANT_API_KEY is not set"
+    if value == "<UNKNOWN>":
+        return "QDRANT_API_KEY is the literal string '<UNKNOWN>', so the variable never resolved"
+    if len(value) < 20:
+        return f"QDRANT_API_KEY is only {len(value)} characters, which is too short to be a key"
     try:
         value.encode("ascii")
     except UnicodeEncodeError:
-        return False
-    return True
+        return "QDRANT_API_KEY contains non-ASCII characters, usually a copy-paste artifact"
+    return None
 
 
-_env_key = os.environ.get("QDRANT_API_KEY")
-QDRANT_API_KEY = _env_key if _usable_key(_env_key) else _DEMO_FALLBACK_KEY
+QDRANT_API_KEY = os.environ.get("QDRANT_API_KEY")
+
+# Fail at import with the actual reason rather than carrying on with a bad key.
+# A silent fallback here hides a broken deploy variable and turns a one-line
+# config error into an afternoon of debugging downstream symptoms.
+if QDRANT_URL.startswith("https://"):
+    _problem = _key_problem(QDRANT_API_KEY)
+    if _problem:
+        raise RuntimeError(
+            f"{_problem}. A remote QDRANT_URL ({QDRANT_URL}) needs a valid API key. "
+            "Set QDRANT_API_KEY in the environment."
+        )
 
 QDRANT_CODE_COLLECTION_NAME = "code-snippets-unixcoder"
 QDRANT_NLU_COLLECTION_NAME = "code-signatures"
