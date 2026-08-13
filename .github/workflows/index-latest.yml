@@ -1,10 +1,10 @@
 name: Index Qdrant source
 
-# Trigger manually
+# Trigger manually. No schedule here: GitHub disables scheduled workflows in
+# forks, which left this one stuck in `disabled_fork` and unrunnable. A demo
+# doesn't need nightly reindexing anyway, and the run takes about six hours.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "55 0 * * *" # every day at 00:55 UTC
 
 env:
   CARGO_TERM_COLOR: always
