@@ -46,10 +46,14 @@ const FEATURES = [
 
 // Every figure here should be one we can point at something for. The previous
 // "<100ms Search Latency" was not: end-to-end a query spends most of its time
-// encoding, and the live demo answers in roughly 0.8-1.5s. File count is the
-// number of .rs files indexed from the Qdrant repo.
+// encoding, and the live demo answers in roughly 0.8-1.5s.
+//
+// These are counted from the collections the indexing workflow builds, as of
+// qdrant/qdrant 74f3e85b: 14,604 of the 17,187 signatures are functions, the
+// rest structs and enums, across 1,720 .rs files. They go stale whenever the
+// index is rebuilt, so re-check them after a reindex.
 const STATS = [
-  { value: "13,878", label: "Functions Indexed" },
+  { value: "14,604", label: "Functions Indexed" },
   { value: "2", label: "Embedding Models" },
   { value: "1,720", label: "Files Indexed" },
 ];
