@@ -1,9 +1,20 @@
 .searchBar {
   position: sticky;
-  top: 76px;
+  /* Flush under the 64px header. At 76px a 12px band sat between the two with
+     nothing painted in it, so results scrolled through the gap. */
+  top: 64px;
   z-index: 100;
 
   padding-top: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+/* Sticky and fully transparent meant code scrolled visibly through the padding
+   above the input. Same surface as the header, so the two read as one bar.
+   Scoped away from the hero, where the search sits in the page, not over it. */
+.searchBar:not([data-idle]) {
+  background: rgba(11, 15, 25, 0.82);
+  backdrop-filter: blur(18px);
 }
 
 .searchBar[data-idle] {
@@ -409,8 +420,10 @@
   justify-content: space-between;
   gap: 12px;
 
-  padding-top: 1rem;
-  padding-bottom: 0.25rem;
+  padding-top: 0.75rem;
+  /* The results grid started immediately under this, so the count and the mode
+     pill sat right on top of the first result. */
+  padding-bottom: 0.75rem;
 }
 
 .resultsInfo {

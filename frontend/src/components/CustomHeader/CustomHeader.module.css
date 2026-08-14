@@ -110,7 +110,7 @@
 .subHeading {
   width: 100%;
 
-  padding-top: 0.75rem;
+  padding-top: 0.5rem;
 
   color: var(--qd-text-secondary);
 
@@ -120,13 +120,17 @@
   text-align: center;
 }
 
-/* Body copy reads left-aligned. Centred paragraphs give every line a
-   different start position, which is fine for one line and tiring for four. */
+/* Body copy reads left-aligned. Centered paragraphs give every line a
+   different start position, which is fine for one line and tiring for four.
+
+   Spacing is deliberately tight: the whole modal has to fit a 700px window,
+   and it was overflowing far enough that the button rendered outside the
+   panel. Vertical rhythm here is the only slack available. */
 .description {
   width: 100%;
 
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
 
   text-align: left;
 
@@ -137,6 +141,12 @@
   font-weight: 400;
 }
 
+/* The paragraph before the button already carries bottom padding, and the
+   button its own top margin. Together they read as a hole rather than a gap. */
+.description:last-of-type {
+  padding-bottom: 0;
+}
+
 /* The diagram used to sit on a #f2f6ff plate, which is the page colour of the
    old light theme. Against a dark modal it read as a screenshot someone had
    pasted in. The SVG now uses the same tokens as the rest of the app, so the
@@ -144,7 +154,7 @@
 .workflow {
   width: 100%;
 
-  padding: 1.25rem 1rem;
+  padding: 0.875rem;
 
   background: var(--qd-bg);
   border: 1px solid var(--qd-border);
@@ -158,7 +168,7 @@
 }
 
 .modalBtn {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 
   border-radius: 8px;
 
