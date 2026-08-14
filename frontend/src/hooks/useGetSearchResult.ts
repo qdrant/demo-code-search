@@ -16,7 +16,12 @@ export const useGetSearchResult = () => {
         setError(null);
         const res = await getSearchResult(query);
 
-        if (res.status === 200) {
+        // A 200 alone isn't proof we got search results. When the API base URL
+        // is misconfigured the request never leaves the static host, which
+        // answers with the app's own index.html and a 200. That HTML used to
+        // sail through as data and blow up later in rendering, so check the
+        // payload actually looks like a search response.
+        if (res.status === 200 && Array.isArray(res.data?.result)) {
           setData(res.data);
         } else {
           setError("Failed to get search results");
