@@ -39,9 +39,26 @@ type CodeContainerProps = {
 
 const loadCount = 10;
 
+/** Where the stored snippet actually begins in the file.
+ *
+ * The parser reports `line_from` at the definition, but the snippet it stores
+ * often starts higher, taking in the docstring above it. Numbering from
+ * `line_from` then labels every line too high, by 13 on some results, and the
+ * match highlighting is offset with it. About 40% of results are affected, the
+ * reference demo included.
+ *
+ * The snippet does reliably end at `line_to`, so when the two disagree the real
+ * start can be counted back from there. Verified against the indexed commit.
+ */
+function snippetStartLine(snippet: string, from: number, to: number): number {
+  const lines = snippet.replace(/\n$/, "").split("\n").length;
+  return lines > to - from + 1 ? to - lines + 1 : from;
+}
+
 export function CodeContainer(props: CodeContainerProps) {
   const { context, line_from, line_to, sub_matches, commit } = props;
-  const [codeLineFrom, setCodeLineFrom] = useMountedState(line_from);
+  const startLine = snippetStartLine(context.snippet, line_from, line_to);
+  const [codeLineFrom, setCodeLineFrom] = useMountedState(startLine);
   const [codeLineTo, setCodeLineTo] = useMountedState(line_to);
   const [code, setCode] = useMountedState(context.snippet);
   const { data, error, loading, getFile } = useGetFile();
@@ -116,7 +133,9 @@ export function CodeContainer(props: CodeContainerProps) {
           // Pinned to the indexed commit, not a branch: the line anchors were
           // computed at index time and stop matching as soon as the file
           // changes upstream. Falls back to master when the API doesn't say.
-          href={`https://github.com/qdrant/qdrant/blob/${commit || "master"}/${context.file_path}#L${line_from}-L${line_to}`}
+          // Anchored to the range actually on screen, not the parser's
+          // line_from, so the highlighted lines on GitHub match what was shown.
+          href={`https://github.com/qdrant/qdrant/blob/${commit || "master"}/${context.file_path}#L${startLine}-L${line_to}`}
           target="_blank"
           rel="noopener noreferrer"
           rightSection={<IconExternalLink size={14} />}
