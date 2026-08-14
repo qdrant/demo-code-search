@@ -1,0 +1,44 @@
+.navbar {
+  position: sticky;
+  top: 140px;
+
+  max-height: calc(100vh - 158px);
+  overflow: auto;
+
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--qd-surface-1);
+  border: 1px solid var(--qd-border);
+  border-radius: 8px;
+}
+
+.treeLabel {
+  padding: 4px 8px 8px;
+
+  color: var(--qd-text-muted);
+
+  text-transform: uppercase;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.links {
+  flex: 1;
+  min-width: 0;
+}
+
+.linksInner {
+  display: grid;
+  gap: 2px;
+}
+
+@media (max-width: 48em) {
+  .navbar {
+    display: none;
+  }
+}

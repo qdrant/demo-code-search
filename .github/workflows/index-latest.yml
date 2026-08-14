@@ -1,10 +1,10 @@
 name: Index Qdrant source
 
-# Trigger manually
+# Trigger manually. No schedule here: GitHub disables scheduled workflows in
+# forks, which left this one stuck in `disabled_fork` and unrunnable. A demo
+# doesn't need nightly reindexing anyway, and the run takes about six hours.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "55 0 * * *" # every day at 00:55 UTC
 
 env:
   CARGO_TERM_COLOR: always
@@ -30,5 +30,34 @@ jobs:
         pip install -r requirements.txt
     - name: Add rust analyzer
       run: rustup component add rust-analyzer
+    # Shape-check the secrets before spending six hours on the indexing run.
+    # Reports length and word count rather than the values themselves, which is
+    # enough to spot the usual breakage: prompt text or a stray newline captured
+    # along with the value when it was pasted in.
+    - name: Check secrets
+      env:
+        QDRANT_URL: ${{ secrets.QDRANT_URL }}
+        QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+      run: |
+        fail=0
+        for name in QDRANT_URL QDRANT_API_KEY; do
+          value="${!name}"
+          words=$(printf '%s' "$value" | wc -w | tr -d ' ')
+          printf '%s: %s chars, %s word(s)\n' "$name" "${#value}" "$words"
+          if [ -z "$value" ]; then echo "  -> not set"; fail=1; fi
+          if [ "$words" -gt 1 ]; then echo "  -> contains whitespace, so it was pasted with extra text"; fail=1; fi
+        done
+        case "$QDRANT_URL" in https://*) ;; *) echo 'QDRANT_URL does not start with https://'; fail=1;; esac
+        # Qdrant Cloud keys are JWTs, but self-hosted keys are arbitrary strings,
+        # so a non-JWT shape is worth a note in the log rather than a failed run.
+        case "$QDRANT_API_KEY" in eyJ*) ;; *) echo 'note: QDRANT_API_KEY is not JWT-shaped, fine for self-hosted Qdrant';; esac
+        [ "$fail" -eq 0 ] || { echo 'Re-set the offending secret with: gh secret set <NAME> --repo qdrant-labs/demo-code-search'; exit 1; }
+        echo 'Both secrets look well-formed.'
+    # Passed through env rather than interpolated into the command line: a value
+    # containing a space used to split the assignment and abort the run at
+    # `secret: command not found` before any indexing happened.
     - name: Run indexing
-      run: QDRANT_URL=${{ secrets.QDRANT_URL }} QDRANT_API_KEY=${{ secrets.QDRANT_API_KEY }} bash -x tools/download_and_index.sh
+      env:
+        QDRANT_URL: ${{ secrets.QDRANT_URL }}
+        QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+      run: bash -x tools/download_and_index.sh

@@ -19,6 +19,11 @@ class UniXcoderEmbeddingsProvider:
             [f"{docstring or ''} {code or ''}"], max_length=512, mode="<encoder-only>"
         )
         source_ids = torch.tensor(tokens_ids).to(self.device)
-        _, func_embedding = self.model(source_ids)
-        vector = func_embedding.detach().cpu().numpy()[0]
+        # Autograd was live for every query. Nothing here is ever backpropagated,
+        # so the graph was built and immediately discarded. Qdrant answers a
+        # search in well under a millisecond while this pass runs into hundreds,
+        # which makes it the only part of a query worth shaving.
+        with torch.inference_mode():
+            _, func_embedding = self.model(source_ids)
+            vector = func_embedding.cpu().numpy()[0]
         return vector.tolist()

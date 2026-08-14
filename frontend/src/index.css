@@ -1,0 +1,148 @@
+/* Global page styles — Qdrant dark theme. */
+
+:root {
+  /* Qdrant brand design tokens (see brand guidelines). */
+  --qd-bg: #0b0f19;
+  --qd-surface-1: #111824;
+  --qd-surface-2: #141a2a;
+  --qd-surface-8: #212635;
+
+  --qd-border: #303547;
+  --qd-border-strong: #4e5366;
+
+  --qd-text: #f0f3fa;
+  --qd-text-secondary: #abb1c7;
+  --qd-text-muted: #656b7f;
+
+  --qd-red: #dc244c;
+  --qd-red-hover: #cc1845;
+  --qd-red-light: #ff8792;
+  --qd-red-tint: rgba(220, 36, 76, 0.12);
+
+  --qd-violet: #6047ff;
+  --qd-violet-tint: rgba(96, 71, 255, 0.14);
+}
+
+body {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(1100px 520px at 15% -10%, rgba(220, 36, 76, 0.13), transparent 60%),
+    radial-gradient(1000px 520px at 85% -10%, rgba(96, 71, 255, 0.12), transparent 60%),
+    #0b0f19;
+  background-attachment: fixed;
+
+  color: #f0f3fa;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Empty-state (hero) layout is designed to fit the viewport exactly —
+   lock scroll so there's no jitter or scrollbar reveal. MainSection
+   toggles this attribute in an effect keyed to `showHero`.
+   Rules are split to survive browsers without :has() support. */
+body[data-home] {
+  overflow: hidden;
+  height: 100vh;
+}
+
+html:has(body[data-home]) {
+  overflow: hidden;
+  height: 100vh;
+}
+
+@media (max-width: 48em) {
+  /* On mobile the hero doesn't fit in the viewport by design —
+     allow scroll so nothing gets clipped. */
+  body[data-home] {
+    overflow: auto;
+    height: auto;
+  }
+  html:has(body[data-home]) {
+    overflow: auto;
+    height: auto;
+  }
+}
+
+/* Subtle dot-grid texture over the hero area. */
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+
+  background-image: radial-gradient(
+    circle,
+    rgba(240, 243, 250, 0.055) 1px,
+    transparent 1px
+  );
+  background-size: 26px 26px;
+
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 55%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.9),
+    transparent 55%
+  );
+
+  pointer-events: none;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -400px 0;
+  }
+  to {
+    background-position: 400px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+::selection {
+  background: rgba(220, 36, 76, 0.35);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #303547 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #303547;
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #4e5366;
+}

@@ -1,59 +1,593 @@
+.searchBar {
+  position: sticky;
+  /* Flush under the 64px header. At 76px a 12px band sat between the two with
+     nothing painted in it, so results scrolled through the gap. */
+  top: 64px;
+  z-index: 100;
+
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+/* Sticky and fully transparent meant code scrolled visibly through the padding
+   above the input. Same surface as the header, so the two read as one bar.
+   Scoped away from the hero, where the search sits in the page, not over it. */
+.searchBar:not([data-idle]) {
+  background: rgba(11, 15, 25, 0.82);
+  backdrop-filter: blur(18px);
+}
+
+.searchBar[data-idle] {
+  position: static;
+
+  max-width: 720px;
+
+  margin: 0 auto;
+  padding-top: 1rem;
+}
+
+.searchBar[data-idle] .input {
+  height: 54px;
+
+  font-size: 15px;
+}
+
+.input {
+  height: 52px;
+
+  padding-right: 7.25rem;
+
+  border: 1px solid var(--qd-border-strong);
+  border-radius: 8px;
+
+  background: rgba(17, 24, 36, 0.85);
+  color: var(--qd-text);
+
+  backdrop-filter: blur(18px);
+
+  font-size: 15px;
+  font-weight: 500;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.input::placeholder {
+  color: var(--qd-text-muted);
+}
+
+.input:focus,
+.input:focus-within {
+  border-color: var(--qd-red);
+  box-shadow: 0 0 0 4px rgba(220, 36, 76, 0.18);
+  background: var(--qd-surface-1);
+}
+
+.searchBar :global(.mantine-TextInput-section) {
+  color: var(--qd-text-muted);
+}
+
+.searchBar :global(.mantine-TextInput-section[data-position="right"]) {
+  width: 6rem;
+  right: 5px;
+  pointer-events: auto;
+}
+
+.searchBar :global(.mantine-Button-root) {
+  width: calc(100% - 8px);
+  height: 42px;
+
+  padding: 0 8px;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: var(--qd-red);
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: background-color 0.15s ease;
+}
+
+.searchBar :global(.mantine-Button-root:hover) {
+  background: var(--qd-red-hover);
+}
+
+.results {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
 .codeDisplayArea {
   width: 75%;
+
+  /* No top padding: it pushed the first code card 16px below the top of the
+     file tree beside it, so the two columns started at different heights. */
   padding-left: var(--mantine-spacing-md);
-  }
+}
+
+.codeDisplayArea > * {
+  animation: fade-up 0.45s ease both;
+}
+
+.codeDisplayArea > *:nth-child(2) {
+  animation-delay: 0.06s;
+}
+
+.codeDisplayArea > *:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+.codeDisplayArea > *:nth-child(4) {
+  animation-delay: 0.18s;
+}
+
+.codeDisplayArea > *:nth-child(n + 5) {
+  animation-delay: 0.24s;
+}
 
 .navbar {
   position: sticky;
-  top: 114px;
+  top: 140px;
   width: 25%;
 }
 
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
+  padding-top: 1.25rem;
+  padding-bottom: 1rem;
+}
+
+.hero > * {
+  animation: fade-up 0.55s ease both;
+}
+
+.hero > *:nth-child(2) {
+  animation-delay: 0.07s;
+}
+
+.hero > *:nth-child(3) {
+  animation-delay: 0.14s;
+}
+
+.hero > *:nth-child(4) {
+  animation-delay: 0.21s;
+}
+
+.hero > *:nth-child(5) {
+  animation-delay: 0.28s;
+}
+
+.hero > *:nth-child(6) {
+  animation-delay: 0.35s;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 1.25rem;
+  padding: 5px 14px;
+
+  border: 1px solid rgba(220, 36, 76, 0.35);
+  border-radius: 999px;
+
+  background: rgba(220, 36, 76, 0.08);
+  color: var(--qd-red-light);
+
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.eyebrow::before {
+  content: "";
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 999px;
+  background: var(--qd-red);
+  box-shadow: 0 0 10px rgba(220, 36, 76, 0.9);
+
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+}
+
+.heading {
+  max-width: 760px;
+
+  margin: 0 auto;
+
+  color: var(--qd-text);
+  text-align: center;
+
+  font-weight: 600;
+  font-size: 3.5rem;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+}
+
+.headingHighlight {
+  color: var(--qd-red);
+}
+
+.subHeading {
+  max-width: 580px;
+
+  margin: 0 auto;
+  padding-top: 1rem;
+
+  text-align: center;
+
+  color: var(--qd-text-secondary);
+
+  font-size: 1.05rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.kbdHint {
+  padding-top: 1.25rem;
+
+  color: var(--qd-text-muted);
+
+  font-size: 12px;
+}
+
+.kbdHint kbd {
+  display: inline-block;
+
+  min-width: 22px;
+  padding: 2px 6px;
+
+  border: 1px solid var(--qd-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+
+  background: var(--qd-surface-2);
+  color: var(--qd-text-secondary);
+
+  text-align: center;
+
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.stats {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 880px;
+
+  margin-top: 1.5rem;
+
+  border: 1px solid var(--qd-border);
+  border-radius: 12px;
+
+  background: rgba(17, 24, 36, 0.5);
+  backdrop-filter: blur(12px);
+}
+
+.stat {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+
+  padding: 16px 24px;
+}
+
+.statValue {
+  color: var(--qd-text);
+
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* Accent the first stat number in Qdrant red so the strip reads
+   as branded, not just a neutral info row. */
+.stat:first-child .statValue {
+  color: var(--qd-red-light);
+}
+
+.statLabel {
+  padding-top: 5px;
+
+  color: var(--qd-text-muted);
+
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.statDivider {
+  position: absolute;
+  right: 0;
+  top: 20%;
+  bottom: 20%;
+
+  width: 1px;
+
+  background: var(--qd-border);
+}
+
+.sectionEyebrow {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+
+  color: var(--qd-text-muted);
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  width: 100%;
+  max-width: 880px;
+}
+
+.featureCard {
+  padding: 20px;
+
+  border: 1px solid var(--qd-border);
+  border-radius: 12px;
+
+  background: var(--qd-surface-1);
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.featureCard:hover {
+  border-color: var(--qd-border-strong);
+  background: var(--qd-surface-2);
+  transform: translateY(-2px);
+}
+
+.featureIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  margin-bottom: 12px;
+
+  border-radius: 8px;
+
+  background: var(--qd-red-tint);
+  color: var(--qd-red-light);
+}
+
+.featureTitle {
+  color: var(--qd-text);
+
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.featureText {
+  padding-top: 5px;
+
+  color: var(--qd-text-secondary);
+
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.resultsBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding-top: 0.75rem;
+  /* The results grid started immediately under this, so the count and the mode
+     pill sat right on top of the first result. */
+  padding-bottom: 0.75rem;
+}
+
+.resultsInfo {
+  color: var(--qd-text-muted);
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.resultsCount {
+  color: var(--qd-text);
+  font-weight: 600;
+}
+
+.modePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  padding: 3px 10px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
+  cursor: help;
+}
+
+.modePill[data-mode="semantic"] {
+  border: 1px solid rgba(96, 71, 255, 0.4);
+  background: rgba(96, 71, 255, 0.14);
+  color: #b8adff;
+}
+
+.modePill[data-mode="keyword"] {
+  border: 1px solid rgba(255, 152, 0, 0.4);
+  background: rgba(255, 152, 0, 0.14);
+  color: #ffc37a;
+}
+
+.errorAlert {
+  max-width: 560px;
+
+  margin: 4rem auto 0;
+
+  border: 1px solid rgba(220, 36, 76, 0.4);
+  border-radius: 8px;
+
+  background: rgba(220, 36, 76, 0.08);
+}
+
+.errorAlert :global(.mantine-Alert-title) {
+  color: var(--qd-text);
+}
+
+.errorAlert :global(.mantine-Alert-message) {
+  color: var(--qd-text-secondary);
+}
+
+.errorAlert :global(.mantine-Alert-icon) {
+  color: var(--qd-red);
+}
+
+.skeletonCard {
+  height: 220px;
+
+  margin-top: var(--mantine-spacing-md);
+
+  border: 1px solid var(--qd-border);
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+        100deg,
+        transparent 30%,
+        rgba(240, 243, 250, 0.045) 50%,
+        transparent 70%
+      )
+      no-repeat,
+    var(--qd-surface-1);
+  background-size: 800px 100%;
+
+  animation: shimmer 1.4s linear infinite;
+}
+
+.skeletonCard:first-child {
+  margin-top: 0;
+}
+
+.skeletonSidebar {
+  height: 280px;
+
+  margin-top: var(--mantine-spacing-md);
+
+  border: 1px solid var(--qd-border);
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+        100deg,
+        transparent 30%,
+        rgba(240, 243, 250, 0.045) 50%,
+        transparent 70%
+      )
+      no-repeat,
+    var(--qd-surface-1);
+  background-size: 800px 100%;
+
+  animation: shimmer 1.4s linear infinite;
+}
 
 @media (max-width: 48em) {
   .codeDisplayArea {
     width: 100%;
     padding-left: 0;
   }
+
   .navbar {
     display: none;
   }
-}
 
-.input {
-  border-color: var(--mantine-color-neutral-1);
-  color: var(--mantine-color-neutral-8);
-}
-.heading {
-  text-decoration: none;
-  font-family: Roboto, Roboto Mono;
-  margin: 0px;
-  color: rgb(31, 50, 102);
-  text-align: center;
-  font-weight: 700;
-  font-size: 2.5rem;
-  font-style: normal;
-  line-height: 3rem;
-}
-.subHeading {
-  text-decoration: none;
-  padding-top: 0.625rem;
-  text-align: center;
-  color: rgb(57, 80, 143);
-  font-size: 1.125rem;
-  line-height: 1.6875rem;
-  font-weight: 400;
-}
-.headingHighlight {
-  color: var(--mantine-color-Primary-2);
-}
+  .searchBar[data-idle] {
+    padding-top: 1.5rem;
+  }
 
-.loader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: calc(100vh - 114px);
+  .hero {
+    padding-top: 2rem;
+  }
+
+  .heading {
+    font-size: 2.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .subHeading {
+    font-size: 1rem;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    flex-direction: column;
+    gap: 0;
+    margin-top: 2rem;
+  }
+
+  .statDivider {
+    top: auto;
+    right: 20%;
+    bottom: 0;
+    left: 20%;
+
+    width: auto;
+    height: 1px;
+  }
+
+  .resultsBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
 }
-
-

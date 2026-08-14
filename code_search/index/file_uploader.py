@@ -23,7 +23,9 @@ def encode_and_upload():
         payload = data
 
     print(f"Recreating the collection {collection_name}")
-    qdrant_client.recreate_collection(
+    if qdrant_client.collection_exists(collection_name):
+        qdrant_client.delete_collection(collection_name)
+    qdrant_client.create_collection(
         collection_name=collection_name,
         vectors_config={}
     )
@@ -35,6 +37,19 @@ def encode_and_upload():
         vectors=[{}] * len(payload),
         ids=None,
         batch_size=256
+    )
+
+    # /api/file is a filtered scroll on `path` and nothing else reads this
+    # collection. Clusters with strict mode on refuse to filter an unindexed
+    # field, so without this the file viewer fails with a 500 on every result
+    # anyone clicks - while search itself keeps working, which makes it look
+    # like a frontend problem.
+    print(f"Indexing `path` in the collection {collection_name}")
+    qdrant_client.create_payload_index(
+        collection_name=collection_name,
+        field_name="path",
+        field_schema="keyword",
+        wait=True,
     )
 
 

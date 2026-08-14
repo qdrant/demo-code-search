@@ -1,0 +1,178 @@
+.page {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
+/* `.content` grows to fill the viewport, but the hero is shorter than the space
+   it gets on a tall window, and all of that slack collected underneath. It left
+   about 160px between the last feature card and the footer, which reads as a
+   layout fault rather than breathing room. Centring spreads it above and below.
+
+   Scoped to the hero state so results stay top-aligned, and that attribute is
+   only set when the hero actually fits, so short windows are unaffected. */
+:global(body[data-home]) .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.footer {
+  margin-top: 1.5rem;
+
+  border-top: 1px solid var(--qd-surface-8);
+
+  background: rgba(11, 15, 25, 0.6);
+}
+
+.footerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 48px;
+
+  gap: 16px;
+}
+
+.footerText {
+  color: var(--qd-text-muted);
+
+  font-size: 13px;
+}
+
+.footerText a {
+  color: var(--qd-text-secondary);
+  text-decoration: none;
+
+  transition: color 0.15s ease;
+}
+
+.footerText a:hover {
+  color: var(--qd-red-light);
+}
+
+.footerActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.starBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 5px 12px;
+  margin-right: 6px;
+
+  border: 1px solid var(--qd-border-strong);
+  border-radius: 999px;
+
+  background: transparent;
+  color: var(--qd-text);
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+  text-decoration: none;
+
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.starBtn:hover {
+  border-color: var(--qd-red);
+  background: var(--qd-red-tint);
+  color: var(--qd-red-light);
+}
+
+.starBtn svg {
+  color: #ffc45a;
+}
+
+.starCount {
+  color: var(--qd-text-muted);
+
+  font-family: var(--mantine-font-family-monospace);
+  font-weight: 500;
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 999px;
+
+  color: var(--qd-text-muted);
+
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.social:hover {
+  color: var(--qd-red-light);
+  background: var(--qd-red-tint);
+}
+
+@media (max-width: 48em) {
+  .footerInner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 0;
+  }
+}
+
+.footerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 56px;
+
+  gap: 16px;
+}
+
+.footerText {
+  color: var(--qd-text-muted);
+
+  font-size: 13px;
+}
+
+.footerText a {
+  color: var(--qd-text-secondary);
+  text-decoration: none;
+
+  transition: color 0.15s ease;
+}
+
+.footerText a:hover {
+  color: var(--qd-red-light);
+}
+
+.footerLink {
+  color: var(--qd-text-secondary);
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  transition: color 0.15s ease;
+}
+
+.footerLink:hover {
+  color: var(--qd-red-light);
+}

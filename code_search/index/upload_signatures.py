@@ -25,7 +25,7 @@ def iter_batch(iterable, batch_size=64):
 
 
 def load_records():
-    with open(file_name, "r") as fp:
+    with open(file_name, "r", encoding="utf-8") as fp:
         for line in fp:
             row = json.loads(line)
             yield row
@@ -49,7 +49,9 @@ def upload():
     )
 
     print(f"Recreating the collection {collection_name}")
-    client.recreate_collection(
+    if client.collection_exists(collection_name):
+        client.delete_collection(collection_name)
+    client.create_collection(
         collection_name=collection_name,
         vectors_config=VectorParams(
             size=ENCODER_SIZE,

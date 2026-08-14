@@ -1,167 +1,265 @@
+import { useCallback, useEffect, useRef } from "react";
 import {
+  Alert,
+  Box,
   Button,
   Container,
-  TextInput,
-  Box,
-  Image,
-  Title,
   Text,
-  Loader,
+  TextInput,
+  Title,
 } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { getHotkeyHandler, useHotkeys } from "@mantine/hooks";
+import {
+  IconAlertTriangle,
+  IconBolt,
+  IconFileCode,
+  IconMessageSearch,
+  IconSearch,
+  IconVectorTriangle,
+} from "@tabler/icons-react";
+import { useSearchParams } from "react-router-dom";
 import useMountedState from "@/hooks/useMountedState";
 import { useGetSearchResult } from "@/hooks/useGetSearchResult";
-import { getHotkeyHandler, useHotkeys } from "@mantine/hooks";
-import { FileTree } from "../FIleTree";
+import { useTypewriter } from "@/hooks/useTypewriter";
 import { CodeContainer } from "../CodeContainer";
-import classes from "./Main.module.css";
 import DemoSearch from "../DemoSearch";
-import { useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
+import { FileTree } from "../FileTree";
+import classes from "./Main.module.css";
+
+const FEATURES = [
+  {
+    icon: IconVectorTriangle,
+    title: "Two Embedding Models",
+    text: "MiniLM reads natural language, UniXcoder reads code structure. Combined for better matches.",
+  },
+  {
+    icon: IconMessageSearch,
+    title: "Search by Description",
+    text: "Type what the code does. Function and variable names are optional.",
+  },
+  {
+    icon: IconFileCode,
+    title: "Results in Context",
+    text: "See matching lines inside the full file, with direct links to GitHub.",
+  },
+];
+
+// Every figure here should be one we can point at something for. The previous
+// "<100ms Search Latency" was not: end-to-end a query spends most of its time
+// encoding, and the live demo answers in roughly 0.8-1.5s.
+//
+// These are counted from the collections the indexing workflow builds, as of
+// qdrant/qdrant 74f3e85b: 14,604 of the 17,187 signatures are functions, the
+// rest structs and enums, across 1,720 .rs files. They go stale whenever the
+// index is rebuilt, so re-check them after a reindex.
+const STATS = [
+  { value: "14,604", label: "Functions Indexed" },
+  { value: "2", label: "Embedding Models" },
+  { value: "1,720", label: "Files Indexed" },
+];
+
+const PLACEHOLDER_PHRASES = [
+  "flush the write-ahead log",
+  "cardinality of should request",
+  "geo condition filter",
+  "merge two hnsw indexes",
+];
 
 export default function Main() {
   const [query, setQuery] = useMountedState("");
   const { data, getSearch, loading, error, resetData } = useGetSearchResult();
   const [searchParams, setSearchParams] = useSearchParams();
+  const lastSearched = useRef<string | null>(null);
 
   useHotkeys([
-    [
-      "/",
-      () => {
-        const input = document.querySelector("input");
-        input?.focus();
-      },
-    ],
+    ["/", () => document.querySelector<HTMLInputElement>("input")?.focus()],
   ]);
-  const handleSubmit = () => {
-    resetData();
-    if (query) {
-      getSearch(query);
-      setSearchParams({ query });
-    }
-  };
 
-  const handleDemoSearch = (query: string) => {
-    resetData();
-    if (query) {
-      setSearchParams({ query: query });
-      setQuery(query);
-      getSearch(query);
-    }
-  };
+  const showHero = !data && !loading && !error;
+  const typedPlaceholder = useTypewriter(PLACEHOLDER_PHRASES, showHero && !query);
 
+  // Lock body scroll on the hero (empty) state so there is no scrollbar reveal,
+  // but only when the hero actually fits. The CSS released the lock below 48em
+  // wide, which is the wrong axis: the hero is about 865px tall, so a 1280x700
+  // window (any laptop with a taskbar) kept the lock, clipped the How It Works
+  // cards, and gave no way to scroll to them. Any other state scrolls normally.
   useEffect(() => {
-    if (searchParams.get("query")&&searchParams.get("query")!==query) {
-      handleDemoSearch(searchParams.get("query") ?? "");
+    if (!showHero) {
+      document.body.removeAttribute("data-home");
+      return;
     }
-  }, [searchParams.get("query")]);
+    const applyLock = () => {
+      // Measure unlocked: with the attribute set, height is clamped to 100vh
+      // and everything looks like it fits.
+      document.body.removeAttribute("data-home");
+      if (document.documentElement.scrollHeight <= window.innerHeight) {
+        document.body.setAttribute("data-home", "");
+      }
+    };
+    applyLock();
+    window.addEventListener("resize", applyLock);
+    return () => {
+      window.removeEventListener("resize", applyLock);
+      document.body.removeAttribute("data-home");
+    };
+  }, [showHero]);
 
-  useEffect(() => {
-    if (query === "") {
+  const runSearch = useCallback(
+    (value: string) => {
+      if (!value) return;
       resetData();
-      window.history.replaceState({}, "", "/");
+      lastSearched.current = value;
+      setQuery(value);
+      if (searchParams.get("query") !== value) {
+        setSearchParams({ query: value });
+      }
+      getSearch(value);
+    },
+    [getSearch, resetData, searchParams, setQuery, setSearchParams]
+  );
+
+  useEffect(() => {
+    const urlQuery = searchParams.get("query");
+    if (urlQuery && urlQuery !== lastSearched.current) {
+      runSearch(urlQuery);
     }
-  }, [query]);
+  }, [searchParams, runSearch]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+    setQuery(value);
+    if (value === "") {
+      lastSearched.current = null;
+      resetData();
+      setSearchParams({}, { replace: true });
+    }
+  };
 
   return (
     <Container size="lg">
-      <TextInput
-        radius={4}
-        size="md"
-        leftSection={<IconSearch color="#102252" />}
-        placeholder="Enter a query"
-        rightSection={
-          <Button
-            radius={4}
-            w={"100%"}
-            size={"md"}
-            variant="filled"
-            color="Primary.2"
-            onClick={handleSubmit}
-          >
-            Search
-          </Button>
-        }
-        rightSectionWidth={"6rem"}
-        value={query}
-        pt={data || loading ? "1rem" : "5rem"}
-        required
-        onChange={(event: any) => setQuery(event.currentTarget.value)}
-        onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
-        classNames={{ input: classes.input }}
-        style={{
-          position: "sticky",
-          top: 56,
-          zIndex: 100,
-          backgroundColor: "#fff",
-        }}
-        ref={(input) => input && input.focus()}
-      />
+      <Box className={classes.searchBar} data-idle={showHero || undefined}>
+        <TextInput
+          size="md"
+          // The placeholder is not an accessible name: it cycles through
+          // examples on the hero and disappears once anything is typed, so a
+          // screen reader has nothing stable to announce the field by.
+          aria-label="Search the Qdrant codebase"
+          leftSection={<IconSearch size={20} />}
+          placeholder={
+            showHero && !query
+              ? `Try: ${typedPlaceholder}`
+              : "Describe what you're looking for"
+          }
+          rightSection={
+            <Button size="md" loading={loading} onClick={() => runSearch(query)}>
+              Search
+            </Button>
+          }
+          rightSectionWidth="6rem"
+          value={query}
+          onChange={handleChange}
+          onKeyDown={getHotkeyHandler([["Enter", () => runSearch(query)]])}
+          classNames={{ input: classes.input }}
+          autoFocus
+        />
+      </Box>
       {data && (
-        <Box
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box className={classes.navbar}>
-            <FileTree data={data} />
+        <>
+          <Box className={classes.resultsBar}>
+            {/* Rendered as the h1: the hero heading is gone in this state, so
+                without it the results page has no headings at all and nothing
+                to navigate by. Styling is unchanged. */}
+            <Text component="h1" className={classes.resultsInfo}>
+              <span className={classes.resultsCount}>{data.result.length}</span>{" "}
+              results for &ldquo;{searchParams.get("query")}&rdquo;
+            </Text>
+            <span
+              className={classes.modePill}
+              data-mode={data.mode ?? "semantic"}
+              title={
+                data.mode === "keyword"
+                  ? "Keyword ranking (unixcoder embeddings still building)"
+                  : "Semantic search via unixcoder + MiniLM"
+              }
+            >
+              <IconBolt size={12} stroke={2.2} />
+              {data.mode === "keyword" ? "Warming Up" : "Semantic"}
+            </span>
           </Box>
-          <Box pt={"md"} className={classes.codeDisplayArea}>
-            {data?.result.map((item) => (
-              <CodeContainer
-                {...item}
-                key={`${item.context.snippet} ${item.line_from} ${item.line_to}`}
-              />
+          <Box className={classes.results}>
+            <Box className={classes.navbar}>
+              <FileTree data={data} />
+            </Box>
+            <Box className={classes.codeDisplayArea}>
+              {data.result.map((item) => (
+                <CodeContainer
+                  {...item}
+                  commit={data.indexed_commit}
+                  key={`${item.context.snippet} ${item.line_from} ${item.line_to}`}
+                />
+              ))}
+            </Box>
+          </Box>
+        </>
+      )}
+      {showHero && (
+        <Box className={classes.hero}>
+          <Text className={classes.eyebrow}>Semantic Search Demo</Text>
+          <Title order={1} className={classes.heading}>
+            Search Code by <span className={classes.headingHighlight}>Meaning</span>,
+            <br />
+            Not Keywords
+          </Title>
+          <Text className={classes.subHeading}>
+            Describe what code does. Find matching functions and snippets
+            across the Qdrant codebase, no names required.
+          </Text>
+          <DemoSearch handleDemoSearch={runSearch} />
+          <Box className={classes.stats}>
+            {STATS.map((stat, i) => (
+              <div key={stat.label} className={classes.stat}>
+                <div className={classes.statValue}>{stat.value}</div>
+                <div className={classes.statLabel}>{stat.label}</div>
+                {i < STATS.length - 1 && <div className={classes.statDivider} />}
+              </div>
+            ))}
+          </Box>
+          <div className={classes.sectionEyebrow}>How It Works</div>
+          <Box className={classes.features}>
+            {FEATURES.map((feature) => (
+              <div key={feature.title} className={classes.featureCard}>
+                <div className={classes.featureIcon}>
+                  <feature.icon size={20} stroke={1.7} />
+                </div>
+                <Text className={classes.featureTitle}>{feature.title}</Text>
+                <Text className={classes.featureText}>{feature.text}</Text>
+              </div>
             ))}
           </Box>
         </Box>
       )}
-      {!data && !loading && !error && (
-        <>
-          <DemoSearch handleDemoSearch={handleDemoSearch} />
-          <Box
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Image
-              src="/landing.gif"
-              alt="Qdrant Landing"
-              maw={400}
-              h={400}
-              fit="contain"
-            />
-            <Title order={3} className={classes.heading}>
-              Qdrant{" "}
-              <span className={classes.headingHighlight}>Code Search</span>{" "}
-              Unleashing Semantic Power
-            </Title>
-            <Text className={classes.subHeading}>
-              Qdrant Code Explorer: Empowering Semantic Searching in Qdrant
-              Repository with Advanced Code Analysis
-            </Text>
-          </Box>
-        </>
-      )}
       {loading && (
-        <Box className={classes.loader}>
-          <Loader type="bars" />
+        <Box className={classes.results} aria-label="Loading results">
+          <Box className={classes.navbar}>
+            <div className={classes.skeletonSidebar} />
+          </Box>
+          <Box className={classes.codeDisplayArea}>
+            {[0, 1, 2].map((i) => (
+              <div key={i} className={classes.skeletonCard} />
+            ))}
+          </Box>
         </Box>
       )}
       {error && (
-        <Box>
-          <Image src="/error.gif" alt="Error" h={400} fit="contain" />
-
-          <Text className={classes.subHeading}>
-            Something went wrong, {error}
-          </Text>
-        </Box>
+        <Alert
+          className={classes.errorAlert}
+          icon={<IconAlertTriangle />}
+          title="Something Went Wrong"
+          color="Primary.5"
+          variant="light"
+        >
+          {error}. Check that the search service is running, then try again.
+        </Alert>
       )}
     </Container>
   );

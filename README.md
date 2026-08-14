@@ -9,6 +9,12 @@ See our code search tool "in action." Navigate to
 **[https://code-search.qdrant.tech/](https://code-search.qdrant.tech/)**. We've prepopulated the demo with Qdrant 
 codebase. You can see the results, in context, even with relatively vague search terms.
 
+The refreshed build in this repository is deployed at
+**[https://demo-code-search-production.up.railway.app](https://demo-code-search-production.up.railway.app)**,
+serving both the frontend and the API from one container. Until
+`code-search.qdrant.tech` is pointed at it, the two run side by side against
+separate Qdrant clusters — see [DEPLOY.md](DEPLOY.md).
+
 ## Prerequisites
 
 To run this demo on your own system, install and/or set up the following components:
@@ -177,6 +183,11 @@ The demo consists of the following components:
 - [Qdrant](https://qdrant.tech/) - a vector search engine that stores the data and performs the search
 - Two neural encoders - one trained on the natural language and one for the code-specific tasks
 
+The diagram shows two collections. There are three: `code-signatures` for the
+MiniLM vectors, `code-snippets-unixcoder` for the UniXcoder vectors, and
+`code-files` holding the source of every indexed file so results can be shown in
+context.
+
 There is also an additional indexing component that has to be run periodically to keep the index up to date. It is also
 part of the demo, but it is not directly exposed to the user. All the required scripts are documented below, and you can 
 find them in the [`tools`](/tools) directory.
@@ -224,9 +235,9 @@ Once the index is built, you can start the search service by running the followi
 docker-compose up
 ```
 
-The UI will be available at [http://localhost:8000/](http://localhost:8000/). This is how it should look like:
-
-![Code search with Qdrant](images/code-search-ui.png)
+The UI will be available at [http://localhost:8000/](http://localhost:8000/), serving both the
+frontend and the API from the same container. For a running instance, see the
+[live demo](https://demo-code-search-production.up.railway.app).
 
 You can type in the search query and see the related code structures. Queries might come both from natural language
 but also from the code itself. 

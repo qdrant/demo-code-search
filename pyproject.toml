@@ -1,19 +1,19 @@
 [tool.poetry]
-name = "demo-template"
+name = "demo-code-search"
 version = "0.1.0"
-description = ""
+description = "Semantic code search demo over the Qdrant codebase"
 authors = ["Qdrant Team <team@qdrant.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.12"
-fastapi = "^0.75.2"
-uvicorn = "^0.17.6"
-torch = "^2.1.0"
-transformers = "^4.26.1"
+python = ">=3.9,<3.13"
+fastapi = "^0.115.14"
+uvicorn = "^0.34.3"
+torch = "^2.6.0"
+transformers = "^4.49.0"
 qdrant-client = "^1.12.0"
-python-dotenv = "^0.21.1"
-sentence-transformers = "^2.2.2"
-tqdm = "^4.64.1"
+python-dotenv = "^1.0.1"
+sentence-transformers = "^2.7.0"
+tqdm = "^4.67.1"
 numpy = "^1.26.4,<2"
 
 [tool.poetry.dev-dependencies]

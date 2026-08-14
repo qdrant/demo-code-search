@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   code_search_demo:
     build: .
@@ -8,4 +6,4 @@ services:
       - QDRANT_URL
       - QDRANT_API_KEY
     ports:
-      - 8000:8000
+      - "8000:8000"
