@@ -65,8 +65,9 @@ export function CustomHeader() {
             <Image src="/workflow.svg" alt="Diagram of the two-model search workflow" />
           </Box>
           <Text className={classes.description}>
-            Combining both embeddings finds the relevant method and the exact
-            lines inside it — semantic code intelligence, in context.
+            MiniLM reads the description, UniXcoder reads the code itself.
+            Combining them finds the relevant method and, where both agree, the
+            exact lines inside it.
           </Text>
           <Button size="md" className={classes.modalBtn} onClick={handlers.close}>
             Get Started

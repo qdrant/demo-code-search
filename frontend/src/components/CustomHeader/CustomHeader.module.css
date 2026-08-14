@@ -120,26 +120,41 @@
   text-align: center;
 }
 
+/* Body copy reads left-aligned. Centred paragraphs give every line a
+   different start position, which is fine for one line and tiring for four. */
 .description {
+  width: 100%;
+
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
 
-  text-align: center;
+  text-align: left;
 
   color: var(--qd-text-secondary);
 
   font-size: var(--mantine-font-size-md);
-  line-height: 1.55;
+  line-height: 1.6;
   font-weight: 400;
 }
 
+/* The diagram used to sit on a #f2f6ff plate, which is the page colour of the
+   old light theme. Against a dark modal it read as a screenshot someone had
+   pasted in. The SVG now uses the same tokens as the rest of the app, so the
+   container is a surface rather than a backing board. */
 .workflow {
   width: 100%;
 
-  padding: 12px;
+  padding: 1.25rem 1rem;
 
-  background: #f2f6ff;
-  border-radius: 8px;
+  background: var(--qd-bg);
+  border: 1px solid var(--qd-border);
+  border-radius: 12px;
+}
+
+.workflow img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .modalBtn {

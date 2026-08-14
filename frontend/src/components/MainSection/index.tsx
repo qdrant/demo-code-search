@@ -30,7 +30,7 @@ const FEATURES = [
   {
     icon: IconVectorTriangle,
     title: "Two Embedding Models",
-    text: "MiniLM reads natural language, UniXcoder reads code structure — combined for better matches.",
+    text: "MiniLM reads natural language, UniXcoder reads code structure. Combined for better matches.",
   },
   {
     icon: IconMessageSearch,
@@ -215,7 +215,7 @@ export default function Main() {
             Not Keywords
           </Title>
           <Text className={classes.subHeading}>
-            Describe what code does — find matching functions and snippets
+            Describe what code does. Find matching functions and snippets
             across the Qdrant codebase, no names required.
           </Text>
           <DemoSearch handleDemoSearch={runSearch} />
