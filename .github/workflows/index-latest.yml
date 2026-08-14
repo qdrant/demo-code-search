@@ -48,7 +48,9 @@ jobs:
           if [ "$words" -gt 1 ]; then echo "  -> contains whitespace, so it was pasted with extra text"; fail=1; fi
         done
         case "$QDRANT_URL" in https://*) ;; *) echo 'QDRANT_URL does not start with https://'; fail=1;; esac
-        case "$QDRANT_API_KEY" in eyJ*) ;; *) echo 'QDRANT_API_KEY does not start with eyJ, so it is not the JWT'; fail=1;; esac
+        # Qdrant Cloud keys are JWTs, but self-hosted keys are arbitrary strings,
+        # so a non-JWT shape is worth a note in the log rather than a failed run.
+        case "$QDRANT_API_KEY" in eyJ*) ;; *) echo 'note: QDRANT_API_KEY is not JWT-shaped, fine for self-hosted Qdrant';; esac
         [ "$fail" -eq 0 ] || { echo 'Re-set the offending secret with: gh secret set <NAME> --repo qdrant-labs/demo-code-search'; exit 1; }
         echo 'Both secrets look well-formed.'
     # Passed through env rather than interpolated into the command line: a value

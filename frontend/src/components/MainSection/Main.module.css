@@ -107,7 +107,8 @@
 .codeDisplayArea {
   width: 75%;
 
-  padding-top: var(--mantine-spacing-md);
+  /* No top padding: it pushed the first code card 16px below the top of the
+     file tree beside it, so the two columns started at different heights. */
   padding-left: var(--mantine-spacing-md);
 }
 
