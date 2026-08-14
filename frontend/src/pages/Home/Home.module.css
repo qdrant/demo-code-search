@@ -9,6 +9,19 @@
   flex: 1;
 }
 
+/* `.content` grows to fill the viewport, but the hero is shorter than the space
+   it gets on a tall window, and all of that slack collected underneath. It left
+   about 160px between the last feature card and the footer, which reads as a
+   layout fault rather than breathing room. Centring spreads it above and below.
+
+   Scoped to the hero state so results stay top-aligned, and that attribute is
+   only set when the hero actually fits, so short windows are unaffected. */
+:global(body[data-home]) .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .footer {
   margin-top: 1.5rem;
 
