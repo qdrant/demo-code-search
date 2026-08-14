@@ -39,6 +39,19 @@ def encode_and_upload():
         batch_size=256
     )
 
+    # /api/file is a filtered scroll on `path` and nothing else reads this
+    # collection. Clusters with strict mode on refuse to filter an unindexed
+    # field, so without this the file viewer fails with a 500 on every result
+    # anyone clicks - while search itself keeps working, which makes it look
+    # like a frontend problem.
+    print(f"Indexing `path` in the collection {collection_name}")
+    qdrant_client.create_payload_index(
+        collection_name=collection_name,
+        field_name="path",
+        field_schema="keyword",
+        wait=True,
+    )
+
 
 if __name__ == '__main__':
     encode_and_upload()
