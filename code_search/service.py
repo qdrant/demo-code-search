@@ -21,10 +21,14 @@ cors_origins = [
     if o.strip()
 ]
 if cors_origins:
+    # No credentials: this API has no cookies or auth, and pairing
+    # `allow_credentials=True` with an "*" origin is rejected by browsers
+    # anyway - the combination is invalid, so the permissive setup it was
+    # meant to enable is the one it would have broken.
     app.add_middleware(
         CORSMiddleware,
         allow_origins=cors_origins,
-        allow_credentials=True,
+        allow_credentials=False,
         allow_methods=["GET"],
         allow_headers=["*"],
     )
