@@ -44,10 +44,14 @@ const FEATURES = [
   },
 ];
 
+// Every figure here should be one we can point at something for. The previous
+// "<100ms Search Latency" was not: end-to-end a query spends most of its time
+// encoding, and the live demo answers in roughly 0.8-1.5s. File count is the
+// number of .rs files indexed from the Qdrant repo.
 const STATS = [
   { value: "13,878", label: "Functions Indexed" },
   { value: "2", label: "Embedding Models" },
-  { value: "<100ms", label: "Search Latency" },
+  { value: "1,720", label: "Files Indexed" },
 ];
 
 const PLACEHOLDER_PHRASES = [
