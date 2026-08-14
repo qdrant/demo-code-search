@@ -160,3 +160,9 @@ cython_debug/
 # Vite build output
 /frontend/dist/
 
+
+# Dependencies are installed from requirements.txt everywhere: the Dockerfile,
+# the indexing workflow, and DEPLOY.md. A poetry.lock alongside it drifted out
+# of sync with pyproject.toml and only produced advisories for packages that
+# were never installed.
+poetry.lock
