@@ -7,6 +7,12 @@ export type SearchResponse = {
    * unixcoder collection is still building. Missing means semantic.
    */
   mode?: "keyword" | "semantic";
+  /**
+   * Server-side time to encode the query and search Qdrant, in milliseconds.
+   * Excludes network, so it reflects this service rather than the viewer's
+   * connection. Optional, since an older backend will not send it.
+   */
+  latency_ms?: number;
   result: {
     code_type: string;
     context: {

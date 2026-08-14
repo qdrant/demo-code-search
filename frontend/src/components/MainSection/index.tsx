@@ -151,6 +151,12 @@ export default function Main() {
             <Text className={classes.resultsInfo}>
               <span className={classes.resultsCount}>{data.result.length}</span>{" "}
               results for &ldquo;{searchParams.get("query")}&rdquo;
+              {/* Measured server-side and shown as reported. The hero used to
+                  assert a latency figure instead, which was wrong by an order
+                  of magnitude and had no way of noticing. */}
+              {typeof data.latency_ms === "number" && (
+                <> in <span className={classes.resultsCount}>{data.latency_ms}ms</span></>
+              )}
             </Text>
             <span
               className={classes.modePill}

@@ -9,6 +9,12 @@ See our code search tool "in action." Navigate to
 **[https://code-search.qdrant.tech/](https://code-search.qdrant.tech/)**. We've prepopulated the demo with Qdrant 
 codebase. You can see the results, in context, even with relatively vague search terms.
 
+The refreshed build in this repository is deployed at
+**[https://demo-code-search-production.up.railway.app](https://demo-code-search-production.up.railway.app)**,
+serving both the frontend and the API from one container. Until
+`code-search.qdrant.tech` is pointed at it, the two run side by side against
+separate Qdrant clusters — see [DEPLOY.md](DEPLOY.md).
+
 ## Prerequisites
 
 To run this demo on your own system, install and/or set up the following components:

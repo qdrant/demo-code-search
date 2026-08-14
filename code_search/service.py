@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
@@ -105,8 +106,17 @@ def health():
 # blocking the event loop.
 @app.get("/api/search")
 def search(query: str):
+    # Time the work this service is actually responsible for: encoding the query
+    # and querying Qdrant. Network time is the caller's, and reporting a number
+    # that moves with the viewer's connection would make it meaningless. The UI
+    # shows this rather than asserting a figure, so it cannot go stale.
+    started = time.perf_counter()
     try:
-        return {"result": searcher.search(query, limit=5)}
+        results = searcher.search(query, limit=5)
+        return {
+            "result": results,
+            "latency_ms": round((time.perf_counter() - started) * 1000),
+        }
     except Exception as exc:
         message = str(exc)
         if "doesn't exist" in message or "Not found" in message or "404" in message:
@@ -119,7 +129,11 @@ def search(query: str):
             # broken without anyone noticing.
             results = _keyword_search(query, limit=5)
             if results or _FALLBACK_INDEX:
-                return {"result": results, "mode": "keyword"}
+                return {
+                    "result": results,
+                    "mode": "keyword",
+                    "latency_ms": round((time.perf_counter() - started) * 1000),
+                }
             raise HTTPException(
                 status_code=503,
                 detail=(
