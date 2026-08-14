@@ -179,6 +179,7 @@ export default function Main() {
               {data.result.map((item) => (
                 <CodeContainer
                   {...item}
+                  commit={data.indexed_commit}
                   key={`${item.context.snippet} ${item.line_from} ${item.line_to}`}
                 />
               ))}

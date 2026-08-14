@@ -7,7 +7,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 
-from code_search.config import DATA_DIR, ROOT_DIR
+from code_search.config import DATA_DIR, INDEXED_COMMIT, ROOT_DIR
 from code_search.get_file import FileGet
 from code_search.searcher import CombinedSearcher
 
@@ -116,6 +116,7 @@ def search(query: str):
         return {
             "result": results,
             "latency_ms": round((time.perf_counter() - started) * 1000),
+            "indexed_commit": INDEXED_COMMIT,
         }
     except Exception as exc:
         message = str(exc)

@@ -53,6 +53,13 @@ QDRANT_FILE_COLLECTION_NAME = "code-files"
 ENCODER_NAME = "all-MiniLM-L6-v2"
 ENCODER_SIZE = 384
 
+# Commit of qdrant/qdrant the collections were built from. Result links carry
+# line numbers, and resolving them against a moving `master` quietly points at
+# the wrong lines as the source changes. Set this to the SHA the indexing run
+# reports; `master` is the old behaviour and stays the default so an unset
+# variable degrades to what it did before rather than breaking links.
+INDEXED_COMMIT = os.environ.get("INDEXED_COMMIT", "master")
+
 
 def make_qdrant_client() -> QdrantClient:
     """Construct a QdrantClient from QDRANT_URL.

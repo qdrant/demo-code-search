@@ -32,12 +32,14 @@ type CodeContainerProps = {
     overlap_from: number;
     overlap_to: number;
   }[];
+  /** Commit the index was built from; the link's line numbers only match there. */
+  commit?: string;
 };
 
 const loadCount = 10;
 
 export function CodeContainer(props: CodeContainerProps) {
-  const { context, line_from, line_to, sub_matches } = props;
+  const { context, line_from, line_to, sub_matches, commit } = props;
   const [codeLineFrom, setCodeLineFrom] = useMountedState(line_from);
   const [codeLineTo, setCodeLineTo] = useMountedState(line_to);
   const [code, setCode] = useMountedState(context.snippet);
@@ -110,7 +112,10 @@ export function CodeContainer(props: CodeContainerProps) {
         <Button
           component="a"
           variant="transparent"
-          href={`https://github.com/qdrant/qdrant/blob/master/${context.file_path}#L${line_from}-L${line_to}`}
+          // Pinned to the indexed commit, not a branch: the line anchors were
+          // computed at index time and stop matching as soon as the file
+          // changes upstream. Falls back to master when the API doesn't say.
+          href={`https://github.com/qdrant/qdrant/blob/${commit || "master"}/${context.file_path}#L${line_from}-L${line_to}`}
           target="_blank"
           rel="noopener noreferrer"
           rightSection={<IconExternalLink size={14} />}

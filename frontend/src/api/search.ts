@@ -13,6 +13,12 @@ export type SearchResponse = {
    * connection. Optional, since an older backend will not send it.
    */
   latency_ms?: number;
+  /**
+   * Commit of qdrant/qdrant the index was built from. Result links carry line
+   * numbers, so they have to resolve against this rather than a moving branch.
+   * Optional: an older backend will not send it, and links fall back to master.
+   */
+  indexed_commit?: string;
   result: {
     code_type: string;
     context: {
