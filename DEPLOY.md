@@ -52,6 +52,7 @@ it's ready.
    | `QDRANT_API_KEY` | your Qdrant Cloud API key |
    | `CORS_ORIGINS` | your Vercel frontend URL (see step 4). Comma-separate multiple. |
    | `WORKERS` | `1` (raise only if you upgrade RAM significantly) |
+   | `INDEXED_COMMIT` | the qdrant/qdrant SHA the collections were built from, printed at the end of the indexing log. Result links carry line numbers and only match at that commit; leave it unset and they resolve against `master`, drifting as the source moves. |
 
 4. Railway will build and expose a URL like `https://code-search-api.up.railway.app`.
    Wait for the health check at `/api/health` to pass; first boot takes ~30–60s
