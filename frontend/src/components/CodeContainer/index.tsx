@@ -20,7 +20,8 @@ type CodeContainerProps = {
     file_path: string;
     module: string;
     snippet: string;
-    struct_name: string;
+    /** Null for free functions, which are not attached to a struct. */
+    struct_name: string | null;
   };
   docstring: string | null;
   line: number;

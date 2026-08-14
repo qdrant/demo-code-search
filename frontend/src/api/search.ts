@@ -26,7 +26,8 @@ export type SearchResponse = {
       file_path: string;
       module: string;
       snippet: string;
-      struct_name: string;
+      /** Null for free functions, which are not attached to a struct. */
+      struct_name: string | null;
     };
     docstring: string | null;
     line: number;
@@ -34,7 +35,13 @@ export type SearchResponse = {
     line_to: number;
     name: string;
     signature: string;
-    sub_matches: {
+    /**
+     * Line ranges where the two models agreed, used to highlight inside the
+     * snippet. Only present when a result's file also came back from the code
+     * search, which is a minority of them - so this is genuinely optional and
+     * was previously typed as though it always arrived.
+     */
+    sub_matches?: {
       overlap_from: number;
       overlap_to: number;
     }[];
