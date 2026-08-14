@@ -60,7 +60,10 @@ export function CodeContainer(props: CodeContainerProps) {
       setInStack("loadUpperCode");
       return;
     }
-    const fileLines = data.result[0].code;
+    // /api/file answers with an empty result for a path it has no record of,
+    // so result[0] is not guaranteed even once data has loaded.
+    const fileLines = data.result[0]?.code;
+    if (!fileLines) return;
     const upperCode = fileLines
       .slice(Math.max(codeLineFrom - loadCount - 1, 0), codeLineFrom - 1)
       .join("");
@@ -74,7 +77,8 @@ export function CodeContainer(props: CodeContainerProps) {
       setInStack("loadLowerCode");
       return;
     }
-    const fileLines = data.result[0].code;
+    const fileLines = data.result[0]?.code;
+    if (!fileLines) return;
     const lowerCode = fileLines.slice(codeLineTo, codeLineTo + loadCount).join("");
     setCodeLineTo((line) => line + loadCount);
     setCode(`${code}${lowerCode}`);
@@ -95,7 +99,7 @@ export function CodeContainer(props: CodeContainerProps) {
         subMatch.overlap_to >= codeLineFrom + index
     );
 
-  const fileEndLine = data?.result[0].endline;
+  const fileEndLine = data?.result?.[0]?.endline;
 
   return (
     <Box className={classes.wrapper} id={context.file_path}>

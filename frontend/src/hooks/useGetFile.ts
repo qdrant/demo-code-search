@@ -16,7 +16,11 @@ export const useGetFile = () => {
         setError(null);
         const res = await getFileResult(path);
 
-        if (res.status === 200) {
+        // Same check as the search hook: a misconfigured API base URL means the
+        // request never leaves the static host, which answers with the app's own
+        // index.html under a 200. Without this the HTML gets stored as file data
+        // and fails later, far from the cause.
+        if (res.status === 200 && Array.isArray(res.data?.result)) {
           setData(res.data);
         } else {
           setError("Failed to load the file");
