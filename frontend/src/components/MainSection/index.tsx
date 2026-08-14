@@ -83,16 +83,30 @@ export default function Main() {
   const showHero = !data && !loading && !error;
   const typedPlaceholder = useTypewriter(PLACEHOLDER_PHRASES, showHero && !query);
 
-  // Lock body scroll on the hero (empty) state — the layout is designed to
-  // fit the viewport with no scroll indicator. Any other state (results,
-  // loading, error) scrolls normally.
+  // Lock body scroll on the hero (empty) state so there is no scrollbar reveal,
+  // but only when the hero actually fits. The CSS released the lock below 48em
+  // wide, which is the wrong axis: the hero is about 865px tall, so a 1280x700
+  // window (any laptop with a taskbar) kept the lock, clipped the How It Works
+  // cards, and gave no way to scroll to them. Any other state scrolls normally.
   useEffect(() => {
-    if (showHero) {
-      document.body.setAttribute("data-home", "");
-    } else {
+    if (!showHero) {
       document.body.removeAttribute("data-home");
+      return;
     }
-    return () => document.body.removeAttribute("data-home");
+    const applyLock = () => {
+      // Measure unlocked: with the attribute set, height is clamped to 100vh
+      // and everything looks like it fits.
+      document.body.removeAttribute("data-home");
+      if (document.documentElement.scrollHeight <= window.innerHeight) {
+        document.body.setAttribute("data-home", "");
+      }
+    };
+    applyLock();
+    window.addEventListener("resize", applyLock);
+    return () => {
+      window.removeEventListener("resize", applyLock);
+      document.body.removeAttribute("data-home");
+    };
   }, [showHero]);
 
   const runSearch = useCallback(
