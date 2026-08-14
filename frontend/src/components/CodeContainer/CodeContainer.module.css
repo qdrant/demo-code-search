@@ -55,11 +55,23 @@
 
   justify-content: flex-start;
 
+  /* The button stretches to fill the header, and Mantine's own padding pushed
+     the path further from its icon. */
+  padding-left: 0;
+  padding-right: 0;
+
   color: var(--qd-text-secondary);
 
   font-family: var(--mantine-font-family-monospace);
   font-size: 13px;
   font-weight: 500;
+}
+
+/* Mantine centers the button's inner wrapper, and `justify-content` on the root
+   does not reach it. With the button stretched across the header, that left the
+   file path floating 156px away from the icon beside it. */
+.filename :global(.mantine-Button-inner) {
+  justify-content: flex-start;
 }
 
 .filename:hover {
