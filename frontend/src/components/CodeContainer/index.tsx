@@ -144,8 +144,11 @@ export function CodeContainer(props: CodeContainerProps) {
           {context.file_path}
         </Button>
         <Box className={classes.headerActions}>
+          {/* Same range as the gutter below and the GitHub link. Reading
+              line_from here while the body numbered from the snippet's real
+              start made the header disagree with the code under it. */}
           <span className={classes.lineRange}>
-            L{line_from}–{line_to}
+            L{startLine}-{line_to}
           </span>
           <span className={classes.langTag}>Rust</span>
           <Tooltip label={copied ? "Copied" : "Copy Snippet"} withArrow>

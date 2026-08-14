@@ -58,11 +58,6 @@ const STATS = [
   { value: "1,720", label: "Files Indexed" },
 ];
 
-// Four-digit millisecond counts read badly. Anything under a second stays in
-// ms, above that reads as seconds, the way a person would say it.
-const formatLatency = (ms: number) =>
-  ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed(1)}s`;
-
 const PLACEHOLDER_PHRASES = [
   "flush the write-ahead log",
   "cardinality of should request",
@@ -177,12 +172,6 @@ export default function Main() {
             <Text component="h1" className={classes.resultsInfo}>
               <span className={classes.resultsCount}>{data.result.length}</span>{" "}
               results for &ldquo;{searchParams.get("query")}&rdquo;
-              {/* Measured server-side and shown as reported. The hero used to
-                  assert a latency figure instead, which was wrong by an order
-                  of magnitude and had no way of noticing. */}
-              {typeof data.latency_ms === "number" && (
-                <> in <span className={classes.resultsCount}>{formatLatency(data.latency_ms)}</span></>
-              )}
             </Text>
             <span
               className={classes.modePill}
