@@ -145,6 +145,10 @@ export default function Main() {
       <Box className={classes.searchBar} data-idle={showHero || undefined}>
         <TextInput
           size="md"
+          // The placeholder is not an accessible name: it cycles through
+          // examples on the hero and disappears once anything is typed, so a
+          // screen reader has nothing stable to announce the field by.
+          aria-label="Search the Qdrant codebase"
           leftSection={<IconSearch size={20} />}
           placeholder={
             showHero && !query
@@ -167,7 +171,10 @@ export default function Main() {
       {data && (
         <>
           <Box className={classes.resultsBar}>
-            <Text className={classes.resultsInfo}>
+            {/* Rendered as the h1: the hero heading is gone in this state, so
+                without it the results page has no headings at all and nothing
+                to navigate by. Styling is unchanged. */}
+            <Text component="h1" className={classes.resultsInfo}>
               <span className={classes.resultsCount}>{data.result.length}</span>{" "}
               results for &ldquo;{searchParams.get("query")}&rdquo;
               {/* Measured server-side and shown as reported. The hero used to
