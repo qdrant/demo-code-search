@@ -104,11 +104,26 @@ def search(query: str):
     try:
         return {"result": searcher.search(query, limit=5)}
     except Exception as exc:
-        # Collection not built yet — fall back to keyword ranking so the
-        # frontend stays usable during the initial indexing run.
         message = str(exc)
         if "doesn't exist" in message or "Not found" in message or "404" in message:
-            return {"result": _keyword_search(query, limit=5), "mode": "keyword"}
+            # Collection not built yet. Fall back to keyword ranking so the
+            # frontend stays usable during the initial indexing run - but only
+            # when there is an index to rank against. data/ is gitignored, so a
+            # deployed image has no structures.json and the fallback returns
+            # nothing. Reporting that as a 200 made a missing collection look
+            # exactly like a query with no matches, which is how the demo sat
+            # broken without anyone noticing.
+            results = _keyword_search(query, limit=5)
+            if results or _FALLBACK_INDEX:
+                return {"result": results, "mode": "keyword"}
+            raise HTTPException(
+                status_code=503,
+                detail=(
+                    "Search index is unavailable: the Qdrant collection is missing "
+                    "and no local fallback index is present. Run the indexing "
+                    "workflow to populate it."
+                ),
+            )
         raise HTTPException(status_code=500, detail=message)
 
 
